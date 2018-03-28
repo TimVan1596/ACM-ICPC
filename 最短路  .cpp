@@ -118,7 +118,6 @@ int main() {
 	}
 
 
-
 	/*
 		*---------------*
 			初始化完成
@@ -155,9 +154,6 @@ int main() {
 	}
 
 	printSU(S,U);
-
-
-
 	/*
 	*---------------*
 	    第一次寻找结束
@@ -182,7 +178,7 @@ int main() {
 		//更新其余点到起点的最短距离
 	it = U.begin();
 	for(; it < U.end(); it++) {
-		if((*it).isUsed == false && (array[(*it).name][min_index] +min_dis) < MAX_INF) {
+		if((*it).isUsed == false && (array[(*it).name][min_index] +min_dis) < (*it).dis) {
 			//cout<<"-name="<<(*it).name<<"  -min="<<array[(*it).name][min_index]<<endl;
 			(*it).dis =(array[(*it).name][min_index] +min_dis);
 		}
@@ -190,13 +186,7 @@ int main() {
 
 	printSU(S,U);
 
-
-
-
-
 	printChart(n,array);
-
-
 
 	return 0;
 }
