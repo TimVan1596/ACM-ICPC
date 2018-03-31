@@ -15,10 +15,19 @@ C国最多可以派出2人。
 #define M 5
 #define BUF 1024
 
+/*
+*  					----------------------------------未完成-----------------------------------------
+*/
+
+
 void f(int a[], int k, int m, char b[]) {
+	
+	printf("k = %d  m = %d\n",k,m);
+	
 	int i,j;
 
 	if(k==N) {
+	//	printf("---- \n");
 		b[M] = 0;
 		if(m==0) printf("%s\n",b);
 		return;
@@ -28,7 +37,7 @@ void f(int a[], int k, int m, char b[]) {
 		for(j=0; j<i; j++) {
 			b[M-m+j] = k+'A';
 		}
-		f(a,k+1,M,b);  //填空位置
+		f(a,k,m-1,b);  //填空位置
 	}
 }
 int main() {
