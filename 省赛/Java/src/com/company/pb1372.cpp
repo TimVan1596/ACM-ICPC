@@ -7,14 +7,23 @@ using namespace std;
 // 接下来有n行[1,100],每行两个数字,第一个数字是该物品的价格Pi([0.01,10000]),第二个数字是该物品的数量Ci([1,10])。
 
 int main() {
-    int N = 0;
-    cin>>N;
-    for (int sume_i = 0; sume_i < N ; ++sume_i) {
+    int T = 0;
+    cin>>T;
+    for (int sum_i = 0; sum_i < T ; ++sum_i) {
         int n = 0;
         double sum_price = 0;
         cin>>n>>sum_price;
-        for (int i = 0; i < ; ++i) {
+        for (int i = 0; i < n ; ++i) {
+            double price = 0;
+            int num = 0;
+            cin>>price>>num;
+            sum_price -= num*price;
 
+        }
+        if(sum_price>=0){
+            cout<<setiosflags(ios::fixed)<<setprecision(2)<<"Case "<<sum_i+1<<": "<<setiosflags(ios::fixed)<<setprecision(1)<<(floor(sum_price*10))/10<<0<<endl;
+        } else{
+            cout<<"Case "<<sum_i+1<<": "<<-1<<endl;
         }
     }
 
