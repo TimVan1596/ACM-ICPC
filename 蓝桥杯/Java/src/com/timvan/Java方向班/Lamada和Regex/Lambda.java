@@ -14,12 +14,13 @@ public class Lambda {
 
     public static void main(String[] args) {
 
-        String fuck = "fuck";
-        TestClass testClass  = (fuckthis)->{
-            System.out.println("hello"+fuckthis);
-        };
-
-        testClass.test("fuck");
+//        String fuck = "fuck";
+//        TestClass testClass  = (fuckthis)->{
+//            System.out.println("hello"+fuckthis);
+//        };
+//
+//        testClass.test("fuck");
+        System.out.println((3-2.6==0.4));
 
     }
 }
