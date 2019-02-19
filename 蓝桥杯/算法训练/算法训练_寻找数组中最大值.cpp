@@ -17,7 +17,20 @@ using namespace std;
 //3 0
 
 int main(){
+	int num = 0;
+	cin>>num;
 	
-	cout<<"hello world !";
+	int max = 0, index = 0;
+	for(int i = 0 ; i < num ; ++ i){
+		int cache = 0;
+		cin>>cache;
+		if( (cache > max) || i == 0){
+			max = cache;
+			index = i;
+		}
+	
+	}
+	
+	cout<<max<<" "<<index;
 	return 0;
 }
