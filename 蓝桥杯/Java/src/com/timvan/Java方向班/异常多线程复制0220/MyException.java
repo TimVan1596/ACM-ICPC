@@ -1,4 +1,4 @@
-package com.timvan.Java方向班.异常多线程0220;
+package com.timvan.Java方向班.异常多线程复制0220;
 
 /**
  * @author TimVan
