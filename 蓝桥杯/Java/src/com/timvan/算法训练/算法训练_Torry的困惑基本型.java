@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.Scanner;
 
 public class 算法训练_Torry的困惑基本型 {
-    //问题描述
+//    问题描述
 //　　Torry从小喜爱数学。一天，老师告诉他，像2、3、5、7……这样的数叫做质数。
 //	Torry突然想到一个问题，前10、100、1000、10000……个质数的乘积是多少呢？他把这个问题告诉老师。
 //	老师愣住了，一时回答不出来。于是Torry求助于会编程的你，请你算出前n个质数的乘积。
@@ -48,10 +48,13 @@ public class 算法训练_Torry的困惑基本型 {
         while (zhi_i < n){
             if(isZhi(i)){
                 zhi_i++;
+                //System.out.println(zhi_i+"："+i);
+
                 sum = sum.multiply(BigInteger.valueOf(i));
-//                if (sum.){
-//                    sum.divide(BigInteger.valueOf(50000))
-//                }
+
+                if (sum.compareTo(BigInteger.valueOf(50000))>0){
+                    sum = sum.mod(BigInteger.valueOf(50000));
+                }
 
             }
             i++;
