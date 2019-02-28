@@ -1,5 +1,8 @@
 package com.timvan.算法训练;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  * @description: 调整每组数的排列顺序，使得两组数据相同下标元素对应相乘，然后相加的和最小
  * @author: Tim Van
@@ -21,8 +24,32 @@ public class 算法训练_最小乘积基本型 {
 //　　一个数表示答案。
 
 
-
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int T = scanner.nextInt();
+
+        for (int i = 0; i < T; i++) {
+            int n = scanner.nextInt();
+            int[] arr1 = new int[n],arr2 = new int[n];
+
+            //输入第一列数
+            for (int k = 0; k < n; k++) {
+                arr1[k] = scanner.nextInt();
+            }
+
+            //输入第二列数
+            for (int k = 0; k < n; k++) {
+                arr2[k] = scanner.nextInt();
+            }
+
+            int sum = 0;
+            for (int j = 0; j < n; j++) {
+                sum += (arr1[j]*arr2[j]);
+            }
+
+            System.out.println("sum = "+sum);
+
+        }
 
     }
 }
