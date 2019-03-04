@@ -2,10 +2,8 @@ package com.timvan.Java方向班.Char集合网络JDBC0225;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.regex.Pattern;
+import java.util.Scanner;
 
 /**
  * <h3>ACM</h3>
@@ -22,6 +20,7 @@ public class JavaQQClient {
      * */
     private final static String SERVER_IP = "172.16.120.68";
     private final static int PORT = 2019;
+    private final static String CLOSE_CONNECT = "GG";
 
     public static void main(String[] args) {
         System.out.println("等待连接到IP="+ SERVER_IP+":"+PORT+"的服务端主机");
@@ -30,7 +29,15 @@ public class JavaQQClient {
             System.out.println("服务端主机地址为:"+socket.getRemoteSocketAddress());
             DataOutputStream dataOutputStream
                     = new DataOutputStream(socket.getOutputStream());
-            dataOutputStream.writeUTF("我喜欢方方");
+
+            System.out.println("请输入发送给服务端的内容");
+            String inputWords = "";
+            Scanner scanner = new Scanner(System.in);
+           while (!inputWords.equals(CLOSE_CONNECT)){
+               dataOutputStream.writeUTF(inputWords);
+               inputWords =  scanner.next();
+           }
+
 
 
             socket.close();
