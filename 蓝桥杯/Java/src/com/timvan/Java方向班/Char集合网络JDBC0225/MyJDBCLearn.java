@@ -1,6 +1,9 @@
 package com.timvan.Java方向班.Char集合网络JDBC0225;
 
+import java.io.*;
+import java.net.URL;
 import java.sql.*;
+import java.util.Properties;
 
 /**
  * <h3>ACM</h3>
@@ -14,6 +17,12 @@ public class MyJDBCLearn {
     final static  String USER = "root";
     final static  String PASSWORD = "";
     final static  String DRIVER = "com.mysql.cj.jdbc.Driver";
+
+    Properties properties = new Properties();
+
+    {
+
+    }
 
     public MyJDBCLearn() {
 
@@ -71,8 +80,10 @@ public class MyJDBCLearn {
         try {
             conn = DriverManager.getConnection(URL,USER,PASSWORD);
 
-            String sql = "update memepics set author = ('我去') where id = 3";
+            String sql = "update memepics set author = ? where id = 3";
             prepStat = conn.prepareStatement(sql);
+            prepStat.setString(1,"lijhi");
+
 
             if (prepStat.execute()){
                 System.out.println("执行成功");
@@ -88,6 +99,20 @@ public class MyJDBCLearn {
 
 
     public static void main(String[] args) {
+
+        Properties properties = new Properties();
+        try {
+            String path = MyJDBCLearn.class.getClassLoader().getResource("memex.properties").getPath();
+
+            properties.load(new BufferedInputStream( new FileInputStream(new File(path))));
+            String url =  properties.getProperty("URL");
+            System.out.println("url = "+url);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         //修改语句
         updateLearn();
