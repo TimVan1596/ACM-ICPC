@@ -1,5 +1,6 @@
 package com.timvan.Java方向班.MemeX.util;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.BufferedInputStream;
@@ -7,29 +8,66 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
- * <h3>ACM</h3>
- * <p>自定义JDBC工具类</p>
+ * <h3>自定义JDBC工具类</h3>
+ * <p>基于 HikariCP 数据库连接池</p>
  *
  * @author : TimVan
  * @date : 2019-03-09 18:06
  **/
 public class JdbcUtils {
-    HikariDataSource hkDataSrc = null;
 
-    final static String URL = "jdbc:mysql://localhost:3306/memex?useUnicode=true&characterEncoding=gbk&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    final static  String USER = "root";
-    final static  String PASSWORD = "";
-    final static  String DRIVER = "com.mysql.cj.jdbc.Driver";
+    /**
+     *
+     * */
 
-    Properties properties = new Properties();
+    private static HikariDataSource hkDataSource = null;
 
-    {
+    //初始化
+    static  {
+
+
+        try {
+            Properties properties = new Properties();
+
+            String path = Objects.requireNonNull(JdbcUtils.class.getClassLoader().getResource("memex.properties")).getPath();
+
+            properties.load(new BufferedInputStream( new FileInputStream(new File(path))));
+
+            // 装配 Hikari 连接池配置
+            HikariConfig config = new HikariConfig(path);
+            hkDataSource = new HikariDataSource(config);
+
+        } catch (IOException e) {
+            //TODO:增加日志系统
+            System.out.println("严重："+JdbcUtils.class.getName()+"读取properties失败！");
+            e.printStackTrace();
+        }
+
+
 
     }
 
+    /**
+     * <h4>获取 Connection 连接</h3>
+     * */
+    public static Connection getConnection(){
+
+        Connection conn = null;
+
+        try {
+            conn =  hkDataSource.getConnection();
+        } catch (SQLException e) {
+            //TODO:增加日志系统
+            System.out.println("严重："+JdbcUtils.class.getName()+"获取 Connection 失败！");
+            e.printStackTrace();
+        }
+
+        return conn;
+    }
 
 
     /**
@@ -47,11 +85,9 @@ public class JdbcUtils {
      * 查 retrieve
      * */
     private static void selectLearn(){
-        Connection conn = null;
+        Connection conn = JdbcUtils.getConnection();
         PreparedStatement prepStat = null;
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(URL,USER,PASSWORD);
             String sql = "select id,name,author from memepics";
             prepStat = conn.prepareStatement(sql);
             ResultSet resultSet = prepStat.executeQuery();
@@ -66,58 +102,17 @@ public class JdbcUtils {
             conn.close();
 
 
-        }  catch (SQLException | ClassNotFoundException e) {
+        }  catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-    /**
-     * 改
-     * */
-    private static void updateLearn(){
-        Connection conn = null;
-        PreparedStatement prepStat = null;
-
-        try {
-            conn = DriverManager.getConnection(URL,USER,PASSWORD);
-
-            String sql = "update memepics set author = ? where id = 3";
-            prepStat = conn.prepareStatement(sql);
-            prepStat.setString(1,"lijhi");
-
-
-            if (prepStat.execute()){
-                System.out.println("执行成功");
-            }
-            else {
-                System.out.println("执行失败");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public static void main(String[] args) {
 
-        Properties properties = new Properties();
-        try {
-            String path = JdbcUtils.class.getClassLoader().getResource("memex.properties").getPath();
 
-            properties.load(new BufferedInputStream( new FileInputStream(new File(path))));
-            String url =  properties.getProperty("URL");
-            System.out.println("url = "+url);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        //修改语句
-        updateLearn();
 
         //查询语句
         selectLearn();

@@ -8,7 +8,28 @@
     <artifactId>蓝桥杯</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+
+    </properties>
+
     <dependencies>
+
+        <!-- SLF4J,即简单日志门面(Simple Logging Facade for Java)-->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.8.0-beta4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.8.0-beta4</version>
+            <scope>compile</scope>
+        </dependency>
+
+
 
         <!--JDBC驱动-->
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
