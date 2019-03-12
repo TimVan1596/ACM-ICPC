@@ -1,6 +1,5 @@
 package com.timvan.算法训练;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -23,14 +22,78 @@ public class 算法训练_最小乘积基本型 {
 //    输出格式
 //　　一个数表示答案。
 
+    /**
+     * arr1、arr2 = 第一列和第二列数
+     *
+     */
+    private static int[] arr1 ;
+    private static int[] arr2 ;
+    private static int sum;
+
+    /**
+     * 交换
+     */
+    private static void arrSwap(int[] arr, int first, int second) {
+        int c = arr[first];
+        arr[first] = arr[second];
+        arr[second] = c;
+    }
+
+    /**
+     * 打印数组
+     */
+    private static void printArr(int[] arr) {
+
+        for (int i = 0; i < arr.length; i++) {
+            if ( i == 0){
+                System.out.print(arr[i]);
+            }
+            else{
+                System.out.print("," + arr[i]);
+            }
+        }
+
+        System.out.println();
+    }
+
+    /**
+     * 对数组进行全排列
+     * perm = permutation
+     */
+    private static void perm(int[] arr,int start ,int end){
+        //迭代终止条件
+        if (start == end){
+            //增加一次
+            printArr(arr);
+        }
+        else{
+
+            for (int i = start; i <= end; i++) {
+                if (start != i){
+                    arrSwap(arr,start,i);
+                }
+                perm(arr,start+1,end);
+                if (start != i){
+                    arrSwap(arr,start,i);
+                }
+            }
+        }
+
+
+    }
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int T = scanner.nextInt();
 
+
         for (int i = 0; i < T; i++) {
             int n = scanner.nextInt();
-            int[] arr1 = new int[n],arr2 = new int[n];
+            arr1 = null;
+            arr2 = null;
+            arr1 = new int[n];
+            arr2 = new int[n];
 
             //输入第一列数
             for (int k = 0; k < n; k++) {
@@ -43,9 +106,8 @@ public class 算法训练_最小乘积基本型 {
             }
 
             int sum = 0;
-            for (int j = 0; j < n; j++) {
-                sum += (arr1[j]*arr2[j]);
-            }
+
+            perm(arr1,0,arr1.length-1);
 
             System.out.println("sum = "+sum);
 

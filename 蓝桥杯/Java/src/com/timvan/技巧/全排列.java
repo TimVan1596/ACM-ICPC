@@ -10,48 +10,71 @@ import java.util.zip.Deflater;
  * @create: 2019-03-08 00:35
  **/
 public class 全排列 {
-    public static void test(boolean[] isUsed ){
-        isUsed[0] = true;
+
+    /**
+     * cnt = 全排列个数
+     */
+    static private int cnt = 0;
+
+    /**
+     * 交换
+     */
+    private static void arrSwap(int[] arr, int first, int second) {
+        int c = arr[first];
+        arr[first] = arr[second];
+        arr[second] = c;
+    }
+
+    /**
+     * 打印数组
+     */
+    private static void printArr(int[] arr) {
+
+        for (int i = 0; i < arr.length; i++) {
+            if ( i == 0){
+                System.out.print(arr[i]);
+            }
+            else{
+                System.out.print("," + arr[i]);
+            }
+        }
+
+        System.out.println();
+    }
+
+    /**
+     * 对数组进行全排列
+     * perm = permutation
+     */
+    private static void perm(int[] arr,int start ,int end){
+        //迭代终止条件
+        if (start == end){
+            //增加一次
+            cnt++;
+            printArr(arr);
+        }
+        else{
+
+            for (int i = start; i <= end; i++) {
+                if (start != i){
+                    arrSwap(arr,start,i);
+                }
+                perm(arr,start+1,end);
+                if (start != i){
+                    arrSwap(arr,start,i);
+                }
+            }
+        }
+
+
     }
 
 
     public static void main(String[] args) {
 
         int n = 3;
-
-        boolean[] isUsed = new boolean[n+1];
-        Arrays.fill(isUsed,false);
-//
-//        for (int i = 1; i <= n; i++) {
-//            isUsed[i] = true;
-//
-//            for (int j = 1; j <= n; j++) {
-//                //跳过重复项
-//                if (isUsed[j]){
-//                    continue;
-//                }
-//                isUsed[j] = true;
-//
-//                for (int k = 1; k <= n; k++) {
-//
-//                    //跳过重复项
-//                    if (isUsed[k]){
-//                        continue;
-//                    }
-//
-//                    System.out.print(i+"-"+j+"-"+k);
-//                    System.out.println();
-//
-//                }
-//
-//                isUsed[j] = false;
-//            }
-//            isUsed[i] = false;
-//
-//        }
-
-        test(isUsed);
-        System.out.println(isUsed[0]);
-
+        int arr[] = {1, 2, 3, 4};
+        perm(arr,0,arr.length-1);
+        System.out.println(arr.length+"个数进行排列有"+cnt+"种情况");
     }
 }

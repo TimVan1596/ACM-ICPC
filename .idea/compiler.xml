@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="蓝桥杯" />
+        <module name="ACM" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="蓝桥杯" target="1.8" />
+      <module name="ACM" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
