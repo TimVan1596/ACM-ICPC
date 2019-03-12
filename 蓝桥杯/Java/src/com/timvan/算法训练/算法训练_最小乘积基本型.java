@@ -24,11 +24,12 @@ public class 算法训练_最小乘积基本型 {
 
     /**
      * arr1、arr2 = 第一列和第二列数
-     *
+     *sum
      */
     private static int[] arr1 ;
     private static int[] arr2 ;
     private static int sum;
+    private static int cnt = 0;
 
     /**
      * 交换
@@ -65,6 +66,10 @@ public class 算法训练_最小乘积基本型 {
         if (start == end){
             //增加一次
             printArr(arr);
+            cnt++;
+            if ()
+                In
+
         }
         else{
 
@@ -105,7 +110,6 @@ public class 算法训练_最小乘积基本型 {
                 arr2[k] = scanner.nextInt();
             }
 
-            int sum = 0;
 
             perm(arr1,0,arr1.length-1);
 
