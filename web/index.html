@@ -3,6 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>斗图神器 网页版</title>
+
+    <!-- 表情包表格单行信息（列表填充模板 template）-->
+    <script type="text/html" id="MEME_TEMPLATE">
+        <tr class="dvd-tr-line">
+            <td class="dvd-radio">
+                <input class="dvd-radio-input" name="dvd-radio"
+                       type="checkbox" value=""/>
+            </td>
+            <td class="dvd-id"></td>
+            <td height="110">
+                <img class="dvd-preview" onclick="onclickImg(this)"
+                     src="https://cloud.timvanx.com/timg.jpg">
+            </td>
+            <td class="dvd-name"></td>
+            <td>
+                <button onclick="loanOrReturnDVD(this)"
+                        class="layui-btn layui-btn-sm
+                            dvd-btn-land">
+                    <i class="layui-icon">&#xe642;</i>
+                </button>
+
+                <button onclick="editDVD(this)"
+                        class="layui-btn layui-btn-sm
+                            dvd-btn-edit">
+                    <i class="layui-icon">&#xe642;</i>编辑
+                </button>
+
+            </td>
+        </tr>
+    </script>
+    <!-- 表情包表格的表头（列表填充模板 template）-->
+    <script type="text/html" id="MEME_TABLE_TH_TEMPLATE">
+        <tr >
+            <th width="30" height="30" ></th>
+            <th width="100">编号</th>
+            <th width="110">内容</th>
+            <th width="250">预览图</th>
+            <th width="150">下载量</th>
+            <th width="150">作者</th>
+        </tr>
+    </script>
+
     <style>
         body{
             margin: 3%;
@@ -31,17 +73,8 @@
 
     <!-- start 表格 -->
     <section class="content">
-        <table border="1">
-            <!--编号	书名	出版日期	作者	出版社-->
-            <tr>
-                <th></th>
-                <th>编号</th>
-                <th>内容</th>
-                <th>预览图</th>
-                <th>下载量</th>
-                <th>作者</th>
-            </tr>
-            <tr></tr>
+        <table border="1" id="memes-table">
+
         </table>
     </section>
     <!-- end 表格-->
@@ -53,7 +86,7 @@
     <!-- end 操作按钮-->
 
 
-
-
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.timvan.Java方向班.MemeX.util;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.log4j.BasicConfigurator;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -21,9 +22,8 @@ import java.util.Properties;
 public class JdbcUtils {
 
     /**
-     *
+     * hkDataSource = HikariCP数据库连接池的DataSource
      * */
-
     private static HikariDataSource hkDataSource = null;
 
     //初始化
@@ -69,55 +69,7 @@ public class JdbcUtils {
         return conn;
     }
 
-
-    /**
-     * JDBC连接数据库的6个步骤
-     *
-     * 1、配置URL、用户、密码连接信息
-     * 2、注册JDBC驱动
-     * 3、向DriverManager请求,获得Connection对象
-     * 4、创建PrepareStatement对象
-     * 5、执行SQL、查询结果集
-     * 6、处理异常,关闭JDBC对象资源
-     * */
-
-    /**
-     * 查 retrieve
-     * */
-    private static void selectLearn(){
-        Connection conn = JdbcUtils.getConnection();
-        PreparedStatement prepStat = null;
-        try {
-            String sql = "select id,name,author from memepics";
-            prepStat = conn.prepareStatement(sql);
-            ResultSet resultSet = prepStat.executeQuery();
-            while (resultSet.next()){
-                System.out.println(resultSet.getString(1)
-                        +" - "+resultSet.getString(2)
-                        +" - "+resultSet.getString(3));
-            }
-
-            resultSet.close();
-            prepStat.close();
-            conn.close();
-
-
-        }  catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
     public static void main(String[] args) {
-
-
-
-        //查询语句
-        selectLearn();
-
-
-
+        BasicConfigurator.configure();
     }
 }
