@@ -29,7 +29,8 @@ public class 算法训练_最小乘积基本型 {
     private static int[] arr1 ;
     private static int[] arr2 ;
     private static int sum;
-    private static int cnt = 0;
+    private static boolean isFirst = true;
+    private static int n;
 
     /**
      * 交换
@@ -65,10 +66,22 @@ public class 算法训练_最小乘积基本型 {
         //迭代终止条件
         if (start == end){
             //增加一次
-            printArr(arr);
-            cnt++;
-            if ()
-                In
+            //printArr(arr);
+
+            int current = 0;
+
+            for (int i = 0; i < n; i++) {
+                current += arr[i]*arr2[i];
+            }
+
+
+            if (isFirst){
+                isFirst = false;
+                sum = current;
+            }
+            else if(current < sum){
+                sum = current;
+            }
 
         }
         else{
@@ -94,11 +107,12 @@ public class 算法训练_最小乘积基本型 {
 
 
         for (int i = 0; i < T; i++) {
-            int n = scanner.nextInt();
+            n = scanner.nextInt();
             arr1 = null;
             arr2 = null;
             arr1 = new int[n];
             arr2 = new int[n];
+            isFirst = true;
 
             //输入第一列数
             for (int k = 0; k < n; k++) {
@@ -111,9 +125,9 @@ public class 算法训练_最小乘积基本型 {
             }
 
 
-            perm(arr1,0,arr1.length-1);
+            perm(arr1,0,n-1);
 
-            System.out.println("sum = "+sum);
+            System.out.println(sum);
 
         }
 
