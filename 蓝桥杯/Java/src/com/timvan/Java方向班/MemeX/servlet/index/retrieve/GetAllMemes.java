@@ -32,7 +32,7 @@ public class GetAllMemes extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+       doPost(req, resp);
     }
 
     @Override
@@ -65,5 +65,18 @@ public class GetAllMemes extends HttpServlet {
 
         String retJson = JSON.toJSONString(ret);
         out.write(retJson);
+    }
+
+    public static void main(String[] args) {
+
+
+        ArrayList<DVD> dvdArr = new ArrayList<>();
+        dvdArr.add(new DVD(1));
+        Map<String, Object> data = new HashMap<>(1);
+        data.put("list", dvdArr);
+        String retJson = JSON.toJSONString(data);
+
+        System.out.println(retJson);
+
     }
 }
