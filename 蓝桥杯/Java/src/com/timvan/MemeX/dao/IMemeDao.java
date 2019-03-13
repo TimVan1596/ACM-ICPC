@@ -1,9 +1,8 @@
-package com.timvan.Java方向班.MemeX.dao;
+package com.timvan.MemeX.dao;
 
-import com.timvan.Java方向班.MemeX.dao.model.Meme;
+import com.timvan.MemeX.dao.model.Meme;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface IMemeDao {
     /**

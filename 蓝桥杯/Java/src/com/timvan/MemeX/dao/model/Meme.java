@@ -1,4 +1,4 @@
-package com.timvan.Java方向班.MemeX.dao.model;
+package com.timvan.MemeX.dao.model;
 
 /**
  * <h3>ACM</h3>

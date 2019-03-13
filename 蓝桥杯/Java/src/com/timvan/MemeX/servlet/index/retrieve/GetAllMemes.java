@@ -1,10 +1,9 @@
-package com.timvan.Java方向班.MemeX.servlet.index.retrieve;
+package com.timvan.MemeX.servlet.index.retrieve;
 
 import com.alibaba.fastjson.JSON;
-import com.timvan.Java方向班.MemeX.dao.IMemeDao;
-import com.timvan.Java方向班.MemeX.dao.MemeDaoImpl;
-import com.timvan.Java方向班.MemeX.dao.model.DVD;
-import com.timvan.Java方向班.MemeX.dao.model.Meme;
+import com.timvan.MemeX.dao.IMemeDao;
+import com.timvan.MemeX.dao.MemeDaoImpl;
+import com.timvan.MemeX.dao.model.Meme;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,10 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +24,7 @@ import java.util.Map;
  * @date : 2019-03-09 17:48
  **/
 @WebServlet(name = "GetAllMemes",
-        urlPatterns = {"/memex/GetAllMemes.do"}, loadOnStartup = 1)
+        urlPatterns = {"/index/GetAllMemes.do"}, loadOnStartup = 1)
 public class GetAllMemes extends HttpServlet {
 
     @Override
@@ -41,21 +38,18 @@ public class GetAllMemes extends HttpServlet {
         resp.setContentType("application/text; charset=utf-8");
         PrintWriter out = resp.getWriter();
 
-//        IMemeDao memeDao = new MemeDaoImpl();
-//        ArrayList<Meme> dvdArr = memeDao.selectAll();
-//        dvdArr.add(new Meme(1, "sfe"));
+        IMemeDao memeDao = new MemeDaoImpl();
+        ArrayList<Meme> memeList = memeDao.selectAll();
 
 
-        ArrayList<DVD> dvdArr = new ArrayList<>();
-        dvdArr.add(new DVD(1));
 
-        System.out.println("dvdArr.size() = " + dvdArr.size());
+        System.out.println("memeList.size() = " + memeList.size());
 
         Map<String, Object> ret = new HashMap<>(1);
         ret.put("code", 0);
         //构建Json返回值
         Map<String, Object> data = new HashMap<>(1);
-        data.put("list", dvdArr);
+        data.put("list", memeList);
         ret.put("data", data);
 //
 //        //使用 Alibaba fastJson 序列化 ret
@@ -70,10 +64,10 @@ public class GetAllMemes extends HttpServlet {
     public static void main(String[] args) {
 
 
-        ArrayList<DVD> dvdArr = new ArrayList<>();
-        dvdArr.add(new DVD(1));
+        IMemeDao memeDao = new MemeDaoImpl();
+        ArrayList<Meme> memeList = memeDao.selectAll();
         Map<String, Object> data = new HashMap<>(1);
-        data.put("list", dvdArr);
+        data.put("list", memeList);
         String retJson = JSON.toJSONString(data);
 
         System.out.println(retJson);

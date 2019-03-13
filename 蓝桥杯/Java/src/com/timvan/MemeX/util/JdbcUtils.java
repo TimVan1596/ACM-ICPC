@@ -1,4 +1,4 @@
-package com.timvan.Java方向班.MemeX.util;
+package com.timvan.MemeX.util;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

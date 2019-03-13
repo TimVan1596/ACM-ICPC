@@ -1,7 +1,7 @@
-package com.timvan.Java方向班.MemeX.dao;
+package com.timvan.MemeX.dao;
 
-import com.timvan.Java方向班.MemeX.dao.model.Meme;
-import com.timvan.Java方向班.MemeX.util.JdbcUtils;
+import com.timvan.MemeX.dao.model.Meme;
+import com.timvan.MemeX.util.JdbcUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
