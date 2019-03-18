@@ -1,0 +1,14 @@
+/*------------    表格样式    -------------*/
+td {
+    text-align: center;
+}
+
+.meme-preview {
+    width: 220px;
+    height: 220px;
+}
+
+.meme-name{
+    font-weight: bold;
+    font-size: large;
+}

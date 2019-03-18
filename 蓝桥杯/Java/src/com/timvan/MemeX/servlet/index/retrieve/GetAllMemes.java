@@ -41,10 +41,6 @@ public class GetAllMemes extends HttpServlet {
         IMemeDao memeDao = new MemeDaoImpl();
         ArrayList<Meme> memeList = memeDao.selectAll();
 
-
-
-        System.out.println("memeList.size() = " + memeList.size());
-
         Map<String, Object> ret = new HashMap<>(1);
         ret.put("code", 0);
         //构建Json返回值

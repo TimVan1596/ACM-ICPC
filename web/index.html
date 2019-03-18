@@ -8,25 +8,24 @@
     <script type="text/html" id="MEME_TEMPLATE">
         <tr class="dvd-tr-line">
             <td class="dvd-radio">
-                <input class="dvd-radio-input" name="dvd-radio"
-                       type="checkbox" value=""/>
+                <label>
+                    <input class="dvd-radio-input" name="dvd-radio"
+                           type="checkbox" value=""/>
+                </label>
             </td>
             <td class="meme-id"></td>
-            <td height="110">
-                <img class="dvd-preview" onclick="onclickImg(this)"
-                     src="https://cloud.timvanx.com/timg.jpg">
-            </td>
             <td class="meme-name"></td>
-            <td>
-                <button onclick="loanOrReturnDVD(this)"
-                        class="layui-btn layui-btn-sm
-                            dvd-btn-land">
-                    <i class="layui-icon">&#xe642;</i>
-                </button>
+            <td height="80">
+                <img class="meme-preview" onclick="onclickImg(this)"
+                     src="https://cloud.timvanx.com/timg.jpg" alt="图片内容">
+            </td>
+            <td class="meme-times"></td>
+            <td class="meme-author"></td>
 
-                <button onclick="editDVD(this)"
+            <td>
+                <button onclick="editMeme(this)"
                         class="layui-btn layui-btn-sm
-                            dvd-btn-edit">
+                            meme-btn-edit">
                     <i class="layui-icon">&#xe642;</i>编辑
                 </button>
 
@@ -37,14 +36,17 @@
     <script type="text/html" id="MEME_TABLE_TH_TEMPLATE">
         <tr >
             <th width="30" height="30" ></th>
-            <th width="100">编号</th>
-            <th width="110">内容</th>
-            <th width="250">预览图</th>
-            <th width="150">下载量</th>
-            <th width="150">作者</th>
+            <th width="50">编号</th>
+            <th width="160">内容</th>
+            <th width="220">预览图</th>
+            <th width="50">下载量</th>
+            <th width="70">作者</th>
+            <th width="120">操作</th>
         </tr>
     </script>
 
+    <link rel="stylesheet" href="plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="css/index.css">
     <style>
         body{
             margin: 3%;
@@ -55,8 +57,18 @@
             margin-bottom: 2%;
         }
 
+        tr:hover{
+            background-color: rgba(0, 129, 255, 0.3) !important;
+        }
 
 
+        table th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
     </style>
 </head>
 <body>
@@ -73,9 +85,7 @@
 
     <!-- start 表格 -->
     <section class="content">
-        <table border="1" id="memes-table">
-
-        </table>
+        <table border="1" id="memes-table"></table>
     </section>
     <!-- end 表格-->
 
@@ -85,8 +95,13 @@
     </section>
     <!-- end 操作按钮-->
 
+    <!--start layer点击图片弹出放大层(默认隐藏)-->
+    <img alt="预览图" style="display:none" id="display-img" src="" />
+    <!-- start layer点击图片弹出放大层(默认隐藏) -->
 
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="plugin/layui/layui.js"></script>
+
     <script src="js/index.js"></script>
 </body>
 </html>
