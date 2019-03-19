@@ -7,33 +7,30 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-int judge (int k) {
-	int i;
-	for (i=2; i*i<=k; i++) {
-		if (k%i==0)
-			return 0;
-	}
-	return 1;
-}
-int main() {
-	int n;
-	int i=1;
-	long long k=1;
-	long long sum=1;
-	scanf("%d",&n);
-	while(i<=n) {
-		k++;
-		if (judge(k)==1) {
-			i++;
-			sum*=k;
-			if (sum>50000) {
-				sum%=50000;
-			}
-//			cout<<i<<"： "<<k<"\t sum="<<sum<<endl;
-			printf("%d： %lld\t sum= %lld\n",i,k,sum);
 
+//打印行列式
+void printMatrix(int *matrix , int m , int n) {
+	for(int i = 0; i < m ; ++i) {
+		for(int j = 0 ; j < n ; ++j) {
+			int cache = 0;
+			cout<<*(matrix+i*n+j)<<" ";
 		}
+		cout<<endl;
 	}
-	printf("%lld",sum);
+
+}
+
+
+
+int main() {
+	int m = 3, n = 2;
+	int arr[3][2] = {
+		{0,3},
+		{1,2},
+		{3,1},
+	};
+	
+	printMatrix(&arr[0][0],m,n);
+	
 }
 
