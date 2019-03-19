@@ -93,7 +93,9 @@ function editMeme(obj) {
     let memeName = obj.getAttribute("name");
     let memePreview = obj.getAttribute("preview");
 
-    alert(memeID+"-"+memeName);
+
+    let url = "html/editPage.html?preview="+decodeURI(memePreview);
+    window.open(url);
 
 }
 

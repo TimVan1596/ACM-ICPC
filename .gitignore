@@ -53,3 +53,13 @@ fabric.properties
 # Editor-based Rest JavaQQClient
 .idea/httpRequests
 
+/.idea/encodings.xml
+.idea/.name
+.idea/artifacts/
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/modules.xml
+.idea/vcs.xml
+classes/
+target/
+"\350\223\235\346\241\245\346\235\257.iml"

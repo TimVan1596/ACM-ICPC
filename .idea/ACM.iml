@@ -33,14 +33,16 @@
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.15" level="project" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:3.3.1" level="project" />
+    <orderEntry type="library" name="bootstrap.bundle" level="application" />
+    <orderEntry type="library" name="jquery.slim" level="application" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://C:/apache-tomcat-9.0.13-windows-x64/apache-tomcat-9.0.13/lib" />
+          <root url="file://C:/Program Files/apache-tomcat-9.0.10-windows-x64/apache-tomcat-9.0.10/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://C:/apache-tomcat-9.0.13-windows-x64/apache-tomcat-9.0.13/lib" recursive="false" />
+        <jarDirectory url="file://C:/Program Files/apache-tomcat-9.0.10-windows-x64/apache-tomcat-9.0.10/lib" recursive="false" />
       </library>
     </orderEntry>
   </component>
