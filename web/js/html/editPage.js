@@ -26,10 +26,10 @@ $(function () {
             $dataScaleY.val(e.detail.scaleY);
         }
     };
-    var originalImageURL = $image.attr('src');
-    var uploadedImageName = 'cropped.jpg';
-    var uploadedImageType = 'image/jpeg';
-    var uploadedImageURL;
+    let originalImageURL = $image.attr('src');
+    let uploadedImageName = 'cropped.jpg';
+    let uploadedImageType = 'image/jpeg';
+    let uploadedImageURL;
 
 
     //获取页面传值所获得的图片url并加载
@@ -284,24 +284,6 @@ function getQueryString(name) {
     if (r != null) return unescape(r[2]);
     return null;
 }
-
-//
-// //初始化页面
-// $(function () {
-//
-//     //获取页面传值所获得的图片url
-//     let previewUrl =  getQueryString("preview");
-//
-//     if(previewUrl == "" || previewUrl == null || previewUrl == undefined){
-//
-//     }
-//     else{
-//         $("#image").attr("src", previewUrl);
-//         alert(previewUrl)
-//     }
-//
-// });
-
 
 
 
