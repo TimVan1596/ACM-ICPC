@@ -1,5 +1,4 @@
 #include<iostream>
-
 using namespace std;
 
 int N;
@@ -11,10 +10,10 @@ int main(void) {
 	string ans, s;
 
 
-//	cin >> N >> str;
-	N = 4;
-	str = "bbaabbaaaaa";
-	len = str.size();
+	cin >> N >> str;
+//	N = 4;
+//	str = "bbaabbaaaaa";
+//	len = str.size();
 
 
 	for(int k = len; k >= N; --k) {

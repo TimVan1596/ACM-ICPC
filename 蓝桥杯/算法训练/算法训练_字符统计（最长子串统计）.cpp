@@ -25,45 +25,68 @@ bool comp(const pair<string,int> &a
 int main() {
 
 
-//	int L = 0;
-//	cin>>L;
-//
-//	string S;
-//	cin>>S;
+	int L = 0;
+	cin>>L;
 
+	string S;
+	cin>>S;
+
+/*
 	string S = "bbaabbaaaaa";
 	L = 4;
+	*/
 
 	string newStr;
 
+	//string a  = "bbaa";
+//	string b  = "bbaa";
+//	cout<<"strTwo.compare(str) = "<<a.compare(b)<<endl;
+	
 
 	//切割子串
 	int max = 0;
 	for(int i = 0 ; i <= S.length()-L+1; ++i) {
 		for(int j = S.length()-1 ; j >= i+L-1; --j) {
-			string str;
-			str.assign(S,i,j-i+1);
+			string str = S.substr(i,j-i+1);
 //			cout<<str<<endl;
+			int cnt = 1;
+			
+//			if( i==0 && j == S.length()-1){
+//				cout<<"start: str = "<<str<<",cnt = "<<cnt<<endl;
+//			}
+			
 
-
-			int cnt = 0;
 			//重复进行一次搜索
-			for(int k = S.length()-1 ; k >= i+L-1; --k) {
-				if(k != i) {
-					string strTwo;
-					strTwo.assign(S,i,j-i+1);
-					if(strTwo == str) {
-						cnt++;
-						cout<<"cnt = "<<cnt<<endl;
+			for(int t = 0 ; t <= S.length()-L+1; ++t) {
+				for(int k = S.length()-1 ; k >= i+L-1; --k) {
+					if(k != j && t!=i) {
+					
+						string strTwo= S.substr(t,k-t+1);
+						if(strTwo.compare(str) == 0) {
+							
+							//cout<<"in , str ="<<str<<",strTwo="<<strTwo
+//								<<",cnt = "<<cnt<<endl;
+							cnt++;
+						//	if( i==0 && j == S.length()-1){
+	//							cout<<"in: str = "<<str<<",cnt = "<<cnt<<endl;
+	//						}
+				
+						
+							//cout<<"cnt = "<<cnt<<endl;
+						}
 					}
-				}
 
 			}
+			}
+
+			
 
 			if(cnt > max){
-				max = cnt;
+				max = cnt; 
 				newStr = str;
 			}
+			
+		//	cout<<"start: str = "<<str<<",cnt = "<<cnt<<endl;
 
 
 		}
