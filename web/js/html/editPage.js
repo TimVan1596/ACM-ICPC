@@ -159,6 +159,7 @@ $(function () {
                     break;
             }
 
+            $image.attr("crossOrigin",'Anonymous');
             result = $image.cropper(data.method, data.option, data.secondOption);
 
             switch (data.method) {
@@ -177,11 +178,23 @@ $(function () {
                 case 'getCroppedCanvas':
                     if (result) {
                         // Bootstrap's Modal
-                        $('#getCroppedCanvasModal').modal().find('.modal-body').html(result);
+                        $('#getCroppedCanvasModal').modal()
+                            .find('.modal-body').html(result);
 
                         if (!$download.hasClass('disabled')) {
-                            download.download = uploadedImageName;
-                            $download.attr('href', result.toDataURL(uploadedImageType));
+                            $download.download = uploadedImageName;
+
+                            //let cacheSrc = URL.createObjectURL(this.response);
+                            // alert(result);
+                            // console.log(result);
+
+                            $image.attr("crossOrigin",'Anonymous');
+                            //$download.attr('href', result.toDataURL(uploadedImageType));
+                            // $image.onload = function(){//图片加载完，再draw 和 toDataURL
+                            //     alert("fuck");
+                            //
+                            // };
+
                         }
                     }
 
@@ -270,6 +283,8 @@ $(function () {
     } else {
         $inputImage.prop('disabled', true).parent().addClass('disabled');
     }
+
+
 
 });
 
