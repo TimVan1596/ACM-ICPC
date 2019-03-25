@@ -14,7 +14,8 @@ $(function () {
     let $dataScaleX = $('#dataScaleX');
     let $dataScaleY = $('#dataScaleY');
     let options = {
-        aspectRatio: 16 / 9,
+        //设置裁剪比
+        aspectRatio: NaN,
         preview: '.img-preview',
         crop: function (e) {
             $dataX.val(Math.round(e.detail.x));
@@ -41,6 +42,7 @@ $(function () {
     else{
         $image.attr("src", previewUrl);
         originalImageURL = $image.attr('src');
+        //$image.attr('crossOrigin', 'anonymous');
     }
 
 
@@ -50,22 +52,17 @@ $(function () {
     // Cropper
     $image.on({
         ready: function (e) {
-            console.log(e.type);
         },
         cropstart: function (e) {
-            console.log(e.type, e.detail.action);
         },
         cropmove: function (e) {
-            console.log(e.type, e.detail.action);
         },
         cropend: function (e) {
-            console.log(e.type, e.detail.action);
         },
         crop: function (e) {
-            console.log(e.type);
         },
         zoom: function (e) {
-            console.log(e.type, e.detail.ratio);
+
         }
     }).cropper(options);
 

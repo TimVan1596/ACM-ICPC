@@ -251,3 +251,8 @@ label.btn {
 .docs-cropped .modal-body > canvas {
     max-width: 100%;
 }
+
+/* --------  右侧工具按钮   -------*/
+.right-btn-group{
+    padding-top: 12px;
+}
