@@ -40,7 +40,9 @@ $(function () {
         alert("您并未点开表情包哦！")
     }
     else{
-        $image.attr("src", previewUrl);
+        $image.attr("crossOrigin",'Anonymous');
+        $image.attr("src", previewUrl + '?time=' + new Date().valueOf());
+
         originalImageURL = $image.attr('src');
         //$image.attr('crossOrigin', 'anonymous');
     }
@@ -52,6 +54,7 @@ $(function () {
     // Cropper
     $image.on({
         ready: function (e) {
+            $image.attr("crossOrigin",'Anonymous');
         },
         cropstart: function (e) {
         },
@@ -62,7 +65,6 @@ $(function () {
         crop: function (e) {
         },
         zoom: function (e) {
-
         }
     }).cropper(options);
 
@@ -83,11 +85,11 @@ $(function () {
 
     // Options
     $('.docs-toggles').on('change', 'input', function () {
-        var $this = $(this);
-        var name = $this.attr('name');
-        var type = $this.prop('type');
-        var cropBoxData;
-        var canvasData;
+        let $this = $(this);
+        let name = $this.attr('name');
+        let type = $this.prop('type');
+        let cropBoxData;
+        let canvasData;
 
         if (!$image.data('cropper')) {
             return;
@@ -182,13 +184,23 @@ $(function () {
                             .find('.modal-body').html(result);
 
                         if (!$download.hasClass('disabled')) {
-                            $download.download = uploadedImageName;
+                            download.download = uploadedImageName;
 
                             //let cacheSrc = URL.createObjectURL(this.response);
                             // alert(result);
                             // console.log(result);
 
-                            $image.attr("crossOrigin",'Anonymous');
+                            // $image.attr("crossOrigin",'Anonymous');
+                            // let image = new Image();
+                            // image.setAttribute('crossOrigin', 'anonymous');
+                            // image.src = previewUrl + '?time=' + new Date().valueOf();
+
+
+                            console.log(result.toDataURL(uploadedImageType));
+
+
+
+
                             //$download.attr('href', result.toDataURL(uploadedImageType));
                             // $image.onload = function(){//图片加载完，再draw 和 toDataURL
                             //     alert("fuck");
