@@ -15,59 +15,108 @@ public class 最大连续子数列和_分而治之 {
 //    输出：
 //            14
 
-    static int contiSum (int[] arr){
+    static int contiSum(int[] arr) {
         int max = arr[0];
 
         //分而治之的中间点
-        int mid = arr.length/2;
+        int mid = arr.length / 2;
 
-        int leftSum = 0 , leftMax = 0;
-        for (int i = mid-1 ; i >= 0 ; i--) {
+        int leftSum = 0, leftMax = 0;
+        for (int i = 0 ; i <  mid; i++) {
             leftSum += arr[i];
-            if( leftSum > leftMax ){
+            if (leftSum > leftMax) {
                 leftMax = leftSum;
             }
         }
 
-        int rightSum = 0 , rightMax = 0;
-        for (int i = mid; i < arr.length ; i++) {
-            rightSum += arr[i];
-            if( rightSum > rightMax ){
-                rightMax = rightSum;
-            }
-        }
-
-        int crossMax = rightMax + leftMax;
-
-
-        System.out.println("rightMax = "+rightMax);
-        System.out.println("leftMax = "+leftMax);
-        System.out.println("crossMax = "+crossMax);
-
-        for (int i = 0; i < arr.length; i++) {
-
-            int sum = 0;
-            for (int j = i; j < arr.length ; j++) {
-                sum += arr[j];
-                if(sum > max ){
-                    max = sum;
-                }
-            }
-
-        }
+//        int leftSum = 0 , leftMax = 0;
+//        for (int i = mid-1 ; i >= 0 ; i--) {
+//            leftSum += arr[i];
+//            if( leftSum > leftMax ){
+//                leftMax = leftSum;
+//            }
+//        }
+//
+//        int rightSum = 0 , rightMax = 0;
+//        for (int i = mid; i < arr.length ; i++) {
+//            rightSum += arr[i];
+//            if( rightSum > rightMax ){
+//                rightMax = rightSum;
+//            }
+//        }
+//
+//        int crossMax = rightMax + leftMax;
+//
+//
+//        System.out.println("rightMax = "+rightMax);
+//        System.out.println("leftMax = "+leftMax);
+//        System.out.println("crossMax = "+crossMax);
+//
+//        for (int i = 0; i < arr.length; i++) {
+//
+//            int sum = 0;
+//            for (int j = i; j < arr.length ; j++) {
+//                sum += arr[j];
+//                if(sum > max ){
+//                    max = sum;
+//                }
+//            }
+//
+//        }
 
         return max;
     }
 
+    static int solve(int[] num,int left, int right)
+    {
+        //序列长度为1时
+        if(left == right){
+            return num[left];
+        }
+
+        //划分为两个规模更小的问题
+        int mid = left + right >> 1;
+        int lans = solve(num,left, mid);
+        int rans = solve(num,mid + 1, right);
+
+        //横跨分割点的情况
+        int sum = 0, lmax = num[mid], rmax = num[mid + 1];
+        for(int i = mid; i >= left; i--) {
+            sum += num[i];
+            if(sum > lmax){
+                lmax = sum;
+            }
+        }
+        sum = 0;
+        for(int i = mid + 1; i <= right; i++) {
+            sum += num[i];
+            if(sum > rmax){
+                rmax = sum;
+            }
+        }
+
+        //答案是三种情况的最大值
+        int ans = lmax + rmax;
+        if(lans > ans) {
+            ans = lans;
+        }
+        if(rans > ans) {
+            ans = rans;
+        }
+
+        return ans;
+    }
+
+
     public static void main(String[] args) {
         //输入数组
         int N = 8;
-        int[] arr = {-2,6,-1,5,4,-7,2,3};
+        int[] arr = {-2, 6, -1, 5, 4, -7, 2, 3};
 
 
+        System.out.println(solve(arr,0,arr.length-1));
 
-
-        System.out.println(contiSum(arr));
+//        System.out.println(contiSum(arr));
 
     }
 }
