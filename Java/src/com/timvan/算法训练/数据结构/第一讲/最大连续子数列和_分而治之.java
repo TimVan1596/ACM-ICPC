@@ -67,8 +67,27 @@ public class 最大连续子数列和_分而治之 {
         return max;
     }
 
-    static int solve(int[] num,int left, int right)
+    static void printArr(int[] arr,int left, int right)
     {
+        System.out.print("l:"+left+" r:"+right+" arr: ");
+        for (int i = left ; i  < right ; ++i){
+            System.out.print(arr[i]+",");
+        }
+
+        //序列长度为1时
+        if(left == right){
+            System.out.print("RET"+arr[left]);
+        }
+
+
+        System.out.println();
+    }
+
+    static private int solve(int[] num,int left, int right)
+    {
+
+        printArr(num,left,right);
+
         //序列长度为1时
         if(left == right){
             return num[left];
@@ -87,6 +106,7 @@ public class 最大连续子数列和_分而治之 {
                 lmax = sum;
             }
         }
+
         sum = 0;
         for(int i = mid + 1; i <= right; i++) {
             sum += num[i];
