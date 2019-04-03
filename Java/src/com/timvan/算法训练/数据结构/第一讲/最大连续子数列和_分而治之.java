@@ -15,117 +15,62 @@ public class 最大连续子数列和_分而治之 {
 //    输出：
 //            14
 
-    static int contiSum(int[] arr) {
-        int max = arr[0];
+    static private int contiSum(int[] arr , int left , int right) {
+
+        printArr(arr,left,right);
+
+        if(left == right){
+            return arr[left];
+        }
 
         //分而治之的中间点
-        int mid = arr.length / 2;
+        int mid = left + ( right >> 1 );
 
-        int leftSum = 0, leftMax = 0;
-        for (int i = 0 ; i <  mid; i++) {
-            leftSum += arr[i];
-            if (leftSum > leftMax) {
-                leftMax = leftSum;
+        //先计算左右两边（递归进行）
+        int leftMax = contiSum(arr,left,mid);
+        int rightMax = contiSum(arr,mid+1,right);
+
+
+        //计算跨中间的第三种情况
+        int leftSubSum = 0 , leftSubMax = 0;
+        for (int i = mid ; i >= left ; i--) {
+            leftSubSum += arr[i];
+            if( leftSubSum > leftSubMax ){
+                leftSubMax = leftSubSum;
             }
         }
 
-//        int leftSum = 0 , leftMax = 0;
-//        for (int i = mid-1 ; i >= 0 ; i--) {
-//            leftSum += arr[i];
-//            if( leftSum > leftMax ){
-//                leftMax = leftSum;
-//            }
-//        }
-//
-//        int rightSum = 0 , rightMax = 0;
-//        for (int i = mid; i < arr.length ; i++) {
-//            rightSum += arr[i];
-//            if( rightSum > rightMax ){
-//                rightMax = rightSum;
-//            }
-//        }
-//
-//        int crossMax = rightMax + leftMax;
-//
-//
-//        System.out.println("rightMax = "+rightMax);
-//        System.out.println("leftMax = "+leftMax);
-//        System.out.println("crossMax = "+crossMax);
-//
-//        for (int i = 0; i < arr.length; i++) {
-//
-//            int sum = 0;
-//            for (int j = i; j < arr.length ; j++) {
-//                sum += arr[j];
-//                if(sum > max ){
-//                    max = sum;
-//                }
-//            }
-//
-//        }
+        int rightSubSum = 0 , rightSubMax = 0;
+        for (int i = mid+1; i <= right ; i++) {
+            rightSubSum += arr[i];
+            if( rightSubSum > rightSubMax ){
+                rightSubMax = rightSubSum;
+            }
+        }
 
-        return max;
+
+        int crossMax = leftSubMax + rightSubMax;
+
+
+        return  Math.max(Math.max(rightMax,leftMax),crossMax) ;
     }
 
+    //打印数组
     static void printArr(int[] arr,int left, int right)
     {
         System.out.print("l:"+left+" r:"+right+" arr: ");
-        for (int i = left ; i  < right ; ++i){
+        for (int i = left ; i  <= right ; ++i){
             System.out.print(arr[i]+",");
         }
 
         //序列长度为1时
         if(left == right){
-            System.out.print("RET"+arr[left]);
+            System.out.print("RET  "+arr[left]);
         }
-
 
         System.out.println();
     }
 
-    static private int solve(int[] num,int left, int right)
-    {
-
-        printArr(num,left,right);
-
-        //序列长度为1时
-        if(left == right){
-            return num[left];
-        }
-
-        //划分为两个规模更小的问题
-        int mid = left + right >> 1;
-        int lans = solve(num,left, mid);
-        int rans = solve(num,mid + 1, right);
-
-        //横跨分割点的情况
-        int sum = 0, lmax = num[mid], rmax = num[mid + 1];
-        for(int i = mid; i >= left; i--) {
-            sum += num[i];
-            if(sum > lmax){
-                lmax = sum;
-            }
-        }
-
-        sum = 0;
-        for(int i = mid + 1; i <= right; i++) {
-            sum += num[i];
-            if(sum > rmax){
-                rmax = sum;
-            }
-        }
-
-        //答案是三种情况的最大值
-        int ans = lmax + rmax;
-        if(lans > ans) {
-            ans = lans;
-        }
-        if(rans > ans) {
-            ans = rans;
-        }
-
-        return ans;
-    }
 
 
     public static void main(String[] args) {
@@ -134,7 +79,7 @@ public class 最大连续子数列和_分而治之 {
         int[] arr = {-2, 6, -1, 5, 4, -7, 2, 3};
 
 
-        System.out.println(solve(arr,0,arr.length-1));
+        System.out.println(contiSum(arr,0,arr.length-1));
 
 //        System.out.println(contiSum(arr));
 
