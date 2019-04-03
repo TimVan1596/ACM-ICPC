@@ -17,14 +17,14 @@ public class 最大连续子数列和_分而治之 {
 
     static private int contiSum(int[] arr , int left , int right) {
 
-        printArr(arr,left,right);
+        //printArr(arr,left,right);
 
         if(left >= right){
             return arr[left];
         }
 
         //分而治之的中间点
-        int mid = left + ( right >> 1 );
+        int mid = (right+left) >> 1 ;
 
         //先计算左右两边（递归进行）
         int leftMax = contiSum(arr,left,mid);
