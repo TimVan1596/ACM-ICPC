@@ -19,7 +19,7 @@ public class 最大连续子数列和_分而治之 {
 
         printArr(arr,left,right);
 
-        if(left == right){
+        if(left >= right){
             return arr[left];
         }
 
@@ -58,7 +58,7 @@ public class 最大连续子数列和_分而治之 {
     //打印数组
     static void printArr(int[] arr,int left, int right)
     {
-        System.out.print("l:"+left+" r:"+right+" arr: ");
+        System.out.print("L:"+left+" R:"+right+" arr: ");
         for (int i = left ; i  <= right ; ++i){
             System.out.print(arr[i]+",");
         }
