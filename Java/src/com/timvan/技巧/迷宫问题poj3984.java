@@ -2,12 +2,23 @@ package com.timvan.技巧;
 
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @description: poj 3984:迷宫问题（广搜，入门题）
  * @author: Tim Van
  * @create: 2019-04-08 00:14
  **/
+
+class Node{
+    int x;
+    int y;
+    int s;
+    short l[] = new short[30];
+};
+
 public class 迷宫问题poj3984 {
     //https://www.cnblogs.com/yym2013/p/3861222.html
 //    它表示一个迷宫，其中的1表示墙壁，0表示可以走的路，只能横着走或竖着走，不能斜着走，要求编程序找出从左上角到右下角的最短路线。
@@ -23,15 +34,11 @@ public class 迷宫问题poj3984 {
     static int dx[] = {0,1,0,-1};
     static int dy[] = {1,0,-1,0};
 
-    class Node{
-        int x;
-        int y;
-        int s;
-        short l[] = new short[30];
-    };
 
-    static private boolean judge(int x,int y)
+
+    private static  boolean judge(int x,int y)
     {
+
         if(x<0 || x>=5 || y<0 || y>=5){
             return true;
         }
@@ -47,15 +54,15 @@ public class 迷宫问题poj3984 {
         return false;
     }
 
-     private Node bfs()
+     private static Node bfs()
     {
-        Queue<Node> q;
+        Queue<Node> q = new LinkedBlockingDeque<>();
         Node cur = new Node() ,next = new Node();
         cur.x = 0;
         cur.y = 0;
         cur.s = 0;
         isw[cur.x][cur.y] = true;
-        q.push(cur);
+        q.add(cur);
         while(!q.isEmpty()){
             cur = q.peek();
             q.poll();
@@ -97,7 +104,7 @@ public class 迷宫问题poj3984 {
         }
 
         //进行BFS或者DFS
-        Node ans = new 迷宫问题poj3984().bfs();
+        Node ans = bfs();
         int x,y;
         x = 0;
         y = 0;
