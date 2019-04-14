@@ -16,7 +16,7 @@ public class GraphMatrix {
     private char[] vertices;
     private int[][] matrix;
 
-    public GraphMatrix(char[] vVertices, char[][] edges) {
+    private GraphMatrix(char[] vVertices, char[][] edges) {
         this.vertices = vVertices;
 
         //复制新的结点数组
@@ -25,20 +25,26 @@ public class GraphMatrix {
         //初始化边
         this.matrix =  new int[versLen][versLen];
 
-        vertices[2] = 'X';
 
         for (int i = 0; i < versLen-1; i++) {
             char vertex1 = edges[i][0] , vertex2 = edges[i][1];
             int verIndex1 = getPosition(vertex1);
             int verIndex2 = getPosition(vertex2);
+            System.out.println("vertex1 = "+vertex1
+                    +"\t verIndex1 = "+verIndex1);
+            System.out.println("vertex2 = "+vertex2
+                    +"\t verIndex2 = "+verIndex2+"\n");
             matrix[verIndex1][verIndex2] = 1;
             matrix[verIndex2][verIndex1] = 1;
 
         }
 
 
-        System.out.println("in GraphMatrix() : "
-                +Arrays.deepToString(matrix));
+//        System.out.println("in GraphMatrix() : "
+//                +Arrays.deepToString(matrix));
+
+        //打印矩阵
+        printMatrix(matrix,versLen);
     }
 
     /** 获得某结点的索引数值 */
@@ -53,6 +59,25 @@ public class GraphMatrix {
         return index;
     }
 
+    /** 绘制矩阵 */
+    private void printMatrix(int[][] arr,int n){
+        for (int i = -1; i < n; i++) {
+            for (int j = -1; j < n; j++) {
+                if( i > -1 &&  j > -1){
+                    System.out.print(arr[i][j]+" ");
+                }
+                else if( i == -1){
+                    System.out.print((char)('A'+j)+" ");
+                }
+                else if( j == -1){
+                    System.out.print((char)('A'+i)+" ");
+                }
+
+            }
+            System.out.println();
+        }
+
+    }
 
     public static void main(String[] args) {
         char[] vertices = {'A','B','C','D','E','F','G'};
