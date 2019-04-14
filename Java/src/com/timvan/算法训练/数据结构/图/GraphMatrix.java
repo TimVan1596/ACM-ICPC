@@ -1,6 +1,9 @@
 package com.timvan.算法训练.数据结构.图;
 
 import java.util.Arrays;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 
 /**
  * @description: 邻接矩阵无向图
@@ -15,13 +18,14 @@ public class GraphMatrix {
      */
     private char[] vertices;
     private int[][] matrix;
+    private int versLen;
 
-    private GraphMatrix(char[] vVertices, char[][] edges) {
+    public GraphMatrix(char[] vVertices, char[][] edges) {
         this.vertices = vVertices;
 
         //复制新的结点数组
         vertices = Arrays.copyOf(vVertices,vVertices.length);
-        int versLen = vVertices.length;
+        versLen = vVertices.length;
         //初始化边
         this.matrix =  new int[versLen][versLen];
 
@@ -30,10 +34,10 @@ public class GraphMatrix {
             char vertex1 = edges[i][0] , vertex2 = edges[i][1];
             int verIndex1 = getPosition(vertex1);
             int verIndex2 = getPosition(vertex2);
-            System.out.println("vertex1 = "+vertex1
-                    +"\t verIndex1 = "+verIndex1);
-            System.out.println("vertex2 = "+vertex2
-                    +"\t verIndex2 = "+verIndex2+"\n");
+//            System.out.println("vertex1 = "+vertex1
+//                    +"\t verIndex1 = "+verIndex1);
+//            System.out.println("vertex2 = "+vertex2
+//                    +"\t verIndex2 = "+verIndex2+"\n");
             matrix[verIndex1][verIndex2] = 1;
             matrix[verIndex2][verIndex1] = 1;
 
@@ -44,7 +48,7 @@ public class GraphMatrix {
 //                +Arrays.deepToString(matrix));
 
         //打印矩阵
-        printMatrix(matrix,versLen);
+        //printMatrix();
     }
 
     /** 获得某结点的索引数值 */
@@ -60,11 +64,12 @@ public class GraphMatrix {
     }
 
     /** 绘制矩阵 */
-    private void printMatrix(int[][] arr,int n){
-        for (int i = -1; i < n; i++) {
-            for (int j = -1; j < n; j++) {
+    public void printMatrix(){
+        int versLen = matrix[0].length;
+        for (int i = -1; i < versLen; i++) {
+            for (int j = -1; j < versLen; j++) {
                 if( i > -1 &&  j > -1){
-                    System.out.print(arr[i][j]+" ");
+                    System.out.print(matrix[i][j]+" ");
                 }
                 else if( i == -1){
                     System.out.print((char)('A'+j)+" ");
@@ -78,6 +83,24 @@ public class GraphMatrix {
         }
 
     }
+
+    /**
+     * 广度优先搜索
+     * https://blog.csdn.net/qiu931110/article/details/80450239
+     **/
+    private  void BFS(){
+        this.printMatrix();
+        Queue queue = new LinkedBlockingQueue();
+
+        int[] visted = new int[versLen];
+        Arrays.fill(visted,0);
+
+        for (int i = 0; i < versLen; i++) {
+
+        }
+
+    }
+
 
     public static void main(String[] args) {
         char[] vertices = {'A','B','C','D','E','F','G'};
