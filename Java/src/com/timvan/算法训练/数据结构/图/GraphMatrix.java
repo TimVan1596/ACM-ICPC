@@ -86,16 +86,29 @@ public class GraphMatrix {
 
     /**
      * 广度优先搜索
-     * https://blog.csdn.net/qiu931110/article/details/80450239
+     * https://blog.csdn.net/qq_21993785/article/details/81545103
      **/
     private  void BFS(){
         this.printMatrix();
-        Queue queue = new LinkedBlockingQueue();
+        Queue<Character> queue
+                = new LinkedBlockingQueue();
 
-        int[] visted = new int[versLen];
-        Arrays.fill(visted,0);
+        boolean[] visted = new boolean[versLen];
+        Arrays.fill(visted,false);
 
         for (int i = 0; i < versLen; i++) {
+            //该结点未被访问
+            if(!visted[i]){
+                visted[i] = true;
+                queue.add(vertices[i]);
+
+                while (!queue.isEmpty()){
+                    char head = queue.poll();
+                }
+            }
+            else{
+
+            }
 
         }
 
