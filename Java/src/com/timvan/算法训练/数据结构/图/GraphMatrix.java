@@ -12,6 +12,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  *  https://www.cnblogs.com/skywang12345/p/3707604.html
  **/
 public class GraphMatrix {
+
+
+
     /**
      * vertices = 保存结点
      * edges =邻接矩阵
@@ -84,6 +87,15 @@ public class GraphMatrix {
 
     }
 
+    /** 打印队列 */
+    private static void printQueue(Queue<Character> queue){
+        System.out.print("queue-> ");
+        for (char c : queue){
+            System.out.print(c+" ");
+        }
+        System.out.println();
+    }
+
     /**
      * 广度优先搜索
      * https://blog.csdn.net/qq_21993785/article/details/81545103
@@ -104,10 +116,16 @@ public class GraphMatrix {
 
                 while (!queue.isEmpty()){
                     char head = queue.poll();
+                    System.out.println("The Head is - "+head);
+                    int head_index = getPosition(head);
+                    for (int j = 0; j < versLen; j++) {
+                        if ( matrix[head_index][j] == 1 && !visted[j]){
+                            queue.add(vertices[j]);
+                            //printQueue(queue);
+                            visted[j] = true;
+                        }
+                    }
                 }
-            }
-            else{
-
             }
 
         }
@@ -128,6 +146,7 @@ public class GraphMatrix {
 
 
         GraphMatrix graphMatrix = new GraphMatrix(vertices,matrix);
+        graphMatrix.BFS();
 
 
     }
