@@ -2,6 +2,7 @@ package com.timvan.算法训练.数据结构.图;
 
 import java.util.Arrays;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -87,6 +88,8 @@ public class GraphMatrix {
 
     }
 
+
+
     /** 打印队列 */
     private static void printQueue(Queue<Character> queue){
         System.out.print("queue-> ");
@@ -96,19 +99,35 @@ public class GraphMatrix {
         System.out.println();
     }
 
+
+
     /**
      * 广度优先搜索
      * https://blog.csdn.net/qq_21993785/article/details/81545103
      **/
-    private  void BFS(){
-        this.printMatrix();
+    private void BFS(char headVector){
         Queue<Character> queue
                 = new LinkedBlockingQueue();
 
         boolean[] visted = new boolean[versLen];
         Arrays.fill(visted,false);
 
-        for (int i = 0; i < versLen; i++) {
+        int headIndex = getPosition(headVector);
+        //将头结点的位置和第一个进行交换
+//        char c = vertices[0];
+//        vertices[0] = vertices[headIndex];
+//        vertices[headIndex]= c;
+
+        System.out.print("BFS["+headVector+"]:");
+
+        int k = -1;
+        do {
+            int i = k;
+            if ( k == -1){
+                i = headIndex;
+            }
+
+
             //该结点未被访问
             if(!visted[i]){
                 visted[i] = true;
@@ -116,7 +135,7 @@ public class GraphMatrix {
 
                 while (!queue.isEmpty()){
                     char head = queue.poll();
-                    System.out.println("The Head is - "+head);
+                    System.out.print(" "+head);
                     int head_index = getPosition(head);
                     for (int j = 0; j < versLen; j++) {
                         if ( matrix[head_index][j] == 1 && !visted[j]){
@@ -128,7 +147,57 @@ public class GraphMatrix {
                 }
             }
 
+            k++;
         }
+        while (k < versLen);
+
+        System.out.println();
+    }
+
+
+    /**
+     * 深度优先搜索
+     **/
+    private void DFS(char headVector){
+        Stack<Character> stack = new Stack<>();
+        boolean[] visted = new boolean[versLen];
+        Arrays.fill(visted,false);
+
+        int headIndex = getPosition(headVector);
+        System.out.print("DFS["+headVector+"]:");
+
+        int k = -1;
+        do {
+            int i = k;
+            if ( k == -1){
+                i = headIndex;
+            }
+
+
+            //该结点未被访问
+            if(!visted[i]){
+                visted[i] = true;
+                stack.add(vertices[i]);
+
+                while (!stack.isEmpty()){
+                    char head = stack.pop();
+                    System.out.print(" "+head);
+                    int head_index = getPosition(head);
+                    for (int j = 0; j < versLen; j++) {
+                        if ( matrix[head_index][j] == 1 && !visted[j]){
+                            stack.add(vertices[j]);
+                            //printQueue(queue);
+                            visted[j] = true;
+                        }
+                    }
+                }
+            }
+
+            k++;
+        }
+        while (k < versLen);
+
+        System.out.println();
 
     }
 
@@ -146,7 +215,9 @@ public class GraphMatrix {
 
 
         GraphMatrix graphMatrix = new GraphMatrix(vertices,matrix);
-        graphMatrix.BFS();
+        graphMatrix.printMatrix();
+//        graphMatrix.BFS('G');
+        graphMatrix.DFS('A');
 
 
     }
