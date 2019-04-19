@@ -140,7 +140,7 @@ public class GraphMatrix {
                     for (int j = 0; j < versLen; j++) {
                         if ( matrix[head_index][j] == 1 && !visted[j]){
                             queue.add(vertices[j]);
-                            //printQueue(queue);
+                            // printQueue(queue);
                             visted[j] = true;
                         }
                     }
