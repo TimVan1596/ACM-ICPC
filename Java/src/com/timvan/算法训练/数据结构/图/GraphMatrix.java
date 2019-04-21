@@ -99,6 +99,15 @@ public class GraphMatrix {
         System.out.println();
     }
 
+    /** 打印栈 */
+    private static void printStack (Stack<Character> stack){
+        System.out.print("stack-> ");
+        for (char c : stack){
+            System.out.print(c+" ");
+        }
+        System.out.println();
+    }
+
 
 
     /**
@@ -155,11 +164,27 @@ public class GraphMatrix {
     }
 
 
+    private boolean[] DFS(int head , boolean[] visted ){
+
+        if(!visted[head]){
+            visted[head] = true;
+            System.out.print(" "+vertices[head]);
+
+            for (int j = 0; j < versLen; j++) {
+                if ( matrix[head][j] == 1 && !visted[j]){
+                    visted = DFS(j,visted);
+                }
+            }
+        }
+
+        return visted;
+    }
+
+
     /**
      * 深度优先搜索
      **/
-    private void DFS(char headVector){
-        Stack<Character> stack = new Stack<>();
+    private void DFSTraverse(char headVector){
         boolean[] visted = new boolean[versLen];
         Arrays.fill(visted,false);
 
@@ -173,25 +198,8 @@ public class GraphMatrix {
                 i = headIndex;
             }
 
-
             //该结点未被访问
-            if(!visted[i]){
-                visted[i] = true;
-                stack.add(vertices[i]);
-
-                while (!stack.isEmpty()){
-                    char head = stack.pop();
-                    System.out.print(" "+head);
-                    int head_index = getPosition(head);
-                    for (int j = 0; j < versLen; j++) {
-                        if ( matrix[head_index][j] == 1 && !visted[j]){
-                            stack.add(vertices[j]);
-                            //printQueue(queue);
-                            visted[j] = true;
-                        }
-                    }
-                }
-            }
+            visted = DFS(i,visted);
 
             k++;
         }
@@ -217,7 +225,7 @@ public class GraphMatrix {
         GraphMatrix graphMatrix = new GraphMatrix(vertices,matrix);
         graphMatrix.printMatrix();
 //        graphMatrix.BFS('G');
-        graphMatrix.DFS('A');
+        graphMatrix.DFSTraverse('C');
 
 
     }
