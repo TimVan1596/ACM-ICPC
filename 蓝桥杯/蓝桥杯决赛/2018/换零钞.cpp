@@ -4,17 +4,21 @@
 using namespace std;
 
 int main(){
-	int a = 1, b =  1 ,c = 1;
+	//int a = 1, b =  1 ,c = 1;
 	
-	for( ; a < 200 ; ++a){
-		b = 10*a;
-		for(; c < 40  ; ++c){
-			int account = a + 2 * b + 5 * c;
-			if(account == 200){
-				cout<<a<<","<<b<<","<<c<<","<<endl;
-			}
-		}
-	}
+	//cout<<"hello"<<endl;
+	printf("hello");
+	
+//	for( int a = 1 ; a < 200 ; ++a){
+
+//		for(int c = 1 ; c < 40  ; ++c){
+//			int account =( a + 20 * a + 5 * c);
+//			cout<<a<<","<<b<<","<<c<<","<<"="<<account<<endl;
+//			if( account == 200){
+//				cout<<a<<","<<b<<","<<c<<","<<"="<<account<<endl;
+//			}
+//		}
+//	}
 	
 	return 0;
 }
