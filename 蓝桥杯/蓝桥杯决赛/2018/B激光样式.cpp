@@ -81,6 +81,8 @@ int main(){
 	//print(arr,0,N);
 	paramate(arr,0,N);
 		cout<<"cnt = "<<cnt<<endl;
+		
+
 	
 
 
