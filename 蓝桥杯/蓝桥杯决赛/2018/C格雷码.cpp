@@ -5,6 +5,16 @@
 #include<cstring>
 using namespace std;
 
+//从编码全0开始生成。
+//当产生第奇数个数时，只把当前数字最末位改变（0变1，1变0）
+//当产生第偶数个数时，先找到最右边的一个1，把它左边的数字改变。
+//用这个规则产生的4位格雷码序列如下：
+//0000
+//0001
+//0011
+//0010
+//0110
+
 void show(int a,int n)
 {
 	int i;
@@ -21,7 +31,11 @@ void f(int n)
 {
 	int i;
 	int num = 1;
-	for(i=0; i<n; i++) num = num<<1;
+	for(i=0; i<n; i++){
+		num = num<<1;
+		
+		//cout<<"i="<<i<<",num="<<num<<endl;
+	} 
 
 	int a = 0;
 	for(i=0; i<num; i++){
