@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
 
 	ArrayList<int> list(20);
 	const int LEN = 7;
-	int arr[LEN] = {14,6,20,9,7,11,31};
+	int arr[LEN] = {14,6,20,9,7,11,1};
 	for(int i = 0; i < LEN ; ++i ) {
 		list.insert(i,arr[i]);
 	}
@@ -53,7 +53,7 @@ bool deleteMinElement (ArrayList<int> &list) {
 	list.deleteByIndex(index,element);
 	cout<<"delete element = "<<element<<endl;
 	list.select(list.getCurrLength()-1,element);
-	list.update(index,element);
+	list.insert(index,element);
 
 	cout<<"--- ---"<<endl;
 	return true;
