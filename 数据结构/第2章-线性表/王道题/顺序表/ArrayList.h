@@ -1,11 +1,12 @@
 #ifndef ARRAYLIST_H
 #define ARRAYLIST_H
 
+#include "LinearList.h"
 #include <iostream>
 using namespace std;
 
 template<typename T>
-class ArrayList {
+class ArrayList : public LinearList<T> {
 	private:
 		//最大长度
 		int maxLength;
@@ -19,7 +20,6 @@ class ArrayList {
 	public:
 		ArrayList(int _maxLength);
 		~ArrayList() {
-			cout<<"析构函数"<<endl;
 			delete []list;
 		}
 
@@ -37,6 +37,12 @@ class ArrayList {
 		}
 		int getCurrLength() const {
 			return currLength;
+		}
+		void setCurrLength(const int length) {
+			this->currLength = length;
+		}
+		T* getList() const {
+			return list;
 		}
 };
 
@@ -74,9 +80,6 @@ bool ArrayList<T>::insert (int index, T element) {
 	if(!checkIndexOutOfBound(index)) {
 		return false;
 	}
-
-
-
 	for(int i = currLength-1 ; i >index ;  --i) {
 		list[i] = list[i-1];
 	}
@@ -89,12 +92,9 @@ bool ArrayList<T>::insert (int index, T element) {
 
 template<typename T>
 bool ArrayList<T>::deleteByIndex (int index, T& element) {
-
-
 	if(!checkIndexOutOfBound(index)) {
 		return false;
 	}
-
 
 	element = list[index];
 	for(int i = index ; i < currLength-1 ;  ++i) {

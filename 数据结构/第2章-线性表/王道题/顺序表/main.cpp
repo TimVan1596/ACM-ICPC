@@ -24,7 +24,6 @@ int main(int argc, char** argv) {
 	list.update(2,233);
 	selectAll(list);
 
-	//ArrayList list(3);
 
 	return 0;
 }
