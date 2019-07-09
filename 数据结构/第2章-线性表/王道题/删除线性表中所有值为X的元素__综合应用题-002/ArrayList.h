@@ -37,6 +37,12 @@ class ArrayList {
 		int getCurrLength() const {
 			return currLength;
 		}
+		void setCurrLength(const int length) {
+			this->currLength = length;
+		}
+		T* getList() const {
+			return list;
+		}
 };
 
 
