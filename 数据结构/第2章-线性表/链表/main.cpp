@@ -5,7 +5,6 @@ using namespace std;
 //Á´±í²âÊÔ 
 int main(int argc, char** argv) {
 	
-	LinkedList<int> list;
-	list.print();		
+	LinkedList<int> list();
 	return 0;
 }
