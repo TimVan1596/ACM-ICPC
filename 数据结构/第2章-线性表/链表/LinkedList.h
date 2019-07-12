@@ -8,7 +8,6 @@ using namespace std;
 
 template<typename T>
 class LinkedList:public LinearList<T> {
-
 	private:
 		Node<T> *head;
 		bool checkIndexOutOfBound(int index) const;
@@ -18,15 +17,21 @@ class LinkedList:public LinearList<T> {
 		~LinkedList();
 
 		//查找
-		bool select (int i, T& element) const = 0;
+		bool select (int i, T& element) const;
 		//插入
-		bool insert (int i, T element) = 0;
+		bool insert (int i, T element);
 		//删除
-		bool deleteByIndex (int i, T &element)= 0;
+		bool deleteByIndex (int i, T &element);
 		//更新
-		bool update (int i, T element) = 0;
+		bool update (int i, T element);
 
+		int getCurrLength() const {
+			return this->currLength;
+		}
 
+		void print() {
+			cout<<"print"<<endl;
+		}
 };
 #endif
 
@@ -57,8 +62,8 @@ bool LinkedList<T>::select (int i, T& element) const {
 	Node<T> *p = head;
 	int index = 0;
 	while(p) {
-		if(index==i){
-			element = p.Node();
+		if(index==i) {
+			element = p->element;
 			break;
 		}
 		p = p->next;
@@ -71,7 +76,7 @@ bool LinkedList<T>::select (int i, T& element) const {
 template<typename T>
 bool LinkedList<T>::insert (int i, T element) {
 
-	if(checkIndexOutOfBound(i)) {
+	if(!checkIndexOutOfBound(i)) {
 		return false;
 	}
 
@@ -81,7 +86,7 @@ bool LinkedList<T>::insert (int i, T element) {
 		if(current == i) {
 			break;
 		}
-		p = p->head;
+		p = p->next;
 		current++;
 	}
 
@@ -90,6 +95,7 @@ bool LinkedList<T>::insert (int i, T element) {
 	p = node;
 
 	this->currLength++;
+	cout<<"this->currLength="<<this->currLength<<endl;
 	return true;
 }
 
@@ -103,12 +109,15 @@ bool LinkedList<T>::update (int i, T element) {
 	return true;
 }
 
-
 template<typename T>
 bool LinkedList<T>::checkIndexOutOfBound(int index) const {
-	if(index<0 || index > currLength) {
+	if(index<0 || index > this->currLength) {
 		cout<<"[ERROR]=> i is out of bound"<<endl;
 		return false;
 	}
+
 	return true;
 }
+
+
+

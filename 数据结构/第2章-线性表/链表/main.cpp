@@ -2,9 +2,35 @@
 #include "LinkedList.h"
 using namespace std;
 
-//链表测试 
+static void selectAll (LinkedList<int> list);
+
+//链表测试
 int main(int argc, char** argv) {
-	
-	LinkedList<int> list();
+
+	LinkedList<int> list;
+	const int LEN = 7;
+	int arr[LEN] = {12,34,4,9,16,7,68};
+	for(int i = 0 ; i < LEN ; ++i) {
+		list.insert(i,arr[i]);
+	}
+
+	selectAll(list);
 	return 0;
 }
+
+
+// 查找所有的element
+static void selectAll (LinkedList<int> list) {
+	cout<<"LinkedList={"<<endl;
+	for(int i = 0 ; i < list.getCurrLength(); ++i ) {
+		int element  = 0;
+		if(list.select(i,element)) {
+			cout<<i<<"->"<<element<<endl;
+		} else {
+			cout<<i<<"->"<<"Out of Bound"<<endl;
+		}
+	}
+	cout<<"}"<<endl;
+}
+
+
