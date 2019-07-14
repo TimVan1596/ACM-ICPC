@@ -41,7 +41,7 @@ class LinkedList:public LinearList<T>
 template<typename T>
 LinkedList<T>::LinkedList()
 {
-	head = NULL;
+	head = new Node<T>();
 	this->currLength = 0;
 	cout<<"currLength="<<this->currLength<<endl;
 }
@@ -92,7 +92,20 @@ bool LinkedList<T>::insert (int i, T element)
 		return false;
 	}
 
-	if(currLength==i)
+
+		int current = 0;
+	while(p) {
+
+		cout<<"½øÈëwhile"<<endl;
+
+		if(current == i) {
+			break;
+		}
+		p = p->next;
+		current++;
+	}
+
+	if(this->currLength==i)
 	{
 		node = new Node<T>(element,NULL);
 	}

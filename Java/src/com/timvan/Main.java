@@ -1,6 +1,9 @@
 package com.timvan;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -16,21 +19,8 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String str = scanner.next();
 
-        for (int i = 0; i < str.length(); i++) {
-            Character c = str.charAt(i);
-            if(Character.isLowerCase(c)){
-                System.out.print(Character.toUpperCase(c));
-            }
-            else if(Character.isUpperCase(c)){
-                System.out.print(Character.toLowerCase(c));
-            }
-            else{
-                System.out.print(c);
-            }
-        }
-
+        int[] arr= new int[]{17,7,8};
+        Arrays.toString(arr);
     }
 }
