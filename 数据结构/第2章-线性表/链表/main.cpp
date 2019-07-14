@@ -10,11 +10,13 @@ int main(int argc, char** argv) {
 	LinkedList<int> list;
 	const int LEN = 7;
 	int arr[LEN] = {12,34,4,9,16,7,68};
-	for(int i = 0 ; i < LEN ; ++i) {
-		list.insert(i,arr[i]);
-	}
+//	for(int i = 0 ; i < 1 ; ++i) {
+//		list.insert(i,arr[i]);
+//	}
 
-	selectAll(list);
+	list.insert(0,233);
+
+	//selectAll(list);
 	return 0;
 }
 
