@@ -19,6 +19,8 @@ class LinkedList:public LinearList<T>
 
 		//查找
 		bool select (int i, T& element) const;
+		//查找全部 
+		void selectAll ();
 		//插入
 		bool insert (int i, T element);
 		//删除
@@ -31,19 +33,15 @@ class LinkedList:public LinearList<T>
 			return this->currLength;
 		}
 
-		void print()
-		{
-			cout<<"print"<<endl;
-		}
+
 };
 #endif
 
 template<typename T>
 LinkedList<T>::LinkedList()
 {
-	head = new Node<T>();
+	head = new Node<T>(233,NULL);
 	this->currLength = 0;
-	cout<<"currLength="<<this->currLength<<endl;
 }
 
 template<typename T>
@@ -62,22 +60,23 @@ LinkedList<T>::~LinkedList()
 template<typename T>
 bool LinkedList<T>::select (int i, T& element) const
 {
-	if(checkIndexOutOfBound(i))
+	
+	if(!checkIndexOutOfBound(i))
 	{
 		return false;
 	}
 
 	Node<T> *p = head;
-	int index = 0;
+	int current = -1;
 	while(p)
 	{
-		if(index==i)
+		if(current==i)
 		{
 			element = p->element;
 			break;
 		}
 		p = p->next;
-		index++;
+		current++;
 	}
 
 	return true;
@@ -87,69 +86,28 @@ template<typename T>
 bool LinkedList<T>::insert (int i, T element)
 {
 
-	if(!checkIndexOutOfBound(i))
+	if(i<0 || i > this->currLength)
 	{
+		cout<<"[ERROR]=> i is out of bound"<<endl;
 		return false;
 	}
 
+	Node<int> *p =  head;
+	int current = 0;
 
-		int current = 0;
-	while(p) {
+	while(p)
+	{
 
-		cout<<"进入while"<<endl;
-
-		if(current == i) {
+		if(current >= i)
+		{
 			break;
 		}
 		p = p->next;
 		current++;
 	}
 
-	if(this->currLength==i)
-	{
-		node = new Node<T>(element,NULL);
-	}
-	else
-	{
-		Node<int> *p;
-		p = head;
-
-		printf("p = %p\n",p);
-		printf("head = %p\n",head);
-
-//	int current = 0;
-//	while(p) {
-//
-//		cout<<"进入while"<<endl;
-//
-//		if(current == i) {
-//			break;
-//		}
-//		p = p->next;
-//		current++;
-//	}
-
-		Node<T> *node = new Node<T>(element,NULL);
-		cout<<"node";
-		Node<T>::print(node);
-		p = node;
-		cout<<"p";
-		Node<T>::print(p);
-//	cout<<"head";
-//	Node<T>::print(head);
-//
-//
-//	if(i == 0) {
-//
-//		printf("p = %p\n",p);
-//		printf("head = %p\n",head);
-//
-//		cout<<"i = 0 , p->element="<<p->element<<endl;
-////		cout<<"i = 0 , head->element="<<head->element<<endl;
-//	}
-	}
-
-
+	Node<T> *node = new Node<T>(element,p->next);
+	p->next = node;
 
 	this->currLength++;
 	return true;
@@ -170,7 +128,7 @@ bool LinkedList<T>::update (int i, T element)
 template<typename T>
 bool LinkedList<T>::checkIndexOutOfBound(int index) const
 {
-	if(index<0 || index > this->currLength)
+	if(index<0 || index >= this->currLength)
 	{
 		cout<<"[ERROR]=> i is out of bound"<<endl;
 		return false;
@@ -179,5 +137,20 @@ bool LinkedList<T>::checkIndexOutOfBound(int index) const
 	return true;
 }
 
+template<typename T>
+void LinkedList<T>::selectAll ()
+{
+	cout<<"LinkedList={"<<endl;
+	Node<T> *p = head->next;
+	int index = 0;
+	while(p)
+	{
+		cout<<"  "<<index<<"->"<<p->element<<endl;
+		p = p->next;
+		index++;
+	}
+	cout<<"}"<<endl;
+
+}
 
 

@@ -8,22 +8,25 @@ template<typename T>
 class LinkedList;
 
 template<typename T>
-class Node {
+class Node
+{
 	private:
 		Node<T> *next;
 		T element;
 		friend class LinkedList<T>;
 	public:
-		Node() {
-
+		Node()
+		{
+			this->next = NULL;
+			this->element = 0;
 		}
-		Node(T _element,Node<T> *_next) {
-			cout<<"¹¹Ôìº¯Êý"<<endl;
-
+		Node(T _element,Node<T> *_next)
+		{
 			this->next = _next;
 			this->element = _element;
 		}
-		static void print(Node<T> *node ) {
+		static void print(Node<T> *node )
+		{
 			cout<<"{"<<endl;
 			cout<<"next:"<<node->next<<endl;
 			cout<<"element:"<<node->element<<endl;
