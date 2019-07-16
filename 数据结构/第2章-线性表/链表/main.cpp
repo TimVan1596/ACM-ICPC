@@ -17,22 +17,22 @@ int main(int argc, char** argv)
 	}
 
 	list.selectAll();
+//
+//
+//	int element  = 3;
+//	int i =0;
+//	list.select(i,element);
+//	cout<<i<<"->"<<element<<endl;
+//
+//	i =1;
+//	list.select(i,element);
+//	cout<<i<<"->"<<element<<endl;
+//
+//	i =2;
+//	list.select(i,element);
+//	cout<<i<<"->"<<element<<endl;
 
-
-	int element  = 3;
-	int i =0;
-	list.select(i,element);
-	cout<<i<<"->"<<element<<endl;
-
-	i =1;
-	list.select(i,element);
-	cout<<i<<"->"<<element<<endl;
-
-	i =2;
-	list.select(i,element);
-	cout<<i<<"->"<<element<<endl;
-
-		selectAll(list);
+	//selectAll(list);
 
 	return 0;
 }
@@ -41,16 +41,17 @@ int main(int argc, char** argv)
 // 查找所有的element
 static void selectAll (LinkedList<int> list)
 {
-	
+
 	cout<<"list.getCurrLength()="<<list.getCurrLength()<<endl;
-	
+
 	cout<<"LinkedList={"<<endl;
 	for(int i = 0 ; i < list.getCurrLength(); ++i )
 	{
+		
 		int element  = 0;
 		if(list.select(i,element))
 		{
-			cout<<i<<"->"<<element<<endl;
+			//cout<<i<<"->"<<element<<endl;
 		}
 		else
 		{

@@ -25,6 +25,13 @@ class Node
 			this->next = _next;
 			this->element = _element;
 		}
+//		//拷贝构造函数
+//		Node(const Node<T>& node)
+//		{
+//			cout<<"调用Node的拷贝构造函数"<<endl;
+//			this->next = node.next;
+//			this->element = node.element;
+//		}
 		static void print(Node<T> *node )
 		{
 			cout<<"{"<<endl;

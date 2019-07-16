@@ -15,11 +15,13 @@ class LinkedList:public LinearList<T>
 
 	public:
 		LinkedList();
+		//拷贝构造函数
+		LinkedList(const LinkedList &c);
 		~LinkedList();
 
 		//查找
 		bool select (int i, T& element) const;
-		//查找全部 
+		//查找全部
 		void selectAll ();
 		//插入
 		bool insert (int i, T element);
@@ -40,19 +42,40 @@ class LinkedList:public LinearList<T>
 template<typename T>
 LinkedList<T>::LinkedList()
 {
-	head = new Node<T>(233,NULL);
+	head = new Node<T>(0,NULL);
+	this->currLength = 0;
+}
+
+template<typename T>
+LinkedList<T>::LinkedList(const LinkedList &c)
+{
+	cout<<"调用LinkedList的拷贝构造函数"<<endl;
+
+	Node<T> *c_p = c.head;
+	head = new Node<T>(c_p->element,c_p->next);
+	Node<T> *p = head;
+	while(c_p)
+	{
+		Node* node = new Node<T>(c_p->element,c_p->next);
+		
+		c_p = c_p->next;
+	}
 	this->currLength = 0;
 }
 
 template<typename T>
 LinkedList<T>::~LinkedList()
 {
-	Node<T> *p;
-	while(head)
+
+	Node<T> *p = head;
+	int index = 0;
+	while(p)
 	{
-		p = head->next;
-		delete head;
-		head = p;
+		cout<<index++<<"次析构循环:"<<"p->element"<<p->element<<endl;
+
+		Node<T> *next = p->next;
+		delete p;
+		p = next;
 	}
 }
 
@@ -60,7 +83,7 @@ LinkedList<T>::~LinkedList()
 template<typename T>
 bool LinkedList<T>::select (int i, T& element) const
 {
-	
+
 	if(!checkIndexOutOfBound(i))
 	{
 		return false;
