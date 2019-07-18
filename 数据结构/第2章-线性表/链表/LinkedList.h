@@ -22,7 +22,20 @@ class LinkedList:public LinearList<T>
 		//查找
 		bool select (int i, T& element) const;
 		//查找全部
-		void selectAll ();
+//		void selectAll ()
+//		{
+//			cout<<"LinkedList={"<<endl;
+//			Node<T> *p = head->next;
+//			int index = 0;
+//			while(p)
+//			{
+//				cout<<"  "<<index<<"->"<<p->element<<endl;
+//				p = p->next;
+//				index++;
+//			}
+//			cout<<"}"<<endl;
+//
+//		}
 		//插入
 		bool insert (int i, T element);
 		//删除
@@ -49,30 +62,34 @@ LinkedList<T>::LinkedList()
 template<typename T>
 LinkedList<T>::LinkedList(const LinkedList &c)
 {
-	cout<<"调用LinkedList的拷贝构造函数"<<endl;
 
 	Node<T> *c_p = c.head;
-	head = new Node<T>(c_p->element,c_p->next);
-	Node<T> *p = head;
+	this->head = new Node<T>(c_p->element,NULL);
+	c_p = c_p->next;
+	//相当于精简版的insert函数
+	Node<T> *p = this->head;
 	while(c_p)
 	{
-		Node* node = new Node<T>(c_p->element,c_p->next);
-		
+
+		Node<T> *node = new Node<T>(c_p->element,p->next);
+		p->next = node;
+
 		c_p = c_p->next;
+		p = p->next;
 	}
-	this->currLength = 0;
+	this->currLength = c.getCurrLength();
 }
 
 template<typename T>
 LinkedList<T>::~LinkedList()
 {
+	cout<<"调用LinkedList的析构函数"<<endl;
+
 
 	Node<T> *p = head;
 	int index = 0;
 	while(p)
 	{
-		cout<<index++<<"次析构循环:"<<"p->element"<<p->element<<endl;
-
 		Node<T> *next = p->next;
 		delete p;
 		p = next;
@@ -139,6 +156,24 @@ bool LinkedList<T>::insert (int i, T element)
 template<typename T>
 bool LinkedList<T>::deleteByIndex (int i, T& element)
 {
+	if(!checkIndexOutOfBound(i))
+	{
+		return false;
+	}
+
+	Node<T> *p = head;
+	int current = -1;
+	while(p)
+	{
+		if(current==i)
+		{
+			element = p->element;
+			break;
+		}
+		p = p->next;
+		current++;
+	}
+
 	return true;
 }
 
@@ -160,20 +195,5 @@ bool LinkedList<T>::checkIndexOutOfBound(int index) const
 	return true;
 }
 
-template<typename T>
-void LinkedList<T>::selectAll ()
-{
-	cout<<"LinkedList={"<<endl;
-	Node<T> *p = head->next;
-	int index = 0;
-	while(p)
-	{
-		cout<<"  "<<index<<"->"<<p->element<<endl;
-		p = p->next;
-		index++;
-	}
-	cout<<"}"<<endl;
-
-}
 
 
