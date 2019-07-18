@@ -15,7 +15,7 @@ class LinearList {
 		virtual bool deleteByIndex (int i, T &element)= 0;
 		//¸üÐÂ
 		virtual bool update (int i, T element) = 0;
-
+		
 };
 
 #endif
