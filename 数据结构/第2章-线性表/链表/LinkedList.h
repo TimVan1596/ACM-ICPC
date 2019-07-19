@@ -21,21 +21,6 @@ class LinkedList:public LinearList<T>
 
 		//查找
 		bool select (int i, T& element) const;
-		//查找全部
-//		void selectAll ()
-//		{
-//			cout<<"LinkedList={"<<endl;
-//			Node<T> *p = head->next;
-//			int index = 0;
-//			while(p)
-//			{
-//				cout<<"  "<<index<<"->"<<p->element<<endl;
-//				p = p->next;
-//				index++;
-//			}
-//			cout<<"}"<<endl;
-//
-//		}
 		//插入
 		bool insert (int i, T element);
 		//删除
@@ -83,9 +68,6 @@ LinkedList<T>::LinkedList(const LinkedList &c)
 template<typename T>
 LinkedList<T>::~LinkedList()
 {
-	cout<<"调用LinkedList的析构函数"<<endl;
-
-
 	Node<T> *p = head;
 	int index = 0;
 	while(p)
@@ -106,8 +88,8 @@ bool LinkedList<T>::select (int i, T& element) const
 		return false;
 	}
 
-	Node<T> *p = head;
-	int current = -1;
+	Node<T> *p = head->next;
+	int current = 0;
 	while(p)
 	{
 		if(current==i)
@@ -161,25 +143,47 @@ bool LinkedList<T>::deleteByIndex (int i, T& element)
 		return false;
 	}
 
-	Node<T> *p = head;
-	int current = -1;
+	Node<T> *p = head->next;
+	Node<T> *last = head;
+	int current = 0;
 	while(p)
 	{
 		if(current==i)
 		{
+			last->next = p->next;
 			element = p->element;
+			delete p;
 			break;
 		}
+		last = p;
 		p = p->next;
 		current++;
 	}
 
+	this->currLength--;
 	return true;
 }
 
 template<typename T>
 bool LinkedList<T>::update (int i, T element)
 {
+	if(!checkIndexOutOfBound(i))
+	{
+		return false;
+	}
+
+	Node<T> *p = head->next;
+	int current = 0;
+	while(p)
+	{
+		if(current==i)
+		{
+			p->element = element ;
+			break;
+		}
+		p = p->next;
+		current++;
+	}
 	return true;
 }
 
