@@ -6,23 +6,57 @@
 #include "Node.h"
 using namespace std;
 
+/** 双向循环链表 */
 template<typename T>
-class DoubleDoubleLinkedList:public LinearList<T>
+class DoubleLinkedList:public LinearList<T>
 {
 	private:
 		Node<T> *head;
 		bool checkIndexOutOfBound(int index) const;
 
 	public:
-		DoubleDoubleLinkedList();
+		DoubleLinkedList();
 		//拷贝构造函数
-		DoubleDoubleLinkedList(const DoubleLinkedList &c);
+		DoubleLinkedList(const DoubleLinkedList &c);
 		~DoubleLinkedList();
 
 		//查找
 		bool select (int i, T& element) const;
+		//正向查找全部
+		void selectAll ()
+		{
+			cout<<"DoubleLinkedList={"<<endl;
+			Node<T> *p = head->next;
+			int index = 0;
+			while(p!=head)
+			{
+				cout<<"  "<<index<<"->"<<p->element<<endl;
+				p = p->next;
+				index++;
+			}
+			cout<<"}"<<endl;
+		}
+		//反向查找全部
+		void reverseSelectAll ()
+		{
+			cout<<"[!reverse!] DoubleLinkedList={"<<endl;
+			Node<T> *p = head->previous;
+			int index = 0;
+			while(p!=head)
+			{
+				cout<<"  "<<index<<"->"<<p->element<<endl;
+				p = p->previous;
+				index++;
+			}
+			cout<<"}"<<endl;
+
+		}
 		//插入
 		bool insert (int i, T element);
+		//头插
+		void insertHead (T element);
+		//尾插
+		void insertEnd (T element);
 		//删除
 		bool deleteByIndex (int i, T &element);
 		//更新
@@ -40,7 +74,10 @@ class DoubleDoubleLinkedList:public LinearList<T>
 template<typename T>
 DoubleLinkedList<T>::DoubleLinkedList()
 {
-	head = new Node<T>(0,NULL);
+	head = new Node<T>(0,head,head);
+	//构造时作为参数head任然是NULL
+	head->next = head;
+	head->previous = head;
 	this->currLength = 0;
 }
 
@@ -68,9 +105,10 @@ DoubleLinkedList<T>::DoubleLinkedList(const DoubleLinkedList &c)
 template<typename T>
 DoubleLinkedList<T>::~DoubleLinkedList()
 {
-	Node<T> *p = head;
-	int index = 0;
-	while(p)
+
+
+	Node<T> *p = head->next;
+	while(p!=head)
 	{
 		Node<T> *next = p->next;
 		delete p;
@@ -128,12 +166,36 @@ bool DoubleLinkedList<T>::insert (int i, T element)
 		current++;
 	}
 
-	Node<T> *node = new Node<T>(element,p->next);
+	Node<T> *node = new Node<T>(element,p,p->next);
+	p->next->previous = node;
 	p->next = node;
+
 
 	this->currLength++;
 	return true;
 }
+
+template<typename T>
+void DoubleLinkedList<T>::insertEnd ( T element)
+{
+
+	Node<T> *node = new Node<T>(element,head->previous,head);
+	head->previous->next = node;
+	head->previous = node;
+
+	this->currLength++;
+}
+
+template<typename T>
+void DoubleLinkedList<T>::insertHead (T element)
+{
+	Node<T> *node = new Node<T>(element,head,head->next);
+	head->next->previous = node;
+	head->next= node;
+
+	this->currLength++;
+}
+
 
 template<typename T>
 bool DoubleLinkedList<T>::deleteByIndex (int i, T& element)
