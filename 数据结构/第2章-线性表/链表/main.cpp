@@ -31,4 +31,25 @@ int main(int argc, char** argv)
 }
 
 
+static void selectAll (LinkedList<int> list)
+{
+	cout<<"LinkedList={"<<endl;
+	for(int i = 0 ; i < list.getCurrLength(); ++i )
+	{
+
+		int element  = 0;
+		if(list.select(i,element))
+		{
+			cout<<"  "<<i<<"->"<<element<<endl;
+		}
+		else
+		{
+			cout<<"  "<<i<<"->"<<"Out of Bound"<<endl;
+		}
+	}
+	cout<<"}"<<endl;
+}
+
+
+
 
