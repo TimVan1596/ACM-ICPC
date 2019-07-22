@@ -5,35 +5,30 @@
 using namespace std;
 
 template<typename T>
-class LinkedList;
+class DoubleLinkedList;
 
 template<typename T>
 class Node
 {
 	private:
+		Node<T> *previous;
 		Node<T> *next;
 		T element;
-		friend class LinkedList<T>;
+		friend class DoubleLinkedList<T>;
 	public:
 		Node()
 		{
 			this->next = NULL;
 			this->element = 0;
 		}
-		Node(T _element,Node<T> *_next)
+
+		Node(T _element,Node<T> *_previous,Node<T> *_next)
 		{
+			this->previous = _previous;
 			this->next = _next;
 			this->element = _element;
 		}
 
-		static void print(Node<T> *node)
-		{
-			cout<<"{"<<endl;
-			cout<<"next:"<<node->next<<endl;
-			cout<<"element:"<<node->element<<endl;
-			cout<<"}"<<endl;
-
-		}
 };
 
 #endif
