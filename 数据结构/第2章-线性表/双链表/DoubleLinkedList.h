@@ -92,36 +92,32 @@ bool DoubleLinkedList<T>::select (int i, T& element) const {
 		return false;
 	}
 
-	Node<T> *p = head->next;
+	int currLength = this->getCurrLength();
+
+	Node<T> *p = NULL;
 	int current = 0;
-	while(p) {
-		if(current==i) {
-			element = p->element;
-			break;
+	if(i<(currLength/2)) {
+		p = head->next;
+
+		while(p) {
+			if(current==i) {
+				element = p->element;
+				break;
+			}
+			p = p->next;
+			current++;
 		}
-		p = p->next;
-		current++;
-	}
-
-	return true;
-}
-
-template<typename T>
-bool DoubleLinkedList<T>::reverseSelect (int i, T& element) const {
-
-	if(!checkIndexOutOfBound(i)) {
-		return false;
-	}
-
-	Node<T> *p = head->previous;
-	int current = this->getCurrLength()-1;
-	while(p) {
-		if(current==i) {
-			element = p->element;
-			break;
+	} else {
+		p = head->previous;
+		current = this->getCurrLength()-1;
+		while(p) {
+			if(current==i) {
+				element = p->element;
+				break;
+			}
+			p = p->previous;
+			current--;
 		}
-		p = p->previous;
-		current--;
 	}
 
 	return true;
@@ -135,23 +131,40 @@ bool DoubleLinkedList<T>::insert (int i, T element) {
 		return false;
 	}
 
-	Node<int> *p =  head;
+	int currLength = this->getCurrLength();
+
+	Node<T> *p = head;
 	int current = 0;
+	if(i<(currLength/2)) {
+		while(p) {
 
-	while(p) {
-
-		if(current >= i) {
-			break;
+			if(current >= i) {
+				break;
+			}
+			p = p->next;
+			current++;
 		}
-		p = p->next;
-		current++;
+
+		Node<T> *node = new Node<T>(element,p,p->next);
+		p->next->previous = node;
+		p->next = node;
+
+	} else {
+		current = this->getCurrLength();
+		while(p) {
+
+			if(current <= i) {
+				break;
+			}
+			p = p->previous;
+			current--;
+		}
+
+		Node<T> *node = new Node<T>(element,p->previous,p);
+		p->previous->next = node;
+		p->previous = node;
+
 	}
-
-	Node<T> *node = new Node<T>(element,p,p->next);
-	p->next->previous = node;
-	p->next = node;
-
-
 	this->currLength++;
 	return true;
 }
@@ -182,20 +195,44 @@ bool DoubleLinkedList<T>::deleteByIndex (int i, T& element) {
 		return false;
 	}
 
-	Node<T> *p = head->next;
 	Node<T> *last = head;
+
+	int currLength = this->getCurrLength();
+
+	Node<T> *p = NULL;
 	int current = 0;
-	while(p) {
-		if(current==i) {
-			last->next = p->next;
-			element = p->element;
-			delete p;
-			break;
+	if(i<(currLength/2)) {
+		p = head->next;
+		while(p) {
+			if(current>=i) {
+				last->next = p->next;
+				p->previous = p;
+				element = p->element;
+				delete p;
+				break;
+			}
+			last = p;
+			p = p->next;
+			current++;
 		}
-		last = p;
-		p = p->next;
-		current++;
+	} else {
+		p = head->previous;
+		current = getCurrLength()-1;
+		while(p) {
+			if(current<=i) {
+				last->previous = p->previous;
+				p->previous->next = last;
+				element = p->element;
+				delete p;
+				break;
+			}
+			last = p;
+			p = p->previous;
+			current--;
+		}
 	}
+
+
 
 	this->currLength--;
 	return true;
@@ -207,15 +244,32 @@ bool DoubleLinkedList<T>::update (int i, T element) {
 		return false;
 	}
 
-	Node<T> *p = head->next;
+
+	int currLength = this->getCurrLength();
+
+	Node<T> *p = NULL;
 	int current = 0;
-	while(p) {
-		if(current==i) {
-			p->element = element ;
-			break;
+	if(i<(currLength/2)) {
+		p = head->next;
+		while(p) {
+			if(current==i) {
+				p->element = element;
+				break;
+			}
+			p = p->next;
+			current++;
 		}
-		p = p->next;
-		current++;
+	} else {
+		p = head->previous;
+		current = this->getCurrLength()-1;
+		while(p) {
+			if(current==i) {
+				p->element = element;
+				break;
+			}
+			p = p->previous;
+			current--;
+		}
 	}
 	return true;
 }

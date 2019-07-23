@@ -18,6 +18,22 @@ int main(int argc, char** argv) {
 		dList.insertEnd(arr[i]);
 	}
 
+	dList.insert(0,1);
+	dList.insert(4,-999);
+	dList.insert(dList.getCurrLength(),64);
+	//É¾³ý
+	int element = 0;
+	dList.deleteByIndex(0,element);
+	cout<<"dList.deleteByIndex(0,element) = "<<element<<endl;
+	dList.deleteByIndex(3,element);
+	cout<<"dList.deleteByIndex(3,element) = "<<element<<endl;
+	dList.deleteByIndex(dList.getCurrLength()-1,element);
+	cout<<"dList.deleteByIndex(dList.getCurrLength()-1,element) = "<<element<<endl;
+	selectAll(dList);
+
+	dList.update(0,1);
+	dList.update(2,-999);
+	dList.update(dList.getCurrLength()-1,64);
 	selectAll(dList);
 
 
@@ -30,21 +46,12 @@ static void selectAll (DoubleLinkedList<int> dList) {
 	int currLength = dList.getCurrLength();
 	for(int i = 0 ; i < currLength; ++i ) {
 		int element  = 0;
-		if(i<(currLength/2)) {
-			if(dList.select(i,element)) {
-				cout<<"  "<<i<<"->"<<element<<endl;
-			} else {
-				cout<<"  "<<i<<"->"<<"Out of Bound"<<endl;
-			}
-
+		if(dList.select(i,element)) {
+			cout<<"  "<<i<<"->"<<element<<endl;
 		} else {
-			if(dList.reverseSelect(i,element)) {
-				cout<<"  "<<i<<"->"<<element<<endl;
-			} else {
-				cout<<"  "<<i<<"->"<<"Out of Bound"<<endl;
-			}
-
+			cout<<"  "<<i<<"->"<<"Out of Bound"<<endl;
 		}
+
 	}
 
 	cout<<"}"<<endl;
