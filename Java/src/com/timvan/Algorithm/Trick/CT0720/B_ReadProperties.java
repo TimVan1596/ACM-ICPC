@@ -9,7 +9,7 @@ public class B_ReadProperties {
         System.out.println(temp);
         temp =  B_ReadProperties.class.getResource("").toString();
         System.out.println(temp);
-        temp =  B_ReadProperties.class.getClassLoader().getResource("").toString();
+        temp =  B_ReadProperties.class.getClassLoader().getResource(  "").toString();
         System.out.println(temp);
 //        temp =  B_ReadProperties.class.getClassLoader().getResource("/").toString();
 //        System.out.println(temp);
