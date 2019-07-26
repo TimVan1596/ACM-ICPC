@@ -6,10 +6,12 @@
 #include "Node.h"
 using namespace std;
 
+//不带头结点的单链表
 template<typename T>
 class NoHeadSingleLinkedList:public LinearList<T> {
 	private:
 		Node<T> *head;
+		Node<T> *tail;
 		bool checkIndexOutOfBound(int index) const;
 
 	public:
@@ -29,8 +31,8 @@ class NoHeadSingleLinkedList:public LinearList<T> {
 
 		//以顺序返回一个包含此所有元素的数组
 		T* toArray();
-		//返回元素数 
-		int size() const{
+		//返回元素数
+		int size() const {
 			return this->currLength;
 		}
 
@@ -40,7 +42,8 @@ class NoHeadSingleLinkedList:public LinearList<T> {
 
 template<typename T>
 NoHeadSingleLinkedList<T>::NoHeadSingleLinkedList() {
-	head = new Node<T>(0,NULL);
+	head = NULL;
+	tail = NULL;
 	this->currLength = 0;
 }
 
@@ -57,9 +60,13 @@ NoHeadSingleLinkedList<T>::NoHeadSingleLinkedList(const NoHeadSingleLinkedList &
 		Node<T> *node = new Node<T>(c_p->element,p->next);
 		p->next = node;
 
+		if(c_p->next == NULL) {
+			this->tail = c_p;
+		}
 		c_p = c_p->next;
 		p = p->next;
 	}
+
 	this->currLength = c.size();
 }
 
@@ -81,17 +88,23 @@ bool NoHeadSingleLinkedList<T>::select (int i, T& element) const {
 	if(!checkIndexOutOfBound(i)) {
 		return false;
 	}
-
-	Node<T> *p = head->next;
-	int current = 0;
-	while(p) {
-		if(current==i) {
-			element = p->element;
-			break;
+	Node<T> *p = NULL;
+	if(i==this->size()-1) {
+		p = tail;
+		element = p->element;
+	} else {
+		p = head;
+		int current = 0;
+		while(p) {
+			if(current==i) {
+				element = p->element;
+				break;
+			}
+			p = p->next;
+			current++;
 		}
-		p = p->next;
-		current++;
 	}
+
 
 	return true;
 }
@@ -104,22 +117,47 @@ bool NoHeadSingleLinkedList<T>::insert (int i, T element) {
 		return false;
 	}
 
-	Node<int> *p =  head;
-	int current = 0;
+	if(i==0) {
+		if(head == NULL) {
+			head = new Node<T>(element,NULL);
+			tail = head;
+		} else {
+			Node<T> *node = new Node<T>(head->element,head->next);
+			head = new Node<T>(element,node);
+			if(i == this->currLength) {
+				tail = node;
+			}
 
-	while(p) {
-
-		if(current >= i) {
-			break;
 		}
-		p = p->next;
-		current++;
+
+
+	} else {
+		Node<int> *p =  head;
+		int current = 0;
+
+		while(p) {
+
+			if(current >= i-1) {
+				break;
+			}
+			p = p->next;
+			current++;
+		}
+
+		Node<T> *node = new Node<T>(element,p->next);
+		p->next = node;
+
+		if(i == this->currLength) {
+			tail = node;
+		}
+
 	}
 
-	Node<T> *node = new Node<T>(element,p->next);
-	p->next = node;
-
+//	if(this->currLength==5 && i==0) {
+//		cout<<"head->element="<<head->element<<endl;
+//	}
 	this->currLength++;
+
 	return true;
 }
 
