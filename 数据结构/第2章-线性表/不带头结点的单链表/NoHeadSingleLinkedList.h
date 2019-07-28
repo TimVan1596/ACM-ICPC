@@ -36,6 +36,11 @@ class NoHeadSingleLinkedList:public LinearList<T> {
 			return this->currLength;
 		}
 
+		void print() const {
+			cout<<"---------------------------------"<<endl;
+			cout<<"tail->element="<<this->tail->element<<endl;
+			cout<<"---------------------------------"<<endl;
+		}
 
 };
 #endif
@@ -50,22 +55,29 @@ NoHeadSingleLinkedList<T>::NoHeadSingleLinkedList() {
 template<typename T>
 NoHeadSingleLinkedList<T>::NoHeadSingleLinkedList(const NoHeadSingleLinkedList &c) {
 
+
 	Node<T> *c_p = c.head;
-	this->head = new Node<T>(c_p->element,NULL);
+	c.print();
+	head = new Node<T>(13,NULL);
+	tail = head;
+	c.print();
 	c_p = c_p->next;
 	//相当于精简版的insert函数
 	Node<T> *p = this->head;
+
 	while(c_p) {
 
 		Node<T> *node = new Node<T>(c_p->element,p->next);
 		p->next = node;
 
-		if(c_p->next == NULL) {
-			this->tail = c_p;
-		}
 		c_p = c_p->next;
 		p = p->next;
+
 	}
+
+
+
+	this->tail = new Node<T>(c.tail->element,NULL);
 
 	this->currLength = c.size();
 }
@@ -105,7 +117,6 @@ bool NoHeadSingleLinkedList<T>::select (int i, T& element) const {
 		}
 	}
 
-
 	return true;
 }
 
@@ -127,9 +138,7 @@ bool NoHeadSingleLinkedList<T>::insert (int i, T element) {
 			if(i == this->currLength) {
 				tail = node;
 			}
-
 		}
-
 
 	} else {
 		Node<int> *p =  head;
@@ -153,9 +162,6 @@ bool NoHeadSingleLinkedList<T>::insert (int i, T element) {
 
 	}
 
-//	if(this->currLength==5 && i==0) {
-//		cout<<"head->element="<<head->element<<endl;
-//	}
 	this->currLength++;
 
 	return true;
@@ -167,41 +173,73 @@ bool NoHeadSingleLinkedList<T>::deleteByIndex (int i, T& element) {
 		return false;
 	}
 
-	Node<T> *p = head->next;
-	Node<T> *last = head;
-	int current = 0;
-	while(p) {
-		if(current==i) {
-			last->next = p->next;
-			element = p->element;
-			delete p;
-			break;
+	if(i==0) {
+		element = head->element;
+		if(this->currLength==1) {
+			head = NULL;
+			tail = NULL;
+		} else {
+			head = head->next;
 		}
-		last = p;
-		p = p->next;
-		current++;
-	}
 
+
+	} else {
+		Node<T> *p = head->next;
+		Node<T> *last = head;
+		int current = 1;
+		while(p) {
+			if(current==i) {
+				last->next = p->next;
+				element = p->element;
+				delete p;
+				break;
+			}
+			last = p;
+			p = p->next;
+			current++;
+		}
+	}
 	this->currLength--;
 	return true;
 }
 
 template<typename T>
 bool NoHeadSingleLinkedList<T>::update (int i, T element) {
+
 	if(!checkIndexOutOfBound(i)) {
 		return false;
 	}
+	Node<T> *p = NULL;
 
-	Node<T> *p = head->next;
-	int current = 0;
-	while(p) {
-		if(current==i) {
-			p->element = element ;
-			break;
+	if(i==(this->size()-1)) {
+		tail->element = element ;
+
+	} else {
+		p = head;
+		int current = 0;
+		while(p) {
+			if(current==i) {
+				p->element = element ;
+				break;
+			}
+			p = p->next;
+			current++;
 		}
-		p = p->next;
-		current++;
 	}
+
+
+//	cout<<"NoHeadSingleLinkedList={"<<endl;
+//	for(int i = 0 ; i < size(); ++i ) {
+//
+//		int element  = 0;
+//		if(select(i,element)) {
+//			cout<<"  "<<i<<"->"<<element<<endl;
+//		} else {
+//			cout<<"  "<<i<<"->"<<"Out of Bound"<<endl;
+//		}
+//	}
+//	cout<<"}"<<endl;
+
 	return true;
 }
 
