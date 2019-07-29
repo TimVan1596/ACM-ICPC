@@ -16,6 +16,7 @@ int main(int argc, char** argv) {
 	list.insert(0,1);
 	list.insert(4,-999);
 	list.insert(list.size(),64);
+//	selectAll(list);
 	//É¾³ý
 	int element = 0;
 	list.deleteByIndex(0,element);
@@ -25,13 +26,13 @@ int main(int argc, char** argv) {
 	list.deleteByIndex(list.size()-1,element);
 	cout<<"list.deleteByIndex(list.getCurrLength()-1,element) = "<<element<<endl;
 //	selectAll(list);
+	list.selectAll();
 
-//	list.update(0,1);
-//	list.update(2,-999);
+	list.update(0,1);
+	list.update(2,-999);
 	list.update(list.size()-1,64);
-	
-	selectAll(list);
-
+	list.selectAll();
+//	selectAll(list);
 
 	return 0;
 }

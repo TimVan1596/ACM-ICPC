@@ -56,6 +56,8 @@ class NoHeadSingleLinkedList:public LinearList<T> {
 			cout<<"}"<<endl;
 		}
 
+		//递归删除所有值为x的结点
+		void recurveDelete(T element);
 };
 #endif
 
@@ -256,17 +258,6 @@ bool NoHeadSingleLinkedList<T>::update (int i, T element) {
 	}
 
 
-//	cout<<"NoHeadSingleLinkedList={"<<endl;
-//	for(int i = 0 ; i < size(); ++i ) {
-//
-//		int element  = 0;
-//		if(select(i,element)) {
-//			cout<<"  "<<i<<"->"<<element<<endl;
-//		} else {
-//			cout<<"  "<<i<<"->"<<"Out of Bound"<<endl;
-//		}
-//	}
-//	cout<<"}"<<endl;
 
 	return true;
 }
@@ -287,4 +278,7 @@ T* NoHeadSingleLinkedList<T>::toArray() {
 	return t;
 }
 
-
+template<typename T>
+void NoHeadSingleLinkedList<T>::recurveDelete(T element){
+	cout<<"递归删除"<<endl;
+}
