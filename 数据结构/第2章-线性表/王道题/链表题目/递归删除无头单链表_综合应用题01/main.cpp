@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
 	for(int i = 0 ; i<LEN ; ++i) {
 		list.insert(i,arr[i]);
 	}
+	list.selectAll();
 	int element = 2;
 	list.recurveDelete(element);
 
