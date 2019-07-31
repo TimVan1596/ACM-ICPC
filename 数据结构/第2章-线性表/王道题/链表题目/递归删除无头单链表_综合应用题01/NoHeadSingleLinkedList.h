@@ -339,7 +339,7 @@ recurveDelete(Node<T> *last,Node<T> *p ,T element,int deleteLen) {
 			p = last;
 			deleteLen++;
 		}
-		
+
 		if(p->next == NULL) {
 			this->tail = p;
 			return deleteLen;
@@ -350,3 +350,5 @@ recurveDelete(Node<T> *last,Node<T> *p ,T element,int deleteLen) {
 	}
 
 }
+
+
