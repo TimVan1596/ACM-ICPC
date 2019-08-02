@@ -1,7 +1,10 @@
 #ifndef SEQSTACK_H
 #define SEQSTACK_H
 
+#include <iostream>
+
 #include "Stack.h"
+using namespace std;
 
 template<typename T>
 class SeqStack:public Stack<T> {
@@ -14,9 +17,11 @@ class SeqStack:public Stack<T> {
 
 		static const int EMPTY_LEN;
 	public:
-		SeqStack(int size){
-			arr = new int[size];
-			maxTop = size;
+		SeqStack(int size) {
+			topIndex = EMPTY_LEN;
+			maxTop = size-1;
+			arr = new int[maxTop];
+
 		};
 		~SeqStack() {
 			delete[] arr;
@@ -25,7 +30,9 @@ class SeqStack:public Stack<T> {
 		bool isEmpty() const {
 			return topIndex == EMPTY_LEN;
 		}
-		bool isFull() const;
+		bool isFull() const {
+			return topIndex == maxTop;
+		}
 		//·µ»ØÕ»¶¥ÔªËØ
 		bool top(T& element) const;
 		//ÍùÕ»¶¥²åÈëÔªËØ
@@ -36,27 +43,44 @@ class SeqStack:public Stack<T> {
 };
 
 template<typename T>
-bool SeqStack<T>::isFull() const {
-	return false;
-}
-
-template<typename T>
 bool SeqStack<T>::top(T& element) const {
-	return false;
+
+	if(isEmpty()) {
+		cout<<"[ERROR] SeqStack is Empty "<<endl;
+		return false;
+	}
+	element = arr[topIndex];
+	return true;
+
 }
 
 template<typename T>
 bool SeqStack<T>::push(T element) {
-	return false;
+
+	if(isFull()) {
+		cout<<"[ERROR] SeqStack is Full "<<endl;
+		return false;
+	}
+
+	arr[++topIndex] = element;
+
+	return true;
 }
 
 template<typename T>
 bool SeqStack<T>::pop(T& element) {
-	return false;
+
+	if(isEmpty()) {
+		cout<<"[ERROR] SeqStack is Empty "<<endl;
+		return false;
+	}
+	element = arr[topIndex--];
+	return true;
 }
 
 template<typename T>
 bool SeqStack<T>::clear() {
+	topIndex = EMPTY_LEN;
 	return false;
 }
 
