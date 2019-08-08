@@ -56,6 +56,12 @@ class NoHeadSingleLinkedList:public LinearList<T> {
 			cout<<"}"<<endl;
 		}
 
+		//遍历删除所有值为element的结点
+		void deleteAllByElement(T element);
+
+		//递归删除所有值为element的结点
+		void recurveDelete(T element);
+		int recurveDelete(Node<T> *last,Node<T> *p ,T element,int deleteLen);
 };
 #endif
 
@@ -77,7 +83,7 @@ NoHeadSingleLinkedList<T>::NoHeadSingleLinkedList(const NoHeadSingleLinkedList &
 	cout<<"-----1------"<<endl;
 
 //	this->head = new Node<T>(123,NULL);
-	
+
 	cout<<"-----2------"<<endl;
 	c.selectAll();
 	cout<<"-----2------"<<endl;
@@ -256,17 +262,6 @@ bool NoHeadSingleLinkedList<T>::update (int i, T element) {
 	}
 
 
-//	cout<<"NoHeadSingleLinkedList={"<<endl;
-//	for(int i = 0 ; i < size(); ++i ) {
-//
-//		int element  = 0;
-//		if(select(i,element)) {
-//			cout<<"  "<<i<<"->"<<element<<endl;
-//		} else {
-//			cout<<"  "<<i<<"->"<<"Out of Bound"<<endl;
-//		}
-//	}
-//	cout<<"}"<<endl;
 
 	return true;
 }
@@ -285,6 +280,75 @@ template<typename T>
 T* NoHeadSingleLinkedList<T>::toArray() {
 	T* t;
 	return t;
+}
+
+template<typename T>
+void NoHeadSingleLinkedList<T>::deleteAllByElement(T element) {
+	Node<T> *p = head;
+	Node<T> *last = NULL;
+	while(p) {
+		if(p->element == element) {
+			if(last == NULL) {
+				head = p->next;
+				last = head;
+			} else {
+				last->next = p->next;
+			}
+			delete p;
+			p = last;
+			this->currLength--;
+		}
+		last = p;
+		if(p->next == NULL) {
+			this->tail = p;
+		}
+		p = p->next;
+
+	}
+
+}
+
+template<typename T>
+void NoHeadSingleLinkedList<T>::recurveDelete(T element) {
+	cout<<"递归删除"<<endl;
+	Node<T> *p = head;
+	Node<T> *last = NULL;
+	int deleteLen = recurveDelete(last,p,element,0);
+	cout<<"deleteLen="<<deleteLen<<endl;
+
+	this->currLength-=deleteLen;
+}
+
+template<typename T>
+int NoHeadSingleLinkedList<T>::
+recurveDelete(Node<T> *last,Node<T> *p ,T element,int deleteLen) {
+	if(p != NULL) {
+		if(p->element == element) {
+			if(last == NULL) {
+				head = p->next;
+				last = head;
+
+				p->element;
+				last->element;
+				p->next->element;
+				last->next->element;
+			} else {
+				last->next = p->next;
+			}
+			delete p;
+			p = last;
+			deleteLen++;
+		}
+
+		if(p->next == NULL) {
+			this->tail = p;
+			return deleteLen;
+		}
+		recurveDelete(p,p->next,element,deleteLen);
+	} else {
+		return deleteLen;
+	}
+
 }
 
 

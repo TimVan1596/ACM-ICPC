@@ -30,7 +30,6 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-
 static void selectAll (LinkedList<int> list)
 {
 	cout<<"LinkedList={"<<endl;
@@ -49,7 +48,3 @@ static void selectAll (LinkedList<int> list)
 	}
 	cout<<"}"<<endl;
 }
-
-
-
-
