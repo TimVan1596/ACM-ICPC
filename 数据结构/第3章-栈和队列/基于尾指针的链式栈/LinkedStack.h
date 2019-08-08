@@ -4,14 +4,14 @@
 #include <iostream>
 
 #include "Stack.h"
-#include "LinkedList.h"
+#include "NoHeadSingleLinkedList.h"
 using namespace std;
 
-//基于头结点的链式栈
+//链式栈
 template<typename T>
 class LinkedStack:public Stack<T> {
 	private:
-		LinkedList<T> list;
+		NoHeadSingleLinkedList<T> list;
 		//指向栈顶
 		int topIndex;
 
@@ -25,7 +25,7 @@ class LinkedStack:public Stack<T> {
 			return (topIndex == EMPTY_LEN);
 		}
 		bool isFull() const {
-			return false;
+			return true;
 		}
 		//返回栈顶元素
 		bool top(T &x) const;
@@ -42,19 +42,14 @@ bool LinkedStack<T>::top(T &x) const {
 		cout<<"[ERROR] SeqStack is Empty "<<endl;
 		return false;
 	}
-	list.select(0,x);
+	list.select(topIndex,x);
 
 	return true;
 }
 
 template<typename T>
 bool LinkedStack<T>::push(T x) {
-	if(isFull()) {
-		cout<<"[ERROR] SeqStack is Full "<<endl;
-		return false;
-	}
-	list.insert(0,x);
-	topIndex++;
+	list.insert(++topIndex,x);
 	return true;
 }
 
@@ -64,13 +59,12 @@ bool LinkedStack<T>::pop(T& element) {
 		cout<<"[ERROR] SeqStack is Empty "<<endl;
 		return false;
 	}
-	list.deleteByIndex(0,element);
-	topIndex--;
+	list.deleteByIndex(topIndex--,element);
 	return true;
 }
 
 template<typename T>
-bool LinkedStack<T>::clear() {
+bool LinkedStack<T>::clear(){
 	return true;
 }
 

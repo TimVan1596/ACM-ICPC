@@ -16,6 +16,11 @@ class LinearList {
 		//更新
 		virtual bool update (int i, T element) = 0;
 		
+		//以顺序返回一个包含此所有元素的数组
+		virtual T* toArray() = 0;
+		//返回元素数
+		virtual int size() const  = 0;
+		
 };
 
 #endif

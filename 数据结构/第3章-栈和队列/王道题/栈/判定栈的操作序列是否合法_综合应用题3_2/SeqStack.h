@@ -1,79 +1,92 @@
-#ifndef LINKEDSTACK_H
-#define LINKEDSTACK_H
+#ifndef SEQSTACK_H
+#define SEQSTACK_H
 
 #include <iostream>
 
 #include "Stack.h"
-#include "LinkedList.h"
 using namespace std;
 
-//基于头结点的链式栈
 template<typename T>
-class LinkedStack:public Stack<T> {
+class SeqStack:public Stack<T> {
 	private:
-		LinkedList<T> list;
+		T *arr;
 		//指向栈顶
 		int topIndex;
+		//最大容量
+		int maxTop;
 
 		static const int EMPTY_LEN;
 	public:
-		LinkedStack() {
+		SeqStack(int size) {
 			topIndex = EMPTY_LEN;
+			maxTop = size-1;
+			arr = new int[maxTop];
+
+		};
+		~SeqStack() {
+			delete[] arr;
 		}
 
 		bool isEmpty() const {
-			return (topIndex == EMPTY_LEN);
+			return topIndex == EMPTY_LEN;
 		}
 		bool isFull() const {
-			return false;
+			return topIndex == maxTop;
 		}
 		//返回栈顶元素
-		bool top(T &x) const;
+		bool top(T& element) const;
 		//往栈顶插入元素
-		bool push(T x);
+		bool push(T element);
 		//弹出栈顶元素
 		bool pop(T& element);
 		bool clear();
 };
 
 template<typename T>
-bool LinkedStack<T>::top(T &x) const {
+bool SeqStack<T>::top(T& element) const {
+
 	if(isEmpty()) {
 		cout<<"[ERROR] SeqStack is Empty "<<endl;
 		return false;
 	}
-	list.select(0,x);
-
+	element = arr[topIndex];
 	return true;
+
 }
 
 template<typename T>
-bool LinkedStack<T>::push(T x) {
+bool SeqStack<T>::push(T element) {
+
 	if(isFull()) {
 		cout<<"[ERROR] SeqStack is Full "<<endl;
 		return false;
 	}
-	list.insert(0,x);
-	topIndex++;
+
+	arr[++topIndex] = element;
+
 	return true;
 }
 
 template<typename T>
-bool LinkedStack<T>::pop(T& element) {
+bool SeqStack<T>::pop(T& element) {
+
 	if(isEmpty()) {
 		cout<<"[ERROR] SeqStack is Empty "<<endl;
 		return false;
 	}
-	list.deleteByIndex(0,element);
-	topIndex--;
+	element = arr[topIndex--];
 	return true;
 }
 
 template<typename T>
-bool LinkedStack<T>::clear() {
-	return true;
+bool SeqStack<T>::clear() {
+	topIndex = EMPTY_LEN;
+	return false;
 }
 
+
 template<typename T>
-const int LinkedStack<T>::EMPTY_LEN = -1;
+const int SeqStack<T>::EMPTY_LEN = -1;
 #endif
+
+

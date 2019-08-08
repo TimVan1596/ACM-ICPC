@@ -5,7 +5,7 @@
 using namespace std;
 
 template<typename T>
-class LinkedList;
+class NoHeadSingleLinkedList;
 
 template<typename T>
 class Node
@@ -13,7 +13,7 @@ class Node
 	private:
 		Node<T> *next;
 		T element;
-		friend class LinkedList<T>;
+		friend class NoHeadSingleLinkedList<T>;
 	public:
 		Node()
 		{

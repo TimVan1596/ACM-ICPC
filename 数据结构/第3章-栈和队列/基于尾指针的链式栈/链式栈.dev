@@ -61,6 +61,26 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit6]
+FileName=LinkedStack.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit2]
+FileName=LinearList.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit3]
 FileName=Node.h
 CompileCpp=1
 Folder=
@@ -71,7 +91,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit4]
-FileName=LinearList.h
+FileName=NoHeadSingleLinkedList.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -81,27 +101,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit5]
-FileName=LinkedList.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit2]
 FileName=Stack.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit3]
-FileName=LinkedStack.h
 CompileCpp=1
 Folder=
 Compile=1
