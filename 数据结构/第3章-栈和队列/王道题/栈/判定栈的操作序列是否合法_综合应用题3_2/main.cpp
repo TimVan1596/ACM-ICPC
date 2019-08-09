@@ -3,6 +3,8 @@
 #include "SeqStack.h"
 using namespace std;
 
+bool isSeqLegal(string seq);
+
 //假设以I和O分别表示入栈和出栈操作。栈的初态和终态均为空，
 //入栈和出栈的操作序列可表示为仅由I和O组成的序列
 //称可以操作的序列为合法序列，否则称为非法序列。
@@ -12,39 +14,48 @@ using namespace std;
 //若合法，返回true，否则返回false(假定被判定的操作序列已存入一维数组中)。
 int main(int argc, char** argv) {
 
-	const int LEN = 5;
-	SeqStack<int> seqStack(LEN);
+	string seq = "IOIIOIOO";
+	cout<<seq<<":";
+	isSeqLegal(seq)? cout<<"TRUE" : cout<<"false";
+	cout<<endl;
 
-	cout<<"seqStack isEmpty = "<< seqStack.isEmpty()<<endl;
-	cout<<" isFull = "<< seqStack.isFull()<<endl;
+	seq = "IOOIOIIO";
+	cout<<seq<<":";
+	isSeqLegal(seq)? cout<<"TRUE" : cout<<"false";
+	cout<<endl;
 
-	int arr[LEN] = {2,4,8,16,32};
-	for(int i = 0 ; i < LEN ; ++i) {
-		seqStack.push(arr[i]);
-	}
+	seq = "IIIOIOIO";
+	cout<<seq<<":";
+	isSeqLegal(seq)? cout<<"TRUE" : cout<<"false";
+	cout<<endl;
 
-	int element = 0;
-	seqStack.top(element);
-	cout<<" top = "<<element <<endl;
-
-	cout<<" isEmpty = "<< seqStack.isEmpty()<<endl;
-	cout<<" isFull = "<< seqStack.isFull()<<endl;
-
-	while(!seqStack.isEmpty()) {
-		seqStack.pop(element);
-		cout<<" pop = "<<element <<endl;
-
-	}
-
-	cout<<" isEmpty = "<< seqStack.isEmpty()<<endl;
-	cout<<" isFull = "<< seqStack.isFull()<<endl;
-
-	seqStack.push(1024);
-	seqStack.clear();
-
-	cout<<" isEmpty = "<< seqStack.isEmpty()<<endl;
-	cout<<" isFull = "<< seqStack.isFull()<<endl;
+	seq = "IIIOOIOO";
+	cout<<seq<<":";
+	isSeqLegal(seq)? cout<<"TRUE" : cout<<"false";
+	cout<<endl;
 
 
 	return 0;
+}
+
+bool isSeqLegal(string seq) {
+	bool isLegal = true;
+
+	int len = seq.size() , insertCount = 0;
+	for(int i = 0 ; i < len ; ++i) {
+		if(seq[i] == 'I') {
+			insertCount++;
+		} else {
+			if(--insertCount < 0) {
+				isLegal = false;
+				break;
+			}
+		}
+	}
+
+	if(insertCount != 0) {
+		isLegal = false;
+	}
+
+	return isLegal;
 }
