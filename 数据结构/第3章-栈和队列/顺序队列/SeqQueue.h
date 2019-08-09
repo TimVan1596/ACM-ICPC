@@ -1,6 +1,10 @@
 #ifndef SEQQUEUE_H
 #define SEQQUEUE_H
 
+#include <iostream>
+#include "Queue.h"
+using namespace std;
+
 template<typename T>
 class SeqQueue {
 	private:
@@ -8,46 +12,75 @@ class SeqQueue {
 		int front , rear;
 		int maxSize;
 		T *arr;
+
+		static const int EMPTY_LEN;
 	public:
 		SeqQueue(int size) {
 			maxSize = size;
 			arr = new T[size];
+
+			front = EMPTY_LEN;
+			rear = EMPTY_LEN;
 		}
-		bool isEmpty() const;
-		bool isFull() const ;
+		//是否为空
+		bool isEmpty() const {
+			return rear == EMPTY_LEN;
+		}
+		//是否已满
+		bool isFull() const {
+			return rear == maxSize;
+		}
 		bool getHead(T &element) const;
-		bool enQueue(T element) const;
-		bool deQueue(T &element) const;
-		bool clear() const;
+		bool enQueue(T element);
+		bool deQueue(T &element);
+		bool clear();
 };
 
 template<typename T>
-bool SeqQueue<T>::isEmpty() const {
+bool SeqQueue<T>::getHead(T &element) const {
+	if(isEmpty()) {
+		cout<<"[ERROR] SeqQueue is Empty "<<endl;
+		return false;
+	}
+
+	element = arr[rear];
 	return true;
 }
 
 template<typename T>
-bool isFull() const {
-	return true;
-}
-template<typename T>
-bool getHead(T &element) const {
+bool SeqQueue<T>::enQueue(T element)  {
+	if(isFull()) {
+		cout<<"[ERROR] SeqQueue is Full "<<endl;
+		return false;
+	}
+
+	for(int i = rear+1 ; i > 0 ; --i) {
+		arr[i] = arr[i-1];
+	}
+
+	arr[0] = element;
+	rear++;
+
 	return true;
 }
 
 template<typename T>
-bool enQueue(T element) const {
+bool SeqQueue<T>::deQueue(T &element)  {
+	if(isEmpty()) {
+		cout<<"[ERROR] SeqQueue is Empty "<<endl;
+		return false;
+	}
+	
+	rear--;	
 	return true;
 }
 
 template<typename T>
-bool deQueue(T &element) const {
+bool SeqQueue<T>::clear() {
+	rear = EMPTY_LEN;
 	return true;
 }
 
 template<typename T>
-bool clear() const {
-	return true;
-}
-
+const int SeqQueue<T>::EMPTY_LEN = -1;
 #endif
