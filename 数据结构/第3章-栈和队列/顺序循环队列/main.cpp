@@ -1,14 +1,14 @@
 #include <iostream>
 
-#include "SeqQueue.h"
+#include "SeqCircleQueue.h"
 using namespace std;
 
 int main(int argc, char** argv) {
 
 	const int LEN = 5;
-	SeqQueue<int> queue(LEN);
+	SeqCircleQueue<int> queue(LEN);
 
-	cout<<"SeqQueue isEmpty = "<< queue.isEmpty()<<endl;
+	cout<<"SeqCircleQueue isEmpty = "<< queue.isEmpty()<<endl;
 	cout<<" isFull = "<< queue.isFull()<<endl;
 
 	int arr[LEN] = {2,4,8,16,32};

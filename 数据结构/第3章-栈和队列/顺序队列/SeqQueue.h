@@ -70,8 +70,7 @@ bool SeqQueue<T>::deQueue(T &element)  {
 		cout<<"[ERROR] SeqQueue is Empty "<<endl;
 		return false;
 	}
-	
-	rear--;	
+	element = arr[rear--] ;
 	return true;
 }
 
