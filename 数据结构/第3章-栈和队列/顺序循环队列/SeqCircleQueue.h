@@ -17,38 +17,64 @@ class SeqCircleQueue: public Queue<T> {
 	public:
 
 		SeqCircleQueue(int size) {
+			//注意！数组头从0开始
 			maxSize = size;
-			front = rear = EMPTY_LEN;
-			arr = new T[maxSize];
+			front = rear = 0;
+			arr = new T[maxSize+1];
 		}
-		bool isEmpty() const;
-		bool isFull() const;
+		bool isEmpty() const {
+			return front == rear;
+		}
+		bool isFull() const {
+			return (front - rear) == maxSize;
+		}
 		bool getHead(T &element) const;
 		bool enQueue(T element);
 		bool deQueue(T &element);
-		bool clear();
+		bool clear() {
+			front = rear = 0;
+		}
+
+		void selectAll() {
+			cout<<"arr={"<<endl;
+
+			cout<<" front = "<< front<<endl;
+			cout<<" rear = "<< rear<<endl;
+
+			for(int i = 0 ; i < maxSize; ++i ) {
+				cout<<i<<"->"<<arr[i]<<endl;
+			}
+			cout<<"}"<<endl;
+		}
 };
 
-template<typename T>
-bool SeqCircleQueue<T>::isEmpty() const {
-
-	return true;
-}
-
-template<typename T>
-bool SeqCircleQueue<T>::isFull() const {
-
-	return true;
-}
 
 template<typename T>
 bool SeqCircleQueue<T>::getHead(T &element) const {
+	if(isEmpty()) {
+		cout<<"[ERROR] SeqCircleQueue is Empty "<<endl;
+		return false;
+	}
+
+	element = arr[(front+1)%maxSize];
 
 	return true;
 }
 
 template<typename T>
 bool SeqCircleQueue<T>::enQueue(T element)  {
+	if(isFull()) {
+		cout<<"[ERROR] SeqCircleQueue is Full "<<endl;
+		return false;
+	}
+	rear = (rear+1)%maxSize;
+	arr[rear] = element;
+
+	cout<<"{"<<endl;
+	cout<<" element = "<< element<<endl;
+	cout<<" front = "<< front<<endl;
+	cout<<" rear = "<< rear<<endl;
+	cout<<"}"<<endl;
 
 	return true;
 }
@@ -56,11 +82,13 @@ bool SeqCircleQueue<T>::enQueue(T element)  {
 template<typename T>
 bool SeqCircleQueue<T>::deQueue(T& element)  {
 
-	return true;
-}
+	if(isEmpty()) {
+		cout<<"[ERROR] SeqCircleQueue is Empty "<<endl;
+		return false;
+	}
 
-template<typename T>
-bool SeqCircleQueue<T>::clear() {
+	element = arr[(front+1)%maxSize];
+	front = (front+1)%maxSize;
 
 	return true;
 }
