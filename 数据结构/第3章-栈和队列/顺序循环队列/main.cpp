@@ -28,25 +28,25 @@ int main(int argc, char** argv) {
 		cout<<" deQueue = "<<element <<endl;
 
 	}
-
-	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
-	cout<<" isFull = "<< queue.isFull()<<endl<<endl;
-
-	queue.enQueue(1024);
-	cout<<" queue.enQueue(1024) "<<endl;
-	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
-	cout<<" isFull = "<< queue.isFull()<<endl<<endl;
-	queue.clear();
-	cout<<" queue.clear() "<<endl;
-	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
-	cout<<" isFull = "<< queue.isFull()<<endl<<endl;
-
-	int arr2[7] = {13,2,8,20,19,8,11};
-	for(int i = 0 ; i < 7 ; ++i) {
-		queue.enQueue(arr2[i]);
-	}
-	
-	queue.selectAll();
+//
+//	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
+//	cout<<" isFull = "<< queue.isFull()<<endl<<endl;
+//
+//	queue.enQueue(1024);
+//	cout<<" queue.enQueue(1024) "<<endl;
+//	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
+//	cout<<" isFull = "<< queue.isFull()<<endl<<endl;
+//	queue.clear();
+//	cout<<" queue.clear() "<<endl;
+//	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
+//	cout<<" isFull = "<< queue.isFull()<<endl<<endl;
+//
+//	int arr2[7] = {13,2,8,20,19,8,11};
+//	for(int i = 0 ; i < 7 ; ++i) {
+//		queue.enQueue(arr2[i]);
+//	}
+//	
+//	queue.selectAll();
 
 //	while(!queue.isEmpty()) {
 //		queue.deQueue(element);
