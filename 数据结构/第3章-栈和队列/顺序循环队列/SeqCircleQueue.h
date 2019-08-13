@@ -19,7 +19,7 @@ class SeqCircleQueue: public Queue<T> {
 		SeqCircleQueue(int size) {
 			//注意！数组头从0开始
 			maxSize = size;
-			front = rear = 0;
+			front = rear = EMPTY_LEN;
 			arr = new T[maxSize];
 		}
 		bool isEmpty() const {
@@ -37,15 +37,16 @@ class SeqCircleQueue: public Queue<T> {
 		}
 
 		void selectAll() {
-			cout<<"arr={"<<endl;
+			cout<<"---  arr={   ---"<<endl;
 
 			cout<<" front = "<< front<<endl;
 			cout<<" rear = "<< rear<<endl;
+			cout<<" rear% = "<< rear%(maxSize+1)<<endl;
 
 			for(int i = 0 ; i < maxSize; ++i ) {
 				cout<<i<<"->"<<arr[i]<<endl;
 			}
-			cout<<"}"<<endl;
+			cout<<"---  }   ---  "<<endl<<endl;
 		}
 };
 
@@ -69,7 +70,12 @@ bool SeqCircleQueue<T>::enQueue(T element)  {
 		return false;
 	}
 
-	arr[rear%(maxSize+1)] = element;
+	if(front == EMPTY_LEN) {
+		front = 0;
+		rear = 0;
+	}
+
+	arr[rear%(maxSize)] = element;
 	rear++;
 
 //	cout<<"{enQueue:"<<endl;
