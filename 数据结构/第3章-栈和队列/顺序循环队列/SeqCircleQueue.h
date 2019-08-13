@@ -20,13 +20,14 @@ class SeqCircleQueue: public Queue<T> {
 			//注意！数组头从0开始
 			maxSize = size;
 			front = rear = 0;
-			arr = new T[maxSize+1];
+			arr = new T[maxSize];
 		}
 		bool isEmpty() const {
 			return front == rear;
 		}
 		bool isFull() const {
-			return (front - rear) == maxSize;
+			//头指针指向为空,故要多一个
+			return (rear - front) >= maxSize;
 		}
 		bool getHead(T &element) const;
 		bool enQueue(T element);
@@ -56,7 +57,7 @@ bool SeqCircleQueue<T>::getHead(T &element) const {
 		return false;
 	}
 
-	element = arr[(front+1)%maxSize];
+	element = arr[front%maxSize];
 
 	return true;
 }
@@ -67,14 +68,16 @@ bool SeqCircleQueue<T>::enQueue(T element)  {
 		cout<<"[ERROR] SeqCircleQueue is Full "<<endl;
 		return false;
 	}
-	rear = (rear+1)%maxSize;
-	arr[rear] = element;
 
-	cout<<"{"<<endl;
-	cout<<" element = "<< element<<endl;
-	cout<<" front = "<< front<<endl;
-	cout<<" rear = "<< rear<<endl;
-	cout<<"}"<<endl;
+	arr[rear%(maxSize+1)] = element;
+	rear++;
+
+//	cout<<"{enQueue:"<<endl;
+//	cout<<" element = "<< element<<endl;
+//	cout<<" front = "<< front<<endl;
+//	cout<<" rear = "<< rear<<endl;
+//	cout<<" arr["<<(rear-1)%maxSize<<"] = "<< arr[(rear-1)%maxSize]<<endl;
+//	cout<<"}"<<endl;
 
 	return true;
 }
@@ -87,8 +90,14 @@ bool SeqCircleQueue<T>::deQueue(T& element)  {
 		return false;
 	}
 
-	element = arr[(front+1)%maxSize];
-	front = (front+1)%maxSize;
+	element = arr[front%maxSize];
+	front++;
+
+//	cout<<"{deQueue:"<<endl;
+//	cout<<" element = "<< element<<endl;
+//	cout<<" front = "<< front<<endl;
+//	cout<<" rear = "<< rear<<endl;
+//	cout<<"}"<<endl;
 
 	return true;
 }
