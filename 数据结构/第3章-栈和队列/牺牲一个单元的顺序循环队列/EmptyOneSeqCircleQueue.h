@@ -1,16 +1,13 @@
-#ifndef SEQCIRCLEQUEQUE_H
-#define SEQCIRCLEQUEQUE_H
+#ifndef EMPTYONESEQCIRCLEQUEUE_H
+#define EMPTYONESEQCIRCLEQUEUE_H
 
 #include<iostream>
 #include "Queue.h"
 using namespace std;
 
-//顺序循环栈
-//front和rear一直加这种方式避免 front==rear ，是因删除导致队空
-//还是因为因插入导致队满
-//参见：https://blog.csdn.net/qq_28081081/article/details/80726877 
+//牺牲一个单元的顺序循环队列
 template<typename T>
-class SeqCircleQueue: public Queue<T> {
+class EmptyOneSeqCircleQueue: public Queue<T> {
 	private:
 		int front,rear;
 		int maxSize;
@@ -19,17 +16,17 @@ class SeqCircleQueue: public Queue<T> {
 		static const int EMPTY_LEN;
 	public:
 
-		SeqCircleQueue(int size) {
+		EmptyOneSeqCircleQueue(int size) {
 			//注意！数组头从0开始
 			maxSize = size;
-			front = rear = EMPTY_LEN;
-			arr = new T[maxSize];
+			front = rear = 0;
+			//头牺牲一个单元来区分队空和队满
+			arr = new T[maxSize+1];
 		}
 		bool isEmpty() const {
 			return front == rear;
 		}
 		bool isFull() const {
-			//头指针指向为空,故要多一个
 			return (rear - front) >= maxSize;
 		}
 		bool getHead(T &element) const;
@@ -55,9 +52,9 @@ class SeqCircleQueue: public Queue<T> {
 
 
 template<typename T>
-bool SeqCircleQueue<T>::getHead(T &element) const {
+bool EmptyOneSeqCircleQueue<T>::getHead(T &element) const {
 	if(isEmpty()) {
-		cout<<"[ERROR] SeqCircleQueue is Empty "<<endl;
+		cout<<"[ERROR] EmptyOneSeqCircleQueue is Empty "<<endl;
 		return false;
 	}
 
@@ -67,9 +64,9 @@ bool SeqCircleQueue<T>::getHead(T &element) const {
 }
 
 template<typename T>
-bool SeqCircleQueue<T>::enQueue(T element)  {
+bool EmptyOneSeqCircleQueue<T>::enQueue(T element)  {
 	if(isFull()) {
-		cout<<"[ERROR] SeqCircleQueue is Full "<<endl;
+		cout<<"[ERROR] EmptyOneSeqCircleQueue is Full "<<endl;
 		return false;
 	}
 
@@ -92,10 +89,10 @@ bool SeqCircleQueue<T>::enQueue(T element)  {
 }
 
 template<typename T>
-bool SeqCircleQueue<T>::deQueue(T& element)  {
+bool EmptyOneSeqCircleQueue<T>::deQueue(T& element)  {
 
 	if(isEmpty()) {
-		cout<<"[ERROR] SeqCircleQueue is Empty "<<endl;
+		cout<<"[ERROR] EmptyOneSeqCircleQueue is Empty "<<endl;
 		return false;
 	}
 
@@ -112,5 +109,5 @@ bool SeqCircleQueue<T>::deQueue(T& element)  {
 }
 
 template<typename T>
-const int SeqCircleQueue<T>::EMPTY_LEN = -1;
+const int EmptyOneSeqCircleQueue<T>::EMPTY_LEN = -1;
 #endif

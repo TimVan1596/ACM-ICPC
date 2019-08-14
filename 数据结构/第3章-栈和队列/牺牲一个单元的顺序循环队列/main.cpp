@@ -1,14 +1,15 @@
 #include <iostream>
 
-#include "SeqCircleQueue.h"
+#include "EmptyOneSeqCircleQueue.h"
 using namespace std;
 
 int main(int argc, char** argv) {
-
+	
+	
 	const int LEN = 7;
-	SeqCircleQueue<int> queue(5);
+	EmptyOneSeqCircleQueue<int> queue(5);
 
-	cout<<"SeqCircleQueue:"<<endl<<"isEmpty = "<< queue.isEmpty()<<endl;
+	cout<<"EmptyOneSeqCircleQueue:"<<endl<<"isEmpty = "<< queue.isEmpty()<<endl;
 	cout<<" isFull = "<< queue.isFull()<<endl;
 
 	cout<<"queue.enQueue(2,4,8,16,32,64,128)"<<endl;
@@ -120,6 +121,6 @@ int main(int argc, char** argv) {
 		cout<<" deQueue = "<<element <<endl;
 	}
 	cout<<"*****  }   *****"<<endl<<endl;
-
+	
 	return 0;
 }
