@@ -1,6 +1,6 @@
 [Project]
-FileName=判定栈的操作序列是否合法.dev
-Name=判定栈的操作序列是否合法_综合应用题3_2
+FileName=牺牲一个单元的顺序循环队列.dev
+Name=牺牲一个单元的顺序循环队列
 Type=1
 Ver=2
 ObjFiles=
@@ -60,8 +60,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit2]
-FileName=..\..\..\顺序栈\SeqStack.h
+[Unit3]
+FileName=EmptyOneSeqCircleQueue.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -70,8 +70,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit3]
-FileName=..\..\..\顺序栈\Stack.h
+[Unit2]
+FileName=Queue.h
 CompileCpp=1
 Folder=
 Compile=1

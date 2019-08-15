@@ -1,6 +1,6 @@
 [Project]
-FileName=判定栈的操作序列是否合法.dev
-Name=判定栈的操作序列是否合法_综合应用题3_2
+FileName=顺序循环队列.dev
+Name=顺序循环队列
 Type=1
 Ver=2
 ObjFiles=
@@ -28,7 +28,7 @@ Folders=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000000000000000000000000
+CompilerSettings=0000000000000000001000000
 UnitCount=3
 
 [VersionInfo]
@@ -60,8 +60,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit2]
-FileName=..\..\..\顺序栈\SeqStack.h
+[Unit3]
+FileName=Queue.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -70,8 +70,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit3]
-FileName=..\..\..\顺序栈\Stack.h
+[Unit2]
+FileName=SeqCircleQueue.h
 CompileCpp=1
 Folder=
 Compile=1
