@@ -18,22 +18,22 @@ class EmptyOneSeqCircleQueue: public Queue<T> {
 
 		EmptyOneSeqCircleQueue(int size) {
 			//注意！数组头从0开始
-			maxSize = size;
+			maxSize = size+1;
 			front = rear = 0;
 			//头牺牲一个单元来区分队空和队满
-			arr = new T[maxSize+1];
+			arr = new T[maxSize];
 		}
 		bool isEmpty() const {
-			return front == rear;
+			return rear == front;
 		}
 		bool isFull() const {
-			return (rear - front) >= maxSize;
+			return (rear+1)%maxSize == front;
 		}
 		bool getHead(T &element) const;
 		bool enQueue(T element);
 		bool deQueue(T &element);
 		bool clear() {
-			front = rear = EMPTY_LEN;
+			front = rear = 0;
 		}
 
 		void selectAll() {
@@ -58,7 +58,7 @@ bool EmptyOneSeqCircleQueue<T>::getHead(T &element) const {
 		return false;
 	}
 
-	element = arr[front%maxSize];
+	element = arr[rear];
 
 	return true;
 }
@@ -70,13 +70,8 @@ bool EmptyOneSeqCircleQueue<T>::enQueue(T element)  {
 		return false;
 	}
 
-	if(front == EMPTY_LEN) {
-		front = 0;
-		rear = 0;
-	}
-
-	arr[rear%(maxSize)] = element;
-	rear++;
+	rear = (rear+1)%(maxSize);
+	arr[rear] = element;
 
 //	cout<<"{enQueue:"<<endl;
 //	cout<<" element = "<< element<<endl;
@@ -96,8 +91,8 @@ bool EmptyOneSeqCircleQueue<T>::deQueue(T& element)  {
 		return false;
 	}
 
-	element = arr[front%maxSize];
-	front++;
+	front = (front+1)%(maxSize);
+	element = arr[front];
 
 //	cout<<"{deQueue:"<<endl;
 //	cout<<" element = "<< element<<endl;

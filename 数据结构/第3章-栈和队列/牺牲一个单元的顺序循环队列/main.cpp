@@ -4,8 +4,8 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-	
-	
+
+
 	const int LEN = 7;
 	EmptyOneSeqCircleQueue<int> queue(5);
 
@@ -25,12 +25,14 @@ int main(int argc, char** argv) {
 	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
 	cout<<" isFull = "<< queue.isFull()<<endl;
 
-	while(!queue.isEmpty()) {
-		queue.deQueue(element);
-		cout<<" deQueue = "<<element <<endl;
 
-	}
 	queue.selectAll();
+//	cout<<"*****  deQueueAll ={   *****"<<endl;
+//	while(!queue.isEmpty()) {
+//		queue.deQueue(element);
+//		cout<<" deQueue = "<<element <<endl;
+//	}
+//	cout<<"*****  }   *****"<<endl<<endl;
 
 	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
 	cout<<" isFull = "<< queue.isFull()<<endl<<endl;
@@ -49,23 +51,17 @@ int main(int argc, char** argv) {
 		queue.enQueue(arr2[i]);
 	}
 
-
-
-
-
 	queue.deQueue(element);
 	cout<<" queue.deQueue(element) = "<< element<<endl;
 	queue.selectAll();
-
-
 //	cout<<"*****  deQueueAll ={   *****"<<endl;
 //	while(!queue.isEmpty()) {
 //		queue.deQueue(element);
 //		cout<<" deQueue = "<<element <<endl;
 //	}
 //	cout<<"*****  }   *****"<<endl<<endl;
-
 //
+////
 	queue.enQueue(2019);
 	cout<<"queue.enQueue(2019)"<<endl;
 	queue.selectAll();
@@ -75,9 +71,8 @@ int main(int argc, char** argv) {
 //		cout<<" deQueue = "<<element <<endl;
 //	}
 //	cout<<"*****  }   *****"<<endl<<endl;
-//
-//
-//
+
+
 	cout<<"queue.enQueue(0,1,2,3,4,5,6)"<<endl;
 
 	for(int i = 0 ; i < LEN ; ++i) {
@@ -90,21 +85,21 @@ int main(int argc, char** argv) {
 //		cout<<" deQueue = "<<element <<endl;
 //	}
 //	cout<<"*****  }   *****"<<endl<<endl;
-//
+
 
 	queue.deQueue(element);
 	cout<<" queue.deQueue(element) = "<< element<<endl;
 	queue.selectAll();
-	cout<<"*****  deQueueAll ={   *****"<<endl;
-	while(!queue.isEmpty()) {
-		queue.deQueue(element);
-		cout<<" deQueue = "<<element <<endl;
-	}
-	cout<<"*****  }   *****"<<endl<<endl;
+//	cout<<"*****  deQueueAll ={   *****"<<endl;
+//	while(!queue.isEmpty()) {
+//		queue.deQueue(element);
+//		cout<<" deQueue = "<<element <<endl;
+//	}
+//	cout<<"*****  }   *****"<<endl<<endl;
+//
+	cout<<"queue.enQueue(1,4,9,16,25,36)"<<endl;
 
-	cout<<"queue.enQueue(0,1,4,9,16,25,36)"<<endl;
-
-	for(int i = 0 ; i < LEN ; ++i) {
+	for(int i = 1 ; i < LEN ; ++i) {
 		queue.enQueue(i*i);
 	}
 	queue.selectAll();
@@ -121,6 +116,6 @@ int main(int argc, char** argv) {
 		cout<<" deQueue = "<<element <<endl;
 	}
 	cout<<"*****  }   *****"<<endl<<endl;
-	
+
 	return 0;
 }
