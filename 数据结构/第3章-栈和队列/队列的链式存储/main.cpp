@@ -34,9 +34,53 @@ int main(int argc, char** argv) {
 	for(int i = 0 ; i < 3 ; ++i) {
 		queue.enQueue(arr2[i]);
 	}
+//	queue.deQueue(element);
+//	cout<<" queue.deQueue(element) = "<< element<<endl;
+//	queue.selectAll();
+//	queue.deQueueAll();
+
+//	queue.deQueue(element);
+//	cout<<" queue.deQueue(element) = "<< element<<endl;
+//
+//	queue.deQueue(element);
+//	cout<<" queue.deQueue(element) = "<< element<<endl;
+//
+//	queue.deQueue(element);
+//	cout<<" queue.deQueue(element) = "<< element<<endl;
+
+//
+	queue.enQueue(2019);
+	cout<<"queue.enQueue(2019)"<<endl;
+	queue.selectAll();
+	queue.deQueueAll();
+
+	queue.selectAll();
+	cout<<"queue.enQueue(0,1,2,3,4,5,6)"<<endl;
+
+	for(int i = 0 ; i < LEN ; ++i) {
+		queue.enQueue(i);
+	}
+	queue.selectAll();
+	queue.deQueueAll();
+
 	queue.deQueue(element);
 	cout<<" queue.deQueue(element) = "<< element<<endl;
 	queue.selectAll();
+
+
+	cout<<"queue.enQueue(0,1,4,9,16,25,36)"<<endl;
+	for(int i = 0 ; i < LEN ; ++i) {
+		queue.enQueue(i*i);
+	}
+	queue.selectAll();
+
+	queue.deQueue(element);
+	cout<<" queue.deQueue(element) = "<< element<<endl;
+
+	cout<<"queue.enQueue(1024)"<<endl;
+	queue.enQueue(1024);
+	queue.selectAll();
+	queue.deQueueAll();
 
 
 	return 0;

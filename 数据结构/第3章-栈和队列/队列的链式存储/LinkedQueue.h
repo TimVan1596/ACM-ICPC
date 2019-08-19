@@ -33,7 +33,12 @@ class LinkedQueue: public Queue<T> {
 		void selectAll() {
 			cout<<"---  Node={   ---"<<endl;
 
-			cout<<" head->next->e = "<< head->next->element<<endl;
+			if(head->next) {
+				cout<<" head->next->e = "<< head->next->element<<endl;
+			} else {
+				cout<<" head->next->e = NULL"<<endl;
+
+			}
 			cout<<" rear->e = "<< rear->element<<endl;
 
 			Node<T> *p = head->next;
@@ -70,10 +75,19 @@ bool LinkedQueue<T>::getHead(T &element) const {
 
 template<typename T>
 bool LinkedQueue<T>::enQueue(T element) {
+
+	if(head->next) {
+		Node<T> *node = new Node<T>(element,rear->next);
+		rear->next = node;
+		rear = node;
+	} else {
+		Node<T> *node = new Node<T>(element,head->next);
+		head->next = node;
+		rear = node;
+	}
+
 	//进入队列使用链表尾插
-	Node<T> *node = new Node<T>(element,rear->next);
-	rear->next = node;
-	rear = node;
+
 
 	return true;
 }
@@ -90,6 +104,10 @@ bool LinkedQueue<T>::deQueue(T &element) {
 	head->next = head->next->next;
 	delete temp;
 
+	if(!rear) {
+		rear = head;
+	}
+
 	return true;
 }
 
@@ -103,8 +121,10 @@ bool LinkedQueue<T>::clear() {
 		delete p;
 		p = p->next;
 	}
-	
+
 	head->next = NULL;
+	rear = head;
+
 	return true;
 }
 
