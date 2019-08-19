@@ -49,9 +49,6 @@ int main(int argc, char** argv) {
 	}
 
 
-
-
-
 	queue.deQueue(element);
 	cout<<" queue.deQueue(element) = "<< element<<endl;
 	queue.selectAll();
