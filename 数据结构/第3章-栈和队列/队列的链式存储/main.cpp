@@ -8,7 +8,6 @@ int main(int argc, char** argv) {
 	const int LEN = 7;
 	LinkedQueue<int> queue;
 
-//
 	cout<<"LinkedQueue:"<<endl<<"isEmpty = "<< queue.isEmpty()<<endl;
 
 	cout<<"queue.enQueue(2,4,8,16,32,64,128)"<<endl;
