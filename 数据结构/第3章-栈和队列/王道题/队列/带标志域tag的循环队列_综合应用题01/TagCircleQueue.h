@@ -25,7 +25,7 @@ class TagCircleQueue:public Queue<T> {
 			maxSize = size;
 			//因rear在第一次进队操作时执行 rear+1%maxSize操作
 			front = 0;
-			rear = -1;
+			rear = 0;
 			arr = new T[maxSize];
 
 			tag = 0;
@@ -36,10 +36,10 @@ class TagCircleQueue:public Queue<T> {
 		}
 
 		bool isEmpty() const {
-			return tag == 0;
+			return (front==rear) && (tag == 0);
 		}
 		bool isFull() const {
-			return tag == 1;
+			return (front==rear) && (tag == 1);
 		}
 		bool getHead(T &element) const;
 		bool enQueue(T element) ;
@@ -51,6 +51,7 @@ class TagCircleQueue:public Queue<T> {
 
 			cout<<" front = "<< front<<endl;
 			cout<<" rear = "<< rear<<endl;
+			cout<<" tag = "<< tag<<endl;
 
 			for(int i = 0 ; i < maxSize; ++i ) {
 				cout<<i<<"->"<<arr[i]<<endl;
@@ -88,10 +89,10 @@ bool  TagCircleQueue<T>::enQueue(T element) {
 		return false;
 	}
 
-	rear = (rear+1)%maxSize;
 	arr[rear] = element;
+	rear = (rear+1)%maxSize;
 
-	if((rear+1)%maxSize == front) {
+	if(rear == front) {
 		tag = 1;
 	}
 
@@ -106,11 +107,10 @@ bool TagCircleQueue<T>::deQueue(T &element) {
 	}
 
 	element = arr[front];
+	front = (front+1)%maxSize;
 
-	if(front == rear) {
+	if(rear == front) {
 		tag = 0;
-	}else{
-		front = (front+1)%maxSize;
 	}
 
 	return true;
@@ -120,7 +120,7 @@ template<typename T>
 bool TagCircleQueue<T>::clear() {
 
 	front = 0;
-	rear = -1;
+	rear = 0;
 	tag = 0;
 
 	return true;

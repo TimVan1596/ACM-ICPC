@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 	int element = 0;
 	queue.getHead(element);
 	cout<<"getHead = "<<element <<endl;
-	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
+	cout<<"isEmpty = "<< queue.isEmpty()<<endl;
 
 	queue.selectAll();
 	queue.deQueueAll();
@@ -33,11 +33,32 @@ int main(int argc, char** argv) {
 	cout<<" isEmpty = "<< queue.isEmpty()<<endl;
 
 
-//	cout<<"queue.enQueue(13,2,8)"<<endl;
-//	int arr2[3] = {13,2,8};
-//	for(int i = 0 ; i < 3 ; ++i) {
-//		queue.enQueue(arr2[i]);
-//	}
+	cout<<"queue.enQueue(12,39,20,19)"<<endl;
+	int arr2[4] = {12,39,20,19};
+	for(int i = 0 ; i < 4 ; ++i) {
+		queue.enQueue(arr2[i]);
+	}
+
+	queue.deQueue(element);
+	cout<<" queue.deQueue(element) = "<< element<<endl;
+	queue.deQueue(element);
+	cout<<" queue.deQueue(element) = "<< element<<endl;
+	queue.deQueue(element);
+	cout<<" queue.deQueue(element) = "<< element<<endl;
+
+	cout<<"queue.enQueue(2,4,6,8)"<<endl;
+	int arr3[4] = {2,4};
+	for(int i = 0 ; i < 2 ; ++i) {
+		queue.enQueue(arr3[i]);
+	}
+	queue.selectAll();
+//	queue.deQueueAll();
+//	queue.selectAll();
+	queue.enQueue(2019);
+	cout<<"queue.enQueue(2019)"<<endl;
+	queue.selectAll();
+	queue.deQueueAll();
+
 
 	return 0;
 }
