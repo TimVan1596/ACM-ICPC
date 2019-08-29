@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "X_SeqStack.h"
+#include "StackedQueue.h"
 using namespace std;
 
 //利用两个栈S1，S2来模拟一个队列，已知栈的4的运算定义如下：
@@ -14,24 +14,51 @@ using namespace std;
 //QueueEmpty; 判断队列是否为空
 int main(int argc, char** argv) {
 	const int LEN = 5;
-	X_SeqStack<string> strStack(LEN);
+	StackedQueue<string> strQueue(LEN);
 
+	cout<<" isEmpty = "<< strQueue.QueueEmpty()<<endl;
+
+	cout<<"strQueue.Enqueue(Jack,Pony,Tim,Jobs,Bill)"<<endl;
 	string strArr[LEN] = {"Jack","Pony","Tim","Jobs","Bill"};
-
-
 	for(int i = 0 ; i < LEN ; ++i) {
-		cout<<"i="<<i<<"-- strArr["<<strArr[i]<<"]="<<strArr[i]<<endl;
-		X_SeqStack<string>::Push(strStack,strArr[i]);
+		strQueue.Enqueue(strArr[i]);
 	}
+	strQueue.Enqueue("Hello");
 
 	string element;
 
-	cout<<"StackOverflow = "<<X_SeqStack<string>::StackOverflow(strStack)<<endl;
-	while(!X_SeqStack<string>::StackEmpty(strStack)) {
-		X_SeqStack<string>::Pop(strStack,element);
-		cout<<" pop = "<<element <<endl;
+	cout<<" isEmpty = "<< strQueue.QueueEmpty()<<endl;
 
+	cout<<"---- DequeueAll ----"<<endl;
+	while(!strQueue.QueueEmpty()) {
+		strQueue.Dequeue(element);
+		cout<<" Dequeue = "<<element <<endl;
 	}
+	cout<<"----  ----"<<endl;
+
+	strQueue.Enqueue("1024");
+	cout<<" strQueue.Enqueue(1024) "<<endl;
+	cout<<" isEmpty = "<< strQueue.QueueEmpty()<<endl;
+
+	cout<<"strQueue.Enqueue(13,cup,-MiB)"<<endl;
+	string arr2[3] = {"13","cup","-MiB"};
+	for(int i = 0 ; i < 3 ; ++i) {
+		strQueue.Enqueue(arr2[i]);
+	}
+
+	strQueue.Dequeue(element);
+	cout<<" strQueue.Dequeue(element) = "<< element<<endl;
+
+	strQueue.Enqueue("2019");
+	cout<<"strQueue.Enqueue(2019)"<<endl;
+
+	cout<<"---- DequeueAll ----"<<endl;
+	while(!strQueue.QueueEmpty()) {
+		strQueue.Dequeue(element);
+		cout<<" Dequeue = "<<element <<endl;
+	}
+	cout<<"----  ----"<<endl;
+
 
 	return 0;
 }

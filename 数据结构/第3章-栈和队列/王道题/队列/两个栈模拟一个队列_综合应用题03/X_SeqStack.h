@@ -10,7 +10,7 @@ class X_SeqStack {
 	private:
 		SeqStack<T> *stack;
 
-		bool isEmpty() const{
+		bool isEmpty() const {
 			return stack->isEmpty();
 		}
 
@@ -20,15 +20,15 @@ class X_SeqStack {
 
 		//ÍùÕ»¶¥²åÈëÔªËØ
 		bool Push(T element) {
-			if(stack->push(element)) {
+			if(!stack->push(element)) {
 				return false;
 			}
 			return true;
 		}
 
 		//ÍùÕ»¶¥²åÈëÔªËØ
-		bool Pop(T element) {
-			if(stack->pop(element)) {
+		bool Pop(T &element) {
+			if(!stack->pop(element)) {
 				return false;
 			}
 			return true;
@@ -42,24 +42,24 @@ class X_SeqStack {
 			delete stack;
 		}
 
-		static bool StackEmpty(X_SeqStack<T> S) {
+		static bool StackEmpty(X_SeqStack<T> &S) {
 			return S.isEmpty();
 		}
-		static bool StackOverflow(X_SeqStack<T> S) {
+		static bool StackOverflow(X_SeqStack<T> &S) {
 			return S.isFull();
 		}
 
 
 		//ÍùÕ»¶¥²åÈëÔªËØ
-		static bool Push(X_SeqStack<T> S,T element) {
-			if(S.Push(element)) {
+		static bool Push(X_SeqStack<T> &S,T element) {
+			if(!S.Push(element)) {
 				return false;
 			}
 			return true;
 		}
 		//µ¯³öÕ»¶¥ÔªËØ
-		static bool Pop(X_SeqStack<T> S,T& element) {
-			if(S.Pop(element)) {
+		static bool Pop(X_SeqStack<T> &S,T& element) {
+			if(!S.Pop(element)) {
 				return false;
 			}
 			return true;
