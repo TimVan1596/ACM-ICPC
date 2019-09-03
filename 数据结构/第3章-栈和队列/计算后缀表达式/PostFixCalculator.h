@@ -19,11 +19,13 @@ class PostFixCalculator {
 				char ch = str.at(i);
 				double num = 0;
 				if(ch >= '0' && ch <= '9') {
-					double num = ch-'0';
+					num = ch-'0';
 				} else {
 					num = doOperator(ch);
 				}
 				pushOperand(num);
+				cout<<"pushOperand("<<num<<");"<<endl;
+
 			}
 			stack->pop(ret);
 			return ret;
@@ -50,6 +52,8 @@ class PostFixCalculator {
 			double ret;
 			double num1 ,num2;
 			getOperands(num1,num2);
+
+
 			switch(ch) {
 				case '+': {
 					ret = num1+num2;
@@ -57,27 +61,27 @@ class PostFixCalculator {
 				}
 
 				case '-': {
-					ret = num1-num2;
+					ret = num2-num1;
 					break;
 				}
 
 				case '*': {
-					ret = num1+num2;
+					ret = num2*num1;
 					break;
 				}
 
 				case '/': {
-					ret = num1+num2;
+					ret = num2/num1;
 					break;
 				}
 
-				default:{
+				default: {
 					cout<<"doOperator:[ERROR] Operator is Illegal"<<endl;
 					break;
 				}
 			}
 
-
+			cout<<"doOperator:("<<num1<<ch<<num2<<") = "<<ret<<endl;
 			return ret;
 		}
 
