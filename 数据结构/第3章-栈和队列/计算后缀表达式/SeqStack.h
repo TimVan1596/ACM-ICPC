@@ -46,7 +46,7 @@ template<typename T>
 bool SeqStack<T>::top(T& element) const {
 
 	if(isEmpty()) {
-		cout<<"[ERROR] SeqStack is Empty "<<endl;
+		cout<<"top:[ERROR] SeqStack is Empty "<<endl;
 		return false;
 	}
 	element = arr[topIndex];
@@ -58,7 +58,7 @@ template<typename T>
 bool SeqStack<T>::push(T element) {
 
 	if(isFull()) {
-		cout<<"[ERROR] SeqStack is Full "<<endl;
+		cout<<"push:[ERROR] SeqStack is Full "<<endl;
 		return false;
 	}
 
@@ -72,7 +72,7 @@ template<typename T>
 bool SeqStack<T>::pop(T& element) {
 
 	if(isEmpty()) {
-		cout<<"[ERROR] SeqStack is Empty "<<endl;
+		cout<<"pop:[ERROR] SeqStack is Empty "<<endl;
 		return false;
 	}
 	element = arr[topIndex--];

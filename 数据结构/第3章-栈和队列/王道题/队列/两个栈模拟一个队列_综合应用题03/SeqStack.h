@@ -17,12 +17,24 @@ class SeqStack:public Stack<T> {
 
 		static const int EMPTY_LEN;
 	public:
+
+		T* getArr() const {
+			return arr;
+		};
+		int getTopIndex() const {
+			return topIndex;
+		}
+		int getMaxTop() const {
+			return maxTop;
+		}
+
 		SeqStack(int size) {
 			topIndex = EMPTY_LEN;
 			maxTop = size;
 			arr = new T[maxTop];
 
 		};
+
 		~SeqStack() {
 			delete[] arr;
 		}
@@ -40,6 +52,19 @@ class SeqStack:public Stack<T> {
 		//µ¯³öÕ»¶¥ÔªËØ
 		bool pop(T& element);
 		bool clear();
+
+		void selectAll() {
+			cout<<"-----  selectAll  -----"<<endl;
+			cout<<"topIndex = "<<topIndex<<endl;
+			cout<<"maxTop = "<<maxTop<<endl;
+			cout<<"SeqStacks={"<<endl;
+			for(int i = 0 ; i <= topIndex; ++i ) {
+				cout<<"  "<<i<<"->"<<arr[i]<<endl;
+
+			}
+			cout<<"}"<<endl;
+			cout<<"--------  -------"<<endl;
+		}
 };
 
 template<typename T>
@@ -56,15 +81,12 @@ bool SeqStack<T>::top(T& element) const {
 
 template<typename T>
 bool SeqStack<T>::push(T element) {
-
 	if(isFull()) {
 		cout<<"[ERROR] SeqStack is Full "<<endl;
 		return false;
 	}
 
-
 	arr[++topIndex] = element;
-
 	return true;
 }
 
