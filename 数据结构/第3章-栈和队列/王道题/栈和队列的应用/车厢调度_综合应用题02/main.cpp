@@ -9,7 +9,7 @@ const string trackSchedule(string str);
 度,试编写算法,输出对这n节车厢进行调度的操作(即入栈或出栈操作)序列,以使所有的软
 座车厢都被调整到硬座车厢之前。 */
 int main(int argc, char** argv) {
-
+ 
 	string str = "HSHHSHHHSHHSH";
 	cout<<"{\n Track = "<<str<<endl;
 	cout<<"OutPut = "<<trackSchedule(str)<<endl<<"}"<<endl<<endl;
