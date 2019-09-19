@@ -5,6 +5,7 @@ using namespace std;
 
 double reCurCal(double x,int n);
 double noReCurCal(double x,int n);
+double stackCal(double x,int n);
 
 /* 利用栈实现递归函数的非递归计算 */
 int main(int argc, char** argv) {
@@ -55,4 +56,25 @@ double noReCurCal(double x,int n) {
 		}
 	}
 	return results[n];
+}
+
+//栈实现非递归计算
+double stackCal(double x,int n) {
+	double ret;
+	struct Stack {
+		int no;
+		double val;
+	} stack[n];
+
+	for(int i = 0 ; i <= n ; ++i) {
+		stack[i].no = i;
+	}
+	int top = n;
+	
+	
+	while(top--){
+		
+	}
+
+	return ret;
 }
