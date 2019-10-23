@@ -69,11 +69,10 @@ double stackCal(double x,int n) {
 	for(int i = 0 ; i <= n ; ++i) {
 		stack[i].no = i;
 	}
-	int top = n;
-	
-	
-	while(top--){
-		
+	double val_1 = 0 , val_2 = 2*x;
+	int top = 3;
+	while(top <= n){
+		ret = 2*x*stack[i-1].val + 2*(n-1)*stack[i-2].val;
 	}
 
 	return ret;
