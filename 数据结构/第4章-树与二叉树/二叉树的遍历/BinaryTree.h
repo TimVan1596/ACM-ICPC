@@ -2,6 +2,7 @@
 #define BINARYTREE_H
 
 #include "BinaryTreeNode.h"
+#include "BinaryTreeStack.h"
 using namespace std;
 
 template<typename T>
@@ -33,6 +34,36 @@ class BinaryTree {
 				visit(root);
 				inOrder(root->rChild);
 			}
+
+		}
+
+		//非递归中(根)序遍历 LDR
+		static void inOrderNoCircle(BinaryTreeNode<T> *root) {
+			BinaryTreeStack stack(root);
+			BinaryTreeNode<T> *node = stack.pop();
+			while(node != NULL) {
+				if(node->rChild != NULL) {
+					stack.push(node->rChild);
+				}
+
+				if(node->lChild != NULL) {
+					stack.push(node->lChild);
+				} else {
+					visit(node);
+					node = stack.pop();
+				}
+
+
+			}
+//			visit(root->lChild);
+//
+//
+//			visit(root);
+//
+//			if(root->rChild != NULL) {
+//				visit(root->rChild);
+//			}
+
 
 		}
 
