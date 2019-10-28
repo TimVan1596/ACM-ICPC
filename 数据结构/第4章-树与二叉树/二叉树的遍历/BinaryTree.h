@@ -3,6 +3,7 @@
 
 #include "BinaryTreeNode.h"
 #include "BinaryTreeStack.h"
+#include "BinaryTreeQueue.h"
 using namespace std;
 
 template<typename T>
@@ -39,32 +40,49 @@ class BinaryTree {
 
 		//非递归中(根)序遍历 LDR
 		static void inOrderNoCircle(BinaryTreeNode<T> *root) {
-			BinaryTreeStack stack(root);
+			BinaryTreeStack stack;
+			stack.push(root);
 			BinaryTreeNode<T> *node = stack.pop();
-			while(node != NULL) {
-				if(node->rChild != NULL) {
-					stack.push(node->rChild);
-				}
-
-				if(node->lChild != NULL) {
-					stack.push(node->lChild);
+			while(node || !stack.isEmpty()) {
+				if(node) {
+					stack.push(node);
+					node = node->lChild;
 				} else {
-					visit(node);
 					node = stack.pop();
+					visit(node);
+					node = node->rChild;
 				}
-
-
 			}
-//			visit(root->lChild);
-//
-//
-//			visit(root);
-//
-//			if(root->rChild != NULL) {
-//				visit(root->rChild);
-//			}
+		}
 
+		//层次遍历
+		static void levelOrder(BinaryTreeNode<T> *root) {
+			BinaryTreeQueue queue;
 
+			BinaryTreeNode<char>* node = root;
+			int index = 0;
+			while(node || !queue.isEmpty()) {
+
+//				cout<<endl<<"---- index = "<<++index<<"----"<<endl;
+
+				if(node->lChild) {
+//					cout<<"queue.enQueue() = "
+//					    <<node->lChild->data<<endl;
+					queue.enQueue(node->lChild);
+				}
+				if(node->rChild) {
+//					cout<<"queue.enQueue() = "
+//					    <<node->rChild->data<<endl;
+					queue.enQueue(node->rChild);
+				}
+				visit(node);
+				node = queue.deQueue();
+//				cout<<"新node = "
+//				    <<node->data<<endl;
+//
+//				cout<<"queue.isEmpty() = "
+//				    <<queue.isEmpty()<<endl;
+			}
 		}
 
 		//具体对结点的访问
