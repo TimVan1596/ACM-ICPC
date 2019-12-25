@@ -1,0 +1,403 @@
+-- /**
+-- 建立一个“学生”表Student
+-- 它由学号Sno、姓名Sname、性别Ssex、年龄Sage、所在系Sdept五个属性组成。
+-- 其中学号不能为空，值是唯一的，并且姓名取值也唯一。*/ 
+-- CREATE TABLE Stu.Student ( 
+-- 	Sno VARCHAR(10) UNIQUE NOT NULL, 
+-- 	Sname VARCHAR(32) UNIQUE,
+-- 	Ssex VARCHAR(1),
+-- 	Sage int ,
+-- 	Sdept VARCHAR(16)
+-- 	)
+
+
+
+-- -- 建立一个“课程”表Course，它由课程号Cno，课程名Cname，先行课Cpno，
+-- 学分Ccredit组成，其中Cno为主码。
+-- 
+-- CREATE TABLE Stu.Course(
+-- 	Cno int PRIMARY KEY,
+-- 	Cname VARCHAR(16),
+-- 	Cpno int 	,
+-- 	Ccredit int,
+-- 	FOREIGN KEY(Cpno) REFERENCES Stu.Course(Cno)
+-- ) 
+-- 
+
+
+-- 建立一个“学生选课”表SC，它由学号Sno、课程号Cno，修课成绩Grade组成，其中(Sno, Cno)为主码。
+
+-- CREATE TABLE Stu.SC(
+-- 	Sno VARCHAR(12),
+-- 	Cno int ,
+-- 	Grade SMALLINT,
+-- 	PRIMARY KEY(Sno,Cno)
+-- )
+-- 
+-- 
+
+
+-- 向Student表增加“入学时间”列，其数据类型为日期型。
+-- ALTER TABLE Stu.Student 
+-- 	ADD S_entrance Date
+-- 
+
+
+-- 将年龄的数据类型改为整数。
+-- ALTER TABLE Stu.Student
+-- 	ALTER COLUMN Sage SMALLINT;
+
+-- 增加课程名必须取唯一值的约束。
+-- 	ALTER TABLE Stu.Course
+-- 		ADD UNIQUE(Cname)
+
+
+-- 删除Student表
+-- CREATE TABLE Stu.Student2(
+-- 	Sno VARCHAR(12) PRIMARY KEY,
+-- 	Sname VARCHAR(32) ,
+-- 	Sdept VARCHAR(16)
+-- )
+--  
+-- 	DROP TABLE Stu.Student2;
+
+
+--  为学生-课程数据库中的Student，Course，SC三个表建立索引。
+-- 其中Student表按学号升序建唯一索引，
+-- Course表按课程号升序建唯一索引，
+-- SC表按学号升序和课程号降序建唯一索引。
+
+-- CREATE UNIQUE INDEX Stusno ON Stu.Student(Sno);
+-- CREATE UNIQUE INDEX CourCno ON Stu.Course(Cno);
+-- 	 CREATE UNIQUE INDEX SCsnocno ON Stu.SC(Sno ASC,Cno DESC);
+-- 
+
+
+-- 修改SC表的SCno索引名为SCSno。
+-- ALTER INDEX SCsnocno RENAME TO SCSno
+
+--  删除Student表的Stusname索引
+-- DROP INDEX Stusno on Stu.Student
+
+-- 删除列
+-- ALTER TABLE Stu.Student drop COLUMN s_entrance
+-- 
+
+-- 查询全体学生的学号与姓名。
+-- SELECT Student.Sno , Student.Sname
+-- FROM Stu.Student
+
+-- 查询全体学生的详细记录。
+-- SELECT * FROM Stu.Student;
+
+-- 查全体学生的姓名及其出生年份。
+-- SELECT Student.Sname , 2019-Student.Sage
+-- FROM Stu.Student;
+
+-- 查询全体学生的姓名、出生年份和所有系，要求用小写字母表示所有系名。
+-- SELECT  Student.Sname , 2019-Student.Sage ,LOWER(Student.Sdept) 
+-- FROM Stu.Student;
+
+
+-- SELECT  Student.Sname 姓名
+-- 	,2019-Student.Sage age 
+-- 	,LOWER(Student.Sdept) DEPARTMENT
+-- FROM Stu.Student
+
+-- 查询选修了课程的学生学号
+-- SELECT DISTINCT SC.Sno , SC.Cno  
+-- FROM Stu.SC;
+
+-- [例3.22]  查询计算机科学系全体学生的名单
+-- SELECT * 
+-- FROM Stu.Student
+-- WHERE Student.Sdept = 'CS';
+
+
+-- [例3.23]  查询所有年龄在20岁以下的学生姓名及其年龄。
+-- SELECT Student.Sname,Student.Sage 
+-- FROM Stu.Student
+-- WHERE Student.Sage < 20;
+
+-- 查询考试成绩有不及格的学生的学号(distinct)
+-- SELECT SC.Sno
+-- FROM Stu.SC
+-- WHERE SC.Grade < 60;
+-- 
+
+-- 查询年龄在20~23岁（包括20岁和23岁）之间的学生的姓名、系别和年龄。
+-- SELECT Student.Sname,Student.Sdept,Student.Sage
+-- FROM Stu.Student
+-- WHERE Student.Sage BETWEEN 20 AND 23;
+
+-- SELECT Student.Sname,Student.Sdept,Student.Sage
+-- FROM Stu.Student
+-- WHERE Student.Sage NOT BETWEEN 20 AND 23;
+ 
+-- 查询信息系（IS）、数学系（MA）和计算机科学系（CS）学生的姓名和性别。
+-- SELECT Student.Sname,Student.Ssex
+-- FROM Stu.Student
+-- WHERE Student.Sdept IN('IS','MA','CS');
+
+-- 查询所有姓刘学生的姓名、学号和性别。
+-- SELECT Student.Sname,Student.Sno,Student.Ssex
+-- FROM Stu.Student
+-- WHERE Student.sname LIKE '刘%';
+
+-- 查询姓"欧阳"且全名为三个汉字的学生的姓名。
+-- SELECT Student.Sname
+-- FROM Stu.Student
+-- WHERE Student.sname LIKE '欧阳_';
+
+-- 查询名字中第2个字为"阳"字的学生的姓名和学号。
+-- SELECT Student.Sname,Student.Sno
+-- FROM Stu.Student
+-- WHERE Student.sname LIKE '_阳%';
+
+-- 查询所有不姓刘的学生姓名
+-- SELECT Student.Sname
+-- FROM Stu.Student
+-- WHERE Student.sname not LIKE '刘%';
+
+-- =====================================================================
+-- ESCAPE只能用于 LIKE
+-- -- 查询DB_Design课程的课程号和学分
+-- SELECT Course.Cno, Course.Ccredit
+-- FROM Stu.Course
+-- WHERE Course.Cname LIKE ('DB\_Design')
+-- ESCAPE '\';
+
+
+-- 查询以"DB_"开头，且倒数第3个字符为 i的课程的详细情况。
+-- SELECT *
+-- FROM Stu.Course
+-- WHERE Course.Cname LIKE 'DB\_%i__' 
+-- ESCAPE '\'
+
+-- =====================================================================
+-- ！ “IS NULL” 不能用 “= NULL” 代替
+--  某些学生选修课程后没有参加考试，所以有选课记录，但没有考试成绩。
+-- 查询缺少成绩的学生的学号和相应的课程号。
+-- SELECT SC.Sno,SC.Cno
+-- FROM Stu.SC
+-- WHERE sc.Grade IS NULL;
+
+
+-- 查所有有成绩的学生学号和课程号。
+-- SELECT SC.Sno,SC.Cno
+-- FROM Stu.SC
+-- WHERE sc.Grade IS NOT NULL
+
+-- 查询计算机系年龄在20岁以下的学生姓名。
+-- SELECT Student.Sname
+-- FROM Stu.Student
+-- WHERE Student.Sage < 20 AND Student.Sdept = 'CS';
+
+-- 查询信息系（IS）、数学系（MA）和计算机科学系（CS）学生的姓名和性别。
+-- SELECT Sname,Ssex
+-- FROM Stu.Student
+-- WHERE Sdept = 'IS' or Sdept = 'MA' or Sdept = 'CS';
+
+-- 查询选修了3号课程的学生的学号及其成绩，查询结果按分数降序排列。
+-- SELECT SC.Sno , SC.Grade
+-- FROM Stu.SC
+-- WHERE SC.Cno = 3
+-- ORDER BY SC.Grade DESC;
+
+-- 查询全体学生情况，查询结果按所在系的系号升序排列，同一系中的学生按年龄降序排列。
+-- SELECT *
+-- FROM Stu.Student
+-- ORDER BY Student.Sdept, Student.Sage DESC;
+
+
+-- 查询学生总人数
+-- SELECT COUNT(*) FROM Stu.Student;
+-- 
+
+
+--  查询选修了课程的学生人数
+-- SELECT COUNT(DISTINCT SC.Sno)
+-- FROM Stu.SC;
+
+-- 计算1号课程的学生平均成绩。
+-- SELECT AVG(SC.Grade)
+-- FROM Stu.SC
+-- WHERE SC.Cno = 1;
+-- 
+
+-- 查询选修1号课程的学生最高分数。
+-- SELECT MAX(SC.Grade)
+-- FROM Stu.SC
+-- WHERE SC.Cno = 1;
+-- 
+
+-- 查询学生201215121选修课程的总学分
+-- SELECT SUM(Course.Ccredit)
+-- FROM Stu.Course
+-- WHERE Course.Cno in (
+-- 	SELECT SC.Cno
+-- 	FROM Stu.SC
+-- 	WHERE SC.Sno = '201215121'
+-- );
+-- 
+
+-- 求各个课程号及相应的选课人数。
+-- SELECT DISTINCT SC.Cno,COUNT(SC.Cno) 选修人数
+-- FROM Stu.SC
+-- GROUP BY SC.Cno;
+
+
+--  查询选修了3门以上课程的学生学号。
+-- SELECT DISTINCT SC.Sno
+-- FROM Stu.SC
+-- GROUP BY SC.Sno
+-- HAVING COUNT(SC.Cno) > 2;
+
+
+-- ========================================================
+-- 查询有3门以上课程是90分以上的
+-- 学生的学号及（90分以上的）课程数
+-- SELECT  SC.Sno,COUNT(SC.sno)
+-- FROM Stu.SC
+-- WHERE SC.Grade > 90
+-- GROUP BY SC.Sno
+-- HAVING COUNT(SC.sno) > 2;
+
+
+
+-- 查询每个学生及其选修课程的情况。
+-- SELECT Student.Sno, Student.sname , Course.Cname , SC.Grade
+-- FROM Stu.Student,Stu.SC,Stu.Course
+-- WHERE Student.Sno = SC.Sno and Course.Cno = SC.Cno;
+
+
+-- 查询每一门课的间接先修课（即先修课的先修课）
+-- SELECT afterCourse.Cno , afterCourse.Cname , pCourse.Cpno 间接先修课
+-- FROM Stu.Course afterCourse , Stu.Course pCourse
+-- WHERE afterCourse.Cpno = pCourse.cno 
+-- 	and pCourse.Cpno is NOT NULL;
+
+
+-- 查询每个学生及其选修课程的情况包括没有选修课程的学生
+-- ----用外连接操作
+-- SELECT *
+-- FROM Stu.Student LEFT JOIN Stu.SC
+-- on Student.Sno = Sc.Sno;
+-- 
+
+
+-- 查询选修2号课程且成绩在90分以上的所有学生的
+--            学号、姓名
+-- SELECT Student.Sno , Student.Sname
+-- FROM Stu.Student , Stu.SC
+-- WHERE Student.Sno = Sc.Sno
+-- 	AND SC.Cno = 2 
+-- 	AND Grade > 90;
+
+-- 查询与“刘晨”在同一个系学习的学生。
+--          此查询要求可以分步来完成
+-- 
+-- SELECT *
+-- FROM Stu.Student
+-- WHERE Student.Sdept in (
+-- 	SELECT Sdept 
+-- 	FROM Stu.Student
+-- 	WHERE Student.Sname = '刘晨'
+-- )
+-- 
+
+
+-- 查询选修了课程名为“信息系统”的学生学号和姓名
+-- SELECT Student.Sno , Student.Sname
+-- FROM Stu.Student , Stu.SC
+-- WHERE SC.Cno in (
+-- 	SELECT Course.Cno
+-- 	FROM Stu.Course
+-- 	WHERE Course.Cname = '信息系统'
+-- );
+
+
+-- 查询其他系中比信息系任意一个(其中某一个)学生年龄小的学生姓名和年龄
+-- SELECT s1.Sname , s1.Sage
+-- FROM Stu.Student s1
+-- WHERE s1.Sage < ANY(
+-- 	SELECT Student.Sage
+-- 	FROM Stu.Student
+-- 	WHERE Student.Sdept = 'IS'
+-- ) 
+-- 	AND s1.Sdept != 'IS';
+
+-- 查询其他系中比信息系任意一个(其中某一个)学生年龄小的学生姓名和年龄
+-- 集合函数版本
+-- SELECT s1.Sname , s1.Sage
+-- FROM Stu.Student s1
+-- WHERE s1.Sage < (
+-- 	SELECT max(Student.Sage)
+-- 	FROM Stu.Student
+-- 	WHERE Student.Sdept = 'IS'
+-- ) 
+-- 	AND s1.Sdept != 'IS';
+-- 
+-- 查询其他系中比信息系所有学生年龄都小的学生姓名及年龄。
+-- SELECT s1.Sname , s1.Sage
+-- FROM Stu.Student s1
+-- WHERE s1.Sage < ALL (
+-- 	SELECT (Student.Sage)
+-- 	FROM Stu.Student
+-- 	WHERE Student.Sdept = 'IS'
+-- ) 
+-- 	AND s1.Sdept != 'IS';
+-- 	
+	
+-- SELECT s1.Sname , s1.Sage
+-- FROM Stu.Student s1
+-- WHERE s1.Sage <  (
+-- 	SELECT MIN(Student.Sage)
+-- 	FROM Stu.Student
+-- 	WHERE Student.Sdept = 'IS'
+-- ) 
+-- 	AND s1.Sdept != 'IS';
+	
+
+	
+-- 	查询所有选修了1号课程的学生姓名。
+-- SELECT DISTINCT s1.Sname
+-- FROM Stu.Student s1 , Stu.SC
+-- WHERE SC.Cno = 1;
+
+-- ===================================================
+-- 查询没有选修1号课程的学生姓名。
+-- SELECT DISTINCT Student.Sname
+-- FROM Stu.Student
+-- WHERE not EXISTS (
+-- 	SELECT DISTINCT SC.Sno
+-- 	FROM  Stu.SC
+-- 	WHERE SC.Cno = 1 AND Student.Sno = SC.Sno
+-- );
+-- 
+-- 
+-- SELECT DISTINCT Student.Sname
+-- FROM Stu.Student
+-- WHERE Student.Sno not in (
+-- 	SELECT DISTINCT SC.Sno
+-- 	FROM  Stu.SC
+-- 	WHERE SC.Cno = 1
+-- );
+
+-- 查询与“刘晨”在同一个系学习的学生。
+-- 可以用带EXISTS谓词的子查询替换：
+-- SELECT *
+-- FROM Stu.Student s1
+-- WHERE EXISTS (
+-- 	SELECT Sdept 
+-- 	FROM Stu.Student s2
+-- 	WHERE s2.Sname = '刘晨' and s1.Sdept = s2.Sdept
+-- )
+
+
+-- ===========================================================
+-- 查询选修了全部课程的学生姓名。
+SELECT Student.Sname
+FROM Stu.Student ,Stu.SC,Stu.Course
+WHERE Student.Sno = SC.Sno 
+	AND Course.Cno = SC.Cno;
