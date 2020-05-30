@@ -10,7 +10,5 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_10" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/classes" />
-  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8 (blue_bridge_cup)" project-jdk-type="Python SDK" />
 </project>
