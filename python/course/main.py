@@ -18,13 +18,13 @@
 
 # 格式化输出
 """
-age = 20
-name = 'Tim Van'
-name = 'my name is ' + name
-print(" my age is %d, %s" % (age + 1, name))
-print("Bill", "Jobs", "Jack", sep="-", end="\t")
-print("???", sep="\t")
-print("---")
+    age = 20
+    name = 'Tim Van'
+    name = 'my name is ' + name
+    print(" my age is %d, %s" % (age + 1, name))
+    print("Bill", "Jobs", "Jack", sep="-", end="\t")
+    print("???", sep="\t")
+    print("---")
 """
 
 # 输入
@@ -72,7 +72,53 @@ print("---")
 # else:
 #     print("none")
 
-for i in range(0,5,2):
-    print(i)
+# 循环
+# sumNum: int = 0
+# floor = 1
+# ceiling = 100
+# for i in range(floor, ceiling + 1, 1):
+#     sumNum += i
+# print("in for,sum = %d" % sumNum)
+#
+# sumNum = 0
+# i = 0
+# while i <= ceiling:
+#     sumNum += i
+#     i += 1
+# print("in for,sum = %d" % sumNum)
 
+# while else 用法
+# i = 0
+# while i < 5:
+#     print("i=%d" % i)
+#     i += 1
+# else:
+#     print("超出边界，此时i=%d" % i)
 
+# print("-"*5)
+
+# 字符串截取
+# myStr = "hello world"
+# print(myStr[0:5:2])
+
+# List列表的使用
+namelist = ["Jack", "Bill", "Steve"]
+print("namelist=>")
+i = 0
+for i in range(len(namelist)):
+    print(namelist[i], end="\t")
+print()
+
+namelist.append(["Tim", "Pony"])
+print("namelist=>")
+i = 0
+for i in range(len(namelist)):
+    print(namelist[i], end="\t")
+print()
+
+namelist.extend(["Robin", "Satoshi"])
+print("namelist=>")
+i = 0
+for i in range(len(namelist)):
+    print(namelist[i], end="\t")
+print()
