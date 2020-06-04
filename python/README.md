@@ -31,4 +31,9 @@
     Python 中没有 i++ 和 i-- 
 ##### 10. "-"*5
     输出5个“-”字符
-    
+##### 11. append和extend
+    append是将参数作为一个元素插入到List中
+    extend是将另一个List中的元素逐个插入到原List中
+##### 12. 列表删除项
+    del namelist[2] 形式，不是函数形式
+    List.remove()根据传入参数，查找相同参数内容的首个下标位置元素进行删除

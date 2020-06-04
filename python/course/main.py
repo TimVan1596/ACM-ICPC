@@ -102,6 +102,7 @@
 # print(myStr[0:5:2])
 
 # List列表的使用
+#增
 namelist = ["Jack", "Bill", "Steve"]
 print("namelist=>")
 i = 0
@@ -122,3 +123,62 @@ i = 0
 for i in range(len(namelist)):
     print(namelist[i], end="\t")
 print()
+
+
+namelist.insert(1, "Linus")
+print("namelist=>")
+i = 0
+for i in range(len(namelist)):
+    print(namelist[i], end="\t")
+print()
+
+# 删
+del namelist[2]
+print("namelist=>")
+i = 0
+for i in range(len(namelist)):
+    print(namelist[i], end="\t")
+print()
+
+# 改
+namelist[2] = "Jobs"
+print("namelist=>")
+i = 0
+for i in range(len(namelist)):
+    print(namelist[i], end="\t")
+print()
+
+# 查
+name = "Jobs"
+if name in namelist:
+    print("%s in nameList , index = %d" % (name, namelist.index(name)))
+else:
+    print("Not Found")
+
+# 列表的升序与降序、反转
+namelist.reverse()
+print("namelist=>")
+i = 0
+for i in range(len(namelist)):
+    print(namelist[i], end="\t")
+print()
+
+
+ageList = [10, 58, 20, 6, 99]
+ageList.sort()
+print("-"*15, "经过升序")
+print("ageList=>")
+i = 0
+for i in range(len(ageList)):
+    print(ageList[i], end="\t")
+print()
+
+ageList.sort(reverse=True)
+print("-"*15, "经过降序", "-"*15)
+print("ageList=>")
+i = 0
+for i in range(len(ageList)):
+    print(ageList[i], end="\t")
+print()
+
+
