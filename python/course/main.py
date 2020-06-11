@@ -101,6 +101,7 @@
 # myStr = "hello world"
 # print(myStr[0:5:2])
 
+'''
 # List列表的使用
 #增
 namelist = ["Jack", "Bill", "Steve"]
@@ -181,4 +182,25 @@ for i in range(len(ageList)):
     print(ageList[i], end="\t")
 print()
 
+print(ageList[-2])
+print(ageList[1:3])
+'''
 
+'''
+# 元组的相关操作
+tup1 = (10,)
+tup2 = ('元组', 3.14)
+# 连接
+tup = tup1 + tup2
+print(tup)
+'''
+
+# 字典
+myDict = {
+    'name': '一战回忆录',
+    'author': 'Winston Churchill',
+    'price': 99.01
+}
+print(myDict)
+# 取某个值不存在的值
+print(myDict.get("ISBN", '0'))
