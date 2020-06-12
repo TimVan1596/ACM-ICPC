@@ -204,3 +204,45 @@ myDict = {
 print(myDict)
 # 取某个值不存在的值
 print(myDict.get("ISBN", '0'))
+
+# 增
+myDict['ISBN'] = '9787806605608'
+print(myDict)
+# 删
+# del 为删除结构本身
+del myDict['price']
+print(myDict)
+# dict.clear()为删除字典中的内容
+myDict.clear()
+print(myDict)
+# 改
+myDict['name'] = '第一次世界大战回忆录'
+print(myDict)
+# 查
+myDict = {
+    'name': '一战回忆录',
+    'author': 'Winston Churchill',
+    'price': 99.01
+}
+print(myDict.keys())
+print(myDict.values())
+print(myDict.items())
+
+
+# for key in myDict.keys():
+#     print(key, '->', myDict[key])
+
+# print("\n", '-' * 8, '枚举', '-' * 8)
+# for index, tup in enumerate(myDict.items()):
+#     print('%d:' % index, tup[0], '->', tup[1])
+
+
+# 打印字典，并返回字典长度
+def printDict(actionName, ourDict):
+    print("\n", '-' * 8, actionName, '-' * 8)
+    for ourIndex, ourTup in enumerate(ourDict.items()):
+        print('%d:' % ourIndex, ourTup[0], '->', ourTup[1])
+    return len(ourDict.keys()), len(ourTup)
+
+
+print("字典长度为:%d,%d" % printDict('函数中枚举', myDict))
