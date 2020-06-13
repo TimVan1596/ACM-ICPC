@@ -1,15 +1,18 @@
 #include<iostream>
+#include<cmath>
 using namespace std;
 
+
 int main() {
-	int k = 2;
-	int j=k/2+k%2+1-(k/2)%2;
-	printf("When k = %d , j = %d \n",k,j);
-	k = 3;
-	j=k/2+k%2+1-k/2/2;
-	printf("When k = %d , j = %d \n",k,j);
-	k = 7;
-	j=k/2+k%2+1-k/2/2;
-	printf("When k = %d , j = %d \n",k,j);
-	return 0;
+
+	for(int n = 10 ; n <2000 ; n += 20) {
+		int y=0;
+		int x= n; //n>1
+		while(x >= (y+1)*(y+1)) {
+			y++;
+		}
+		cout<<" "<<n<<" "<<y<<"--"<<sqrt(n)<<endl;
+	}
+
 }
+
