@@ -49,3 +49,12 @@ def fun():
     return 3,4
 a,b = fun()
 ```
+##### 16.函数中使用全局变量
+    需要先使用global a 进行声明，注意需要在首行
+##### 17.异常处理获得错误原因
+```
+    try:
+        print(a)
+    except NameError as reason:
+        print("reason:%s" % reason)
+```
