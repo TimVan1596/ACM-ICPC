@@ -1,6 +1,6 @@
 #### 路径
-1. 【学习】Python基本语法  
-2. 【练习】PAT练习题
+1. 【学习】Python基本语法（8次）  √
+2. 【练习】LeetCode(19次)
 3. 【学习】爬虫技术
 4. 【练习】爬虫项目
 5. 【学习】机器学习
@@ -58,3 +58,4 @@ a,b = fun()
     except NameError as reason:
         print("reason:%s" % reason)
 ```
+##### 18.&、| 和 and、or 运算符
