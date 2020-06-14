@@ -327,6 +327,8 @@ print("(a & b) =  %d" % (a & b))
 print("(a | b) =  %d" % (a | b))
 # and运算
 print("(a and b) =  %d" % (a and b))
+print("(a > b) & (b > c)=  %s" % ((a > b) & (b > c)))
+print("(a > b) and (b > c)=  %s" % ((a > b) and (b > c)))
 # or运算
 print("(a or b) =  %d" % (a or b))
 print("(c or b) =  %d" % (c or b))
