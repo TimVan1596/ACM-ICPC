@@ -318,17 +318,24 @@ print(tup)
 # &、| 和 and、or 运算符
 # 47 = 二进制 101111
 # 16 = 二进制 01000
-a = 47
-b = 16
-c = 0
-# 与运算为0
-print("(a & b) =  %d" % (a & b))
-# 或运算为63
-print("(a | b) =  %d" % (a | b))
-# and运算
-print("(a and b) =  %d" % (a and b))
-print("(a > b) & (b > c)=  %s" % ((a > b) & (b > c)))
-print("(a > b) and (b > c)=  %s" % ((a > b) and (b > c)))
-# or运算
-print("(a or b) =  %d" % (a or b))
-print("(c or b) =  %d" % (c or b))
+# a = 47
+# b = 16
+# c = 0
+# # 与运算为0
+# print("(a & b) =  %d" % (a & b))
+# # 或运算为63
+# print("(a | b) =  %d" % (a | b))
+# # and运算
+# print("(a and b) =  %d" % (a and b))
+# print("(a > b) & (b > c)=  %s" % ((a > b) & (b > c)))
+# print("(a > b) and (b > c)=  %s" % ((a > b) and (b > c)))
+# # or运算
+# print("(a or b) =  %d" % (a or b))
+# print("(c or b) =  %d" % (c or b))
+
+nums = [3, 3]
+hashmap = {}
+for ind, num in enumerate(nums):
+    hashmap[num] = ind
+print(hashmap)
+
