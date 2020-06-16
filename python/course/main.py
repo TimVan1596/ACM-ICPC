@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # @Time:2020/5/30 11:41
 # @Author:TimVan
-# @File:main.py
+# @File:leetcode.py
 # @Software:PyCharm
 
 # 单行注释
@@ -333,9 +333,12 @@ print(tup)
 # print("(a or b) =  %d" % (a or b))
 # print("(c or b) =  %d" % (c or b))
 
-nums = [3, 3]
-hashmap = {}
-for ind, num in enumerate(nums):
-    hashmap[num] = ind
-print(hashmap)
+# nums = [3, 3]
+# hashmap = {}
+# for ind, num in enumerate(nums):
+#     hashmap[num] = ind
+# print(hashmap)
+
+
+print(int(5/4))
 
