@@ -340,5 +340,17 @@ print(tup)
 # print(hashmap)
 
 
-print(int(5/4))
+# print(int(5/4))
 
+# break语句和while..else..
+# a = 3
+# while a > 0:
+#     print("a=%d" % a)
+#     a -= 1
+#     # break
+# else:
+#     print("It's in else")
+
+a = 50
+a //= 3
+print(a)
