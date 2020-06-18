@@ -65,24 +65,28 @@ class ListNode:
 #         return listNode3
 
 
-class Solution:
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        # 保存头结点，返回结果
-        dummy = p = ListNode(None)
-        # 每一步的求和暂存变量
-        s = 0
-        # 循环条件：l1 或者l2（没有遍历完成），s(进位)不为0
-        while l1 or l2 or s:
-            # 这其实是好多代码，我自己写了好多行，但是作者这样写非常简洁，赞
-            s += (l1.val if l1 else 0) + (l2.val if l2 else 0)
-            # 构建新的list存储结果，其实用较长的加数链表存也可以，%10：求个位
-            p.next = ListNode(s % 10)
-            p = p.next
-            # 求进位
-            s //= 10
-            l1 = l1.next if l1 else None
-            l2 = l2.next if l2 else None
-        return dummy.next
+# class Solution:
+#     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+#         # 保存头结点，返回结果
+#         dummy = p = ListNode(None)
+#         # 每一步的求和暂存变量
+#         s = 0
+#         # 循环条件：l1 或者l2（没有遍历完成），s(进位)不为0
+#         while l1 or l2 or s:
+#             # 这其实是好多代码，我自己写了好多行，但是作者这样写非常简洁，赞
+#             s += (l1.val if l1 else 0) + (l2.val if l2 else 0)
+#             # 构建新的list存储结果，其实用较长的加数链表存也可以，%10：求个位
+#             p.next = ListNode(s % 10)
+#             p = p.next
+#             # 求进位
+#             s //= 10
+#             l1 = l1.next if l1 else None
+#             l2 = l2.next if l2 else None
+#         return dummy.next
+
+
+# class Solution:
+#     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
 
 
 myL1 = ListNode(2)

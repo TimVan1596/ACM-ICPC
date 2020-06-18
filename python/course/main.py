@@ -351,6 +351,22 @@ print(tup)
 # else:
 #     print("It's in else")
 
-a = 50
-a //= 3
-print(a)
+# a = 50
+# a //= 3
+# print(a)
+
+# 负数取余
+# a = 15
+# print(a % 10)
+# a = -15
+# print(a % 10)
+# a = -12
+# print(a % 10)
+# a = -12
+# print(a % 4)
+# a = -11
+# print
+
+# n < (-2 ^ 31)
+
+print((2 ** 32))

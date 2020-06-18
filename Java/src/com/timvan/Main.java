@@ -20,7 +20,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int[] arr= new int[]{17,7,8};
-        Arrays.toString(arr);
+        //负数取余
+        int a = -11;
+        System.out.println(a%4);
     }
 }
