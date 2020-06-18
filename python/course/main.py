@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # @Time:2020/5/30 11:41
 # @Author:TimVan
-# @File:main.py
+# @File:leetcode.py
 # @Software:PyCharm
 
 # 单行注释
@@ -314,3 +314,59 @@ print(tup)
 #         file.close()
 # except Exception as reason:
 #     print("[Wrong]reason:%s" % reason)
+
+# &、| 和 and、or 运算符
+# 47 = 二进制 101111
+# 16 = 二进制 01000
+# a = 47
+# b = 16
+# c = 0
+# # 与运算为0
+# print("(a & b) =  %d" % (a & b))
+# # 或运算为63
+# print("(a | b) =  %d" % (a | b))
+# # and运算
+# print("(a and b) =  %d" % (a and b))
+# print("(a > b) & (b > c)=  %s" % ((a > b) & (b > c)))
+# print("(a > b) and (b > c)=  %s" % ((a > b) and (b > c)))
+# # or运算
+# print("(a or b) =  %d" % (a or b))
+# print("(c or b) =  %d" % (c or b))
+
+# nums = [3, 3]
+# hashmap = {}
+# for ind, num in enumerate(nums):
+#     hashmap[num] = ind
+# print(hashmap)
+
+
+# print(int(5/4))
+
+# break语句和while..else..
+# a = 3
+# while a > 0:
+#     print("a=%d" % a)
+#     a -= 1
+#     # break
+# else:
+#     print("It's in else")
+
+# a = 50
+# a //= 3
+# print(a)
+
+# 负数取余
+# a = 15
+# print(a % 10)
+# a = -15
+# print(a % 10)
+# a = -12
+# print(a % 10)
+# a = -12
+# print(a % 4)
+# a = -11
+# print
+
+# n < (-2 ^ 31)
+
+print((2 ** 32))
