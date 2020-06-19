@@ -23,21 +23,20 @@
 # Follow up:
 # Could you solve it without converting the integer to a string?
 
-class Solution:
-    def isPalindrome(self, x: int) -> bool:
-        if x < 0:
-            return False
-        dummyX = x
-        ret = 0
-        while dummyX > 0:
-            ret *= 10
-            ret += (dummyX % 10)
-            dummyX //= 10
-        if ret == x:
-            return True
-        else:
-            return False
-
+# class Solution:
+#     def isPalindrome(self, x: int) -> bool:
+#         if x < 0:
+#             return False
+#         dummyX = x
+#         ret = 0
+#         while dummyX > 0:
+#             ret *= 10
+#             ret += (dummyX % 10)
+#             dummyX //= 10
+#         if ret == x:
+#             return True
+#         else:
+#             return False
 
 solution = Solution()
 num = 330001230132100033
