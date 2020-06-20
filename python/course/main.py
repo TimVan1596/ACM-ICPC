@@ -371,8 +371,19 @@ print(tup)
 
 # print((2 ** 32))
 
-romanDict = {'I': 1, 'V': 5, 'X': 10, 'L': 50
-    , 'C': 100, 'D': 500, 'M': 1000
-    , 'IV': 4, 'IX': 9, 'XL': 40, 'XC': 90, 'CD': 400, 'CM': 900}
+# romanDict = {'I': 1, 'V': 5, 'X': 10, 'L': 50
+#     , 'C': 100, 'D': 500, 'M': 1000
+#     , 'IV': 4, 'IX': 9, 'XL': 40, 'XC': 90, 'CD': 400, 'CM': 900}
+#
+# print(romanDict.get('A', 3))
 
-print(romanDict.get('A', 3))
+# zip的使用
+list1 = ["Tim", "Jobs", "Steve", "Bill"]
+list2 = [22, 56, 56, 63]
+list3 = ["蒂姆", "乔布斯"]
+zipped = zip(list1, list2, list3)
+print(zipped)
+print(list(zipped))
+
+for one in zip(*list1):
+    print(one)
