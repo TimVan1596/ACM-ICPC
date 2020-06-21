@@ -377,13 +377,20 @@ print(tup)
 #
 # print(romanDict.get('A', 3))
 
-# zip的使用
-list1 = ["Tim", "Jobs", "Steve", "Bill"]
-list2 = [22, 56, 56, 63]
-list3 = ["蒂姆", "乔布斯"]
-zipped = zip(list1, list2, list3)
-print(zipped)
-print(list(zipped))
+# zip()的使用
+# list1 = ["Tim", "Jobs", "Steve", "Bill"]
+# list2 = [22, 56, 56, 63]
+#
+# list3 = ["蒂姆", "乔布斯"]
+# zipped = zip(list1, list2, list3)
+# print(zipped)
+# print(list(zipped))
+# print(zip(*list1))
+# print("------")
+# for one in zip(*list1):
+#     print(one)
 
-for one in zip(*list1):
-    print(one)
+# set的使用
+list1 = ["Tim", "Tim", 3.14, "Tim"]
+print(set(list1))
+print(len(set(list1)))

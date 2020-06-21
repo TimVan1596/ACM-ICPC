@@ -52,15 +52,27 @@ from typing import List
 #
 #         return commonPrefix
 
+# 使用zip（）和set（）的方法
+# class Solution:
+#     def longestCommonPrefix(self, strs: List[str]) -> str:
+#         s = ""
+#         for one in zip(*strs):
+#             if len(set(one)) == 1:
+#                 s += one[0]
+#             else:
+#                 break
+#         return s
+
+
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
-        s = ""
+        common = ""
         for one in zip(*strs):
             if len(set(one)) == 1:
-                s += one[0]
+                common += one[0]
             else:
                 break
-        return s
+        return common
 
 
 solution = Solution()
