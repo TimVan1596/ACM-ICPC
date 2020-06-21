@@ -391,6 +391,13 @@ print(tup)
 #     print(one)
 
 # set的使用
+# list1 = ["Tim", "Tim", 3.14, "Tim"]
+# print(set(list1))
+# print(len(set(list1)))
+
+# list.pop()的参数
 list1 = ["Tim", "Tim", 3.14, "Tim"]
-print(set(list1))
-print(len(set(list1)))
+a = 2
+a = list1.pop(a)
+print(a)
+print(list1)
