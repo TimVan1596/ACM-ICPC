@@ -396,8 +396,19 @@ print(tup)
 # print(len(set(list1)))
 
 # list.pop()的参数
-list1 = ["Tim", "Tim", 3.14, "Tim"]
-a = 2
-a = list1.pop(a)
-print(a)
-print(list1)
+# list1 = ["Tim", "Tim", 3.14, "Tim"]
+# a = 2
+# a = list1.pop(a)
+# print(a)
+# print(list1)
+
+# range()的参数
+arr = [10, 6, 58, 6, 2020, 6, 23]
+for i in range(0, 7, 2):
+    # if arr[i] == 6:
+    #     print("删除arr[%d]=%d" % (i, arr[i]))
+    #     arr.pop(i)
+
+    print("---i==%d,arr[i]=%d---" % (i, arr[i]))
+
+print("new arr =", arr)

@@ -38,18 +38,32 @@
 from typing import List
 
 
+# class Solution:
+#     def removeDuplicates(self, nums: List[int]) -> int:
+#         numsLen = len(nums)
+#         if numsLen == 0:
+#             return 0
+#         j = 1
+#         # 由于仅有一个数列，所以
+#         while j < len(nums):
+#             element = nums[j]
+#             if element in nums[0:j]:
+#                 nums.pop(j)
+#                 # 弹出后需要后移下标
+#                 j -= 1
+#             j += 1
+#         return len(nums)
+
+# 读题发现是 Sorted Array，因此不需要从 [0~j)下标内进行查找
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
-        numsLen = len(nums)
-        if numsLen == 0:
-            return 0
         j = 1
-        # 由于仅有一个数列，所以
+        # 由于仅有一个数列，所以nums的长度在不断变化
         while j < len(nums):
             element = nums[j]
-            if element in nums[0:j]:
+            if element == nums[j-1]:
                 nums.pop(j)
-                # 弹出后需要后移下标
+                # 弹出后需要后移修正下标
                 j -= 1
             j += 1
         return len(nums)
