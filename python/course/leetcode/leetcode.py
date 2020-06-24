@@ -5,6 +5,7 @@
 # @Software:PyCharm
 # Definition for singly-linked list.
 
-haystack = "singlyly"
-needle = "lya"
-print(haystack.index(needle))
+arr = [11,32,2020,6,24]
+value = 20201
+
+print("-----%d----"% arr.index(value))
