@@ -34,7 +34,7 @@ class Solution:
         needleIndex = 0
         isInSearch = False
         while i < lens:
-            # 若未进入查找序列 且 首字符相同
+            # 若未进入查找程序 且 首字符相同
             if (isInSearch is False) and haystack[i] == needle[needleIndex]:
                 index = i
                 needleIndex += 1

@@ -197,6 +197,7 @@ tup = tup1 + tup2
 print(tup)
 '''
 
+
 # # 字典
 # myDict = {
 #     'name': '一战回忆录',
@@ -403,12 +404,42 @@ print(tup)
 # print(list1)
 
 # range()的参数
-arr = [10, 6, 58, 6, 2020, 6, 23]
-for i in range(0, 7, 2):
-    # if arr[i] == 6:
-    #     print("删除arr[%d]=%d" % (i, arr[i]))
-    #     arr.pop(i)
+# arr = [10, 6, 58, 6, 2020, 6, 23]
+# for i in range(0, 7, 2):
+#     # if arr[i] == 6:
+#     #     print("删除arr[%d]=%d" % (i, arr[i]))
+#     #     arr.pop(i)
+#
+#     print("---i==%d,arr[i]=%d---" % (i, arr[i]))
+#
+# print("new arr =", arr)
 
-    print("---i==%d,arr[i]=%d---" % (i, arr[i]))
+# # index()和find()
+# haystack = "singlyly"
+# # needle = "lya"
+# needle = ""
+# print(haystack.index(needle))
+# print(haystack.find(needle))
 
-print("new arr =", arr)
+# 二分查找
+
+def binaryFind(arr: list, target: int):
+    right = 0
+    left = len(arr) - 1
+    while right <= left:
+        mid = (right + left) // 2
+        print("mid=%d" % mid)
+        midValue = arr[mid]
+        if midValue < target:
+            right = mid + 1
+        elif midValue > target:
+            left = mid - 1
+        else:
+            print("已找到，序号为%d" % mid)
+            return
+    print("未找到")
+
+
+myArr = [0, 6, 26, 51, 424, 2020]
+myTarget = 20000
+binaryFind(myArr, myTarget)
