@@ -369,4 +369,83 @@ print(tup)
 
 # n < (-2 ^ 31)
 
-print((2 ** 32))
+# print((2 ** 32))
+
+# romanDict = {'I': 1, 'V': 5, 'X': 10, 'L': 50
+#     , 'C': 100, 'D': 500, 'M': 1000
+#     , 'IV': 4, 'IX': 9, 'XL': 40, 'XC': 90, 'CD': 400, 'CM': 900}
+#
+# print(romanDict.get('A', 3))
+
+# zip()的使用
+# list1 = ["Tim", "Jobs", "Steve", "Bill"]
+# list2 = [22, 56, 56, 63]
+#
+# list3 = ["蒂姆", "乔布斯"]
+# zipped = zip(list1, list2, list3)
+# print(zipped)
+# print(list(zipped))
+# print(zip(*list1))
+# print("------")
+# for one in zip(*list1):
+#     print(one)
+
+# set的使用
+# list1 = ["Tim", "Tim", 3.14, "Tim"]
+# print(set(list1))
+# print(len(set(list1)))
+
+# list.pop()的参数
+# list1 = ["Tim", "Tim", 3.14, "Tim"]
+# a = 2
+# a = list1.pop(a)
+# print(a)
+# print(list1)
+
+# range()的参数
+# arr = [10, 6, 58, 6, 2020, 6, 23]
+# for i in range(0, 7, 2):
+#     # if arr[i] == 6:
+#     #     print("删除arr[%d]=%d" % (i, arr[i]))
+#     #     arr.pop(i)
+#
+#     print("---i==%d,arr[i]=%d---" % (i, arr[i]))
+#
+# print("new arr =", arr)
+
+# # index()和find()
+# haystack = "singlyly"
+# # needle = "lya"
+# needle = ""
+# print(haystack.index(needle))
+# print(haystack.find(needle))
+
+# 二分查找
+# def binaryFind(arr: list, target: int):
+#     right = 0
+#     left = len(arr) - 1
+#     while right <= left:
+#         mid = (right + left) // 2
+#         print("mid=%d" % mid)
+#         midValue = arr[mid]
+#         if midValue < target:
+#             right = mid + 1
+#         elif midValue > target:
+#             left = mid - 1
+#         else:
+#             print("已找到，序号为%d" % mid)
+#             return
+#     print("未找到")
+#
+#
+# myArr = [0, 6, 26, 51, 424, 2020]
+# myTarget = 20000
+# binaryFind(myArr, myTarget)
+
+# 已知数组长度进行初始化赋值
+arrLen = 5
+value = 1
+arr = [value] * arrLen
+# arr = [value for i in range(arrLen)]
+for i in range(len(arr)):
+    print(arr[i])
