@@ -115,3 +115,9 @@ a,b = fun()
 ##### 34.index()和find()
     当字符串含子串时，均返回首字符下标。当不含子串时，index()会产生异常，而find()会返回-1。若子串为空，均返回0。
     find()不可用于list类型。
+##### 35.已知数组长度进行初始化赋值
+    若数组长度为arrLen，初始化赋值为value
+    有两种方式：
+    ① arr = [value] * arrLen
+    ② arr = [value for i in range(arrLen)]
+    

@@ -5,7 +5,5 @@
 # @Software:PyCharm
 # Definition for singly-linked list.
 
-arr = [11,32,2020,6,24]
-value = 20201
-
-print("-----%d----"% arr.index(value))
+for j in range(10, 5, -1):
+    print(j)
