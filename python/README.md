@@ -120,4 +120,6 @@ a,b = fun()
     有两种方式：
     ① arr = [value] * arrLen
     ② arr = [value for i in range(arrLen)]
-    
+##### 36.打印输出bool
+    使用%s可输出True和False
+    使用%d可输出1（真）和0（假）
