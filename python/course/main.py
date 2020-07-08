@@ -443,9 +443,12 @@ print(tup)
 # binaryFind(myArr, myTarget)
 
 # 已知数组长度进行初始化赋值
-arrLen = 5
-value = 1
-arr = [value] * arrLen
-# arr = [value for i in range(arrLen)]
-for i in range(len(arr)):
-    print(arr[i])
+# arrLen = 5
+# value = 1
+# arr = [value] * arrLen
+# # arr = [value for i in range(arrLen)]
+# for i in range(len(arr)):
+#     print(arr[i])
+
+# 二维数组的初始化
+import numpy as np
