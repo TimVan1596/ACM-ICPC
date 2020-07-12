@@ -451,4 +451,107 @@ print(tup)
 #     print(arr[i])
 
 # 二维数组的初始化
-import numpy as np
+# import numpy as np
+
+# 迭代器和生成器
+# myList = [13, 55, 2020, 7, 12]
+# it = iter(myList)
+# for循环
+# print(next(it))
+# for x in it:
+#     print(x)
+
+# import sys
+# # while循环
+# while True:
+#     try:
+#         print(next(it))
+#     except StopIteration:
+#         sys.exit()
+
+
+# 创建一个迭代器
+# 把一个类作为一个迭代器使用需要在类中实现两个方法__iter__()与__next__() 。
+# 如果你已经了解的面向对象编程，就知道类都有一个构造函数，Python的构造函数为__init__()
+# , 它会在对象初始化的时候执行。更多内容查阅：Python3面向对象
+#
+# __iter__()方法返回一个特殊的迭代器对象， 这个迭代器对象实现了__next__()方法并通过StopIteration
+# 异常标识迭代的完成。
+# __next__()方法（Python2里是next()）会返回下一个迭代器对象。
+#
+# 创建一个返回数字的迭代器，初始值为1，逐步递增1：
+# class MyNumbers:
+#     def __iter__(self):
+#         self.a = 1
+#         return self
+#
+#     def __next__(self):
+#         if self.a <= 20:
+#             x = self.a
+#             self.a += 1
+#             return x
+#         else:
+#             raise StopIteration
+#
+#
+# myclass = MyNumbers()
+# myiter = iter(myclass)
+#
+# for x in myiter:
+#     print(x)
+
+# 生成器
+# 在Python中，使用了yield的函数被称为生成器（generator）。
+# 跟普通函数不同的是，生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器。
+# 在调用生成器运行的过程中，每次遇到yield时函数会暂停并保存当前所有的运行信息，
+# 返回yield 的值, 并在下一次执行next()方法时从当前位置继续运行。
+# 调用一个生成器函数，返回的是一个迭代器对象。
+# 以下实例使用yield实现斐波那契数列：
+
+# import sys
+#
+# # 生成器函数 - 斐波那契
+# def fibonacci(n):
+#     a, b, counter = 0, 1, 0
+#     while True:
+#         if counter > n:
+#             return
+#         yield a
+#         a, b = b, a + b
+#         counter += 1
+#
+#
+# f = fibonacci(10)  # f 是一个迭代器，由生成器返回生成
+#
+# while True:
+#     try:
+#         print(next(f), end=" ")
+#     except StopIteration:
+#         sys.exit()
+
+# 使用生成器yield构建斐波拉契数列
+# import sys
+#
+# def yieldFibonacci(n):
+#     a, b, count = 1, 1, 0
+#     while count < n:
+#         yield a
+#         x = a
+#         a = b
+#         b = x+b
+#         count += 1
+#     return
+#
+#
+# it = yieldFibonacci(10)
+# while True:
+#     try:
+#         print(next(it))
+#     except StopIteration:
+#         sys.exit()
+
+a = 10
+b = 20
+a, b = b, a + b
+print("a=%d" % a)
+print("b=%d" % b)

@@ -1,7 +1,7 @@
 #### 路径
 1. 【学习】Python基本语法（8次）  √
-2. 【练习】LeetCode(19次)   
-    &emsp;&emsp;&emsp;&emsp;Python3 迭代器与生成器  
+2. 【练习】LeetCode(19次)     √
+    &emsp;&emsp;&emsp;&emsp;Python3 迭代器与生成器     √  
     &emsp;&emsp;&emsp;&emsp;Python3 模块  
     &emsp;&emsp;&emsp;&emsp;Python3 输入和输出  
     &emsp;&emsp;&emsp;&emsp;Python3 File(文件) 方法  
@@ -132,3 +132,12 @@ a,b = fun()
 ##### 36.打印输出bool
     使用%s可输出True和False
     使用%d可输出1（真）和0（假）
+##### 37.动态规划=子问题
+    将最终的大问题，化为有重复的子问题。需要让子问题不要重复计算，而提前保存下来。这种方法就叫做动态规划。
+    p.s. “动态规划”的名字比较有迷惑性，应理解为“去除子问题重叠”方法
+##### 38.分别赋值
+    a = 10
+    b = 20
+    a, b = b, a + b
+    即a = b和b = a+b
+    需要特别注意的是，结果为a=20，b=30。说明a和b在赋值时是同时进行，a和b值并未有改变的顺序。
