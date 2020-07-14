@@ -586,3 +586,10 @@ print(tup)
 # >>> # repr() 的参数可以是 Python 的任何对象
 # ... repr((x, y, ('Google', 'Runoob')))
 # "(32.5, 40000, ('Google', 'Runoob'))"
+# 格式化输出
+year = '2020年'
+month = 7
+temp = 32.445
+message = "今年是{}的{}月份".format(year, month)
+# 四舍五入
+print(message + "，今天的温度是%.2f°C" % temp)
