@@ -3,7 +3,7 @@
 2. 【练习】LeetCode(19次)     √
     &emsp;&emsp;&emsp;&emsp;Python3 迭代器与生成器     √  
     &emsp;&emsp;&emsp;&emsp;Python3 模块  
-    &emsp;&emsp;&emsp;&emsp;Python3 输入和输出  
+    &emsp;&emsp;&emsp;&emsp;Python3 输入和输出     √    
     &emsp;&emsp;&emsp;&emsp;Python3 File(文件) 方法  
     &emsp;&emsp;&emsp;&emsp;Python3 OS 文件/目录方法  
     &emsp;&emsp;&emsp;&emsp;Python3 错误和异常  
@@ -141,3 +141,5 @@ a,b = fun()
     a, b = b, a + b
     即a = b和b = a+b
     需要特别注意的是，结果为a=20，b=30。说明a和b在赋值时是同时进行，a和b值并未有改变的顺序。
+##### 39.Pycharm导入自定义模块出现错误
+    无其他错误下不影响运行。若想去除错误红线，可以模块所在目录Mark dic as 根目录去除。

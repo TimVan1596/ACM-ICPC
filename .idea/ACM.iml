@@ -19,6 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/蓝桥杯/Java/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/Java/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/Java/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/python/course" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
