@@ -864,8 +864,99 @@ print(tup)
 #
 # 说明：__name__ 与 __main__ 底下是双下划线，
 # _ _ 是这样去掉中间的那个空格。
-import tool
-# 并未引入时，默认为__main__
-print("__name__ = %s" % __name__)
-print("tool.printName() = %s" % tool.printName())
+# import tool
+# # 并未引入时，默认为__main__
+# print("__name__ = %s" % __name__)
+# print("tool.printName() = %s" % tool.printName())
 
+# dir() 函数
+# 内置的函数 dir() 可以找到模块内定义的所有名称。以一个字符串列表的形式返回:
+#
+# import tool as t, sys
+#
+# print(dir(t))
+# print(dir(sys))
+
+# >>> import fibo, sys
+# >>> dir(fibo)
+# ['__name__', 'fib', 'fib2']
+# >>> dir(sys)
+# ['__displayhook__', '__doc__', '__excepthook__', '__loader__', '__name__',
+#  '__package__', '__stderr__', '__stdin__', '__stdout__',
+#  '_clear_type_cache', '_current_frames', '_debugmallocstats', '_getframe',
+#  '_home', '_mercurial', '_xoptions', 'abiflags', 'api_version', 'argv',
+#  'base_exec_prefix', 'base_prefix', 'builtin_module_names', 'byteorder',
+#  'call_tracing', 'callstats', 'copyright', 'displayhook',
+#  'dont_write_bytecode', 'exc_info', 'excepthook', 'exec_prefix',
+#  'executable', 'exit', 'flags', 'float_info', 'float_repr_style',
+#  'getcheckinterval', 'getdefaultencoding', 'getdlopenflags',
+#  'getfilesystemencoding', 'getobjects', 'getprofile', 'getrecursionlimit',
+#  'getrefcount', 'getsizeof', 'getswitchinterval', 'gettotalrefcount',
+#  'gettrace', 'hash_info', 'hexversion', 'implementation', 'int_info',
+#  'intern', 'maxsize', 'maxunicode', 'meta_path', 'modules', 'path',
+#  'path_hooks', 'path_importer_cache', 'platform', 'prefix', 'ps1',
+#  'setcheckinterval', 'setdlopenflags', 'setprofile', 'setrecursionlimit',
+#  'setswitchinterval', 'settrace', 'stderr', 'stdin', 'stdout',
+#  'thread_info', 'version', 'version_info', 'warnoptions']
+# 如果没有给定参数，那么 dir() 函数会罗列出当前定义的所有名称:
+#
+# import tool as t
+#
+# add = t.add
+# a = 5
+# print(dir())
+# del a
+# print(dir())
+
+# >>> a = [1, 2, 3, 4, 5]
+# >>> import fibo
+# >>> fib = fibo.fib
+# >>> dir() # 得到一个当前模块中定义的属性列表
+# ['__builtins__', '__name__', 'a', 'fib', 'fibo', 'sys']
+# >>> a = 5 # 建立一个新的变量 'a'
+# >>> dir()
+# ['__builtins__', '__doc__', '__name__', 'a', 'sys']
+# >>>
+# >>> del a # 删除变量名a
+# >>>
+# >>> dir()
+# ['__builtins__', '__doc__', '__name__', 'sys']
+# >>>
+
+# 标准模块
+# Python 本身带着一些标准的模块库，
+# 在 Python 库参考文档中将会介绍到（就是后面的"库参考文档"）。
+#
+# 有些模块直接被构建在解析器里，
+# 这些虽然不是一些语言内置的功能，
+# 但是他却能很高效的使用，
+# 甚至是系统级调用也没问题。
+#
+# 这些组件会根据不同的操作系统进行不同形式的配置，
+# 比如 winreg 这个模块就只会提供给 Windows 系统。
+#
+# 应该注意到这有一个特别的模块 sys ，
+# 它内置在每一个 Python 解析器中。
+# 变量 sys.ps1 和 sys.ps2 定义了主提示符和副提示符所对应的字符串:
+#
+# >>> import sys
+# >>> sys.ps1
+# '>>> '
+# >>> sys.ps2
+# '... '
+# >>> sys.ps1 = 'C> '
+# C> print('Runoob!')
+# Runoob!
+# C>
+import sys
+from os import path
+
+print(sys.path[0])
+print(path)
+
+f = open("test\main.txt", "r")
+# f.writelines(['大家好\n', '我是Python3\n', '根地址:' + sys.path[0]+'\n'])
+# str = f.read()
+str = f.readlines()
+print('str=%s'%str)
+f.close()

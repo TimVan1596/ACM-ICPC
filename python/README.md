@@ -4,7 +4,7 @@
     &emsp;&emsp;&emsp;&emsp;Python3 迭代器与生成器     √  
     &emsp;&emsp;&emsp;&emsp;Python3 模块  
     &emsp;&emsp;&emsp;&emsp;Python3 输入和输出     √    
-    &emsp;&emsp;&emsp;&emsp;Python3 File(文件) 方法  
+    &emsp;&emsp;&emsp;&emsp;Python3 File(文件) 方法     √    
     &emsp;&emsp;&emsp;&emsp;Python3 OS 文件/目录方法  
     &emsp;&emsp;&emsp;&emsp;Python3 错误和异常  
     &emsp;&emsp;&emsp;&emsp;Python3 面向对象  
