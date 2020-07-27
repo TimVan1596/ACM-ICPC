@@ -1012,17 +1012,171 @@ print(tup)
 # R_OK - 返回值 True
 # W_OK - 返回值 True
 # X_OK - 返回值 False
+#
+# import sys, os
+#
+# path = "test\copy.txt"
+# ret = os.access(path, os.F_OK)
+# print("{}的os.F_OK={}".format(path, ret))
+#
+# path = "test\\test.txt"
+# ret = os.access(path, os.F_OK)
+# print("{}的os.F_OK={}".format(path, ret))
+#
+# path = "test\copy.txt"
+# ret = os.access(path, os.X_OK)
+# print("{}的os.X_OK={}".format(path, ret))
 
-import sys, os
+# Python3 错误和异常
+# 作为 Python 初学者，在刚学习 Python 编程时，
+# 经常会看到一些报错信息，在前面我们没有提及，这章节我们会专门介绍。
+#
+# Python 有两种错误很容易辨认：语法错误和异常。
+# Python assert（断言）用于判断一个表达式，
+# 在表达式条件为 false 的时候触发异常。
+#
+# 语法错误
+# Python 的语法错误或者称之为解析错，是初学者经常碰到的，如下实例
+# >>> while True print('Hello world')
+#   File "<stdin>", line 1, in ?
+#     while True print('Hello world')
+#                    ^
+# SyntaxError: invalid syntax
+# 这个例子中，函数 print() 被检查到有错误，
+# 是它前面缺少了一个冒号 : 。
+#
+# 语法分析器指出了出错的一行，
+# 并且在最先找到的错误的位置标记了一个小小的箭头。
 
-path = "test\copy.txt"
-ret = os.access(path, os.F_OK)
-print("{}的os.F_OK={}".format(path, ret))
+# 异常
+# 即便 Python 程序的语法是正确的，在运行它的时候，
+# 也有可能发生错误。运行期检测到的错误被称为异常。
+#
+# 大多数的异常都不会被程序处理，都以错误信息的形式展现在这里:
+#
+# 实例
 
-path = "test\\test.txt"
-ret = os.access(path, os.F_OK)
-print("{}的os.F_OK={}".format(path, ret))
+# >>> 10 * (1/0)             # 0 不能作为除数，触发异常
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in ?
+# ZeroDivisionError: division by zero
+# >>> (10/0)
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in <module>
+# ZeroDivisionError: division by zero
+# >>>
 
-path = "test\copy.txt"
-ret = os.access(path, os.X_OK)
-print("{}的os.X_OK={}".format(path, ret))
+# >>> 4 + spam*3             # spam 未定义，触发异常
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in ?
+# NameError: name 'spam' is not defined
+# PyDev console: starting.
+# Python 3.8.3 (tags/v3.8.3:6f8c832, May 13 2020, 22:37:02) [MSC v.1924 64 bit (AMD64)] on win32
+# hello*3
+# Traceback (most recent call last):
+#   File "<input>", line 1, in <module>
+# NameError: name 'hello' is not defined
+
+
+# >>> '2' + 2               # int 不能与 str 相加，触发异常
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in <module>
+# TypeError: can only concatenate str (not "int") to str
+# '1'+2
+# Traceback (most recent call last):
+#   File "<input>", line 1, in <module>
+# TypeError: can only concatenate str (not "int") to str
+
+# 异常以不同的类型出现，
+# 这些类型都作为信息的一部分打印出来:
+# 例子中的类型有 ZeroDivisionError，NameError 和 TypeError。
+#
+# 错误信息的前面部分显示了异常发生的上下文，
+# 并以调用栈的形式显示具体信息。
+
+# 异常处理
+# try/except
+# 异常捕捉可以使用 try/except 语句。
+
+
+# a = 2020
+# def test():
+#     # global a
+#     a = 33
+#     print("in test(),a={}".format(a))
+#
+# test()
+# print("in outer, a={}".format(a))
+
+# list = [2020, '天青釉汝窑', True]
+# print(list)
+# myEnum = enumerate(list, start=10)
+# for i, content in myEnum:
+#     print("{} : {}".format(i, content))
+
+#
+# 以下例子中，让用户输入一个合法的整数，
+# 但是允许用户中断这个程序
+# （使用 Control-C 或者操作系统提供的方法）。
+# 用户中断的信息会引发一个 KeyboardInterrupt 异常。
+#
+# while True:
+#     try:
+#         x = int(input("请输入一个数字: "))
+#         break
+#     except ValueError:
+#         print("您输入的不是数字，请再次尝试输入！")
+# try 语句按照如下方式工作；
+#
+# 首先，执行 try 子句
+# （在关键字 try 和关键字 except 之间的语句）。
+#
+# 如果没有异常发生，
+# 忽略 except 子句，try 子句执行后结束。
+#
+# 如果在执行 try 子句的过程中发生了异常，
+# 那么 try 子句余下的部分将被忽略。
+# 如果异常的类型和 except 之后的名称相符，
+# 那么对应的 except 子句将被执行。
+#
+# 如果一个异常没有与任何的 except 匹配，
+# 那么这个异常将会传递给上层的 try 中。
+
+# while True:
+#     try:
+#         a = int(input("请输入一个数字\n"))
+#         break
+#     except ValueError as reason:
+#         print("您输入的并非数字")
+#
+
+# 一个 try 语句可能包含多个except子句，
+# 分别来处理不同的特定的异常。
+# 最多只有一个分支会被执行。
+#
+# 处理程序将只针对对应的 try 子句中的异常进行处理，
+# 而不是其他的 try 的处理程序中的异常。
+#
+# 一个except子句可以同时处理多个异常，
+# 这些异常将被放在一个括号里成为一个元组，例如:
+#
+# except (RuntimeError, TypeError, NameError):
+#     pass
+# 最后一个except子句可以忽略异常的名称，
+# 它将被当作通配符使用。
+# 你可以使用这种方法打印一个错误信息，
+# 然后再次把异常抛出。
+#
+# import sys
+#
+# try:
+#     f = open('myfile.txt')
+#     s = f.readline()
+#     i = int(s.strip())
+# except OSError as err:
+#     print("OS error: {0}".format(err))
+# except ValueError:
+#     print("Could not convert data to an integer.")
+# except:
+#     print("Unexpected error:", sys.exc_info()[0])
+#     raise
