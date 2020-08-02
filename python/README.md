@@ -6,7 +6,7 @@
     &emsp;&emsp;&emsp;&emsp;Python3 输入和输出     √    
     &emsp;&emsp;&emsp;&emsp;Python3 File(文件) 方法     √    
     &emsp;&emsp;&emsp;&emsp;Python3 OS 文件/目录方法     √     
-    &emsp;&emsp;&emsp;&emsp;Python3 错误和异常  
+    &emsp;&emsp;&emsp;&emsp;Python3 错误和异常     √  
     &emsp;&emsp;&emsp;&emsp;Python3 面向对象  
     &emsp;&emsp;&emsp;&emsp;Python3 命名空间和作用域  
     &emsp;&emsp;&emsp;&emsp;Python3 标准库概览
@@ -175,4 +175,8 @@ print("in outer, a={}".format(a))
     进入当前目录下的文件夹"test\\test.txt"、"test\copy.txt"
     其中注意：
     ①test文件夹前不需要反斜杠\
-    ②注意\t的转义    
+    ②注意\t的转义
+##### 41. {0}{1}.format
+    使用   '{0}:{0} lived in {1}'.format(name, nation) 形式，可以实现变量重复使用
+##### 42. print(10/3)
+    打印结果为：3.3333333333333335

@@ -1180,3 +1180,68 @@ print(tup)
 # except:
 #     print("Unexpected error:", sys.exc_info()[0])
 #     raise
+
+import sys
+
+
+# # {0}{1}.format
+# name = 'Cleopatra VII'
+# nation = 'Egypt(Ptolemaic Dynasty)'
+# myStr = '{0}:{0} lived in {1}'.format(name, nation)
+# print(myStr)
+
+
+# try:
+#     f = open('word.txt')
+#     s = f.readline()
+#     i = int(s.strip())
+# except OSError:
+#     print("OS Error:{}")
+# except ValueError as result:
+#     print("格式转换错误:{0}".format(result))
+# except:
+#     print("Unexpected error:{0}".format(sys.exc_info()[0]))
+
+# 类和对象
+
+
+class Student:
+    # 姓名
+    name: ''
+    no: ''
+    age = 0
+    score = -1
+
+    def __init__(self, name, no, age):
+        self.age = age
+        self.name = name
+        self.no = no
+        score = -1
+
+    # 打印信息
+    def printInfo(self):
+        print("-" * 15)
+        print("姓名:{0}".format(self.name))
+        print("学号:{0}".format(self.no))
+        print("年龄:{0}".format(self.age))
+        if self.score < 0:
+            print("未录入成绩")
+        else:
+            print("成绩:{0}".format(self.score))
+        print("-" * 15)
+
+    # 打印信息
+    def setScore(self, score):
+        self.score = score
+
+
+# 姓名 学号 年龄
+stu1 = Student('Tim', '20200803', 20)
+stu1.printInfo()
+stu1.setScore(95)
+stu1.printInfo()
+stu1.score = 90
+stu1.printInfo()
+
+print(10/3)
+
