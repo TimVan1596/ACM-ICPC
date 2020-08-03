@@ -1202,46 +1202,84 @@ import sys
 # except:
 #     print("Unexpected error:{0}".format(sys.exc_info()[0]))
 
-# 类和对象
+# # 类和对象
+# class Student:
+#     # 姓名
+#     name: ''
+#     no: ''
+#     age = 0
+#     score = -1
+#
+#     def __init__(self, name, no, age):
+#         self.age = age
+#         self.name = name
+#         self.no = no
+#         score = -1
+#
+#     # 打印信息
+#     def printInfo(self):
+#         print("-" * 15)
+#         print("姓名:{0}".format(self.name))
+#         print("学号:{0}".format(self.no))
+#         print("年龄:{0}".format(self.age))
+#         if self.score < 0:
+#             print("未录入成绩")
+#         else:
+#             print("成绩:{0}".format(self.score))
+#         print("-" * 15)
+#
+#     # 打印信息
+#     def setScore(self, score):
+#         self.score = score
+#
+#     @classmethod
+#     def ViewInfo(cls):
+#         print("类名：Student")
+#
+#     def __test(self, name):
+#         print("测试私有方法,name={}".format(name))
+#
+#     def testPrivate(self):
+#         self.__test("testPrivate")
+#
+# # 姓名 学号 年龄
+# stu1 = Student('Tim', '20200803', 20)
+# # stu1.printInfo()
+# # stu1.setScore(95)
+# # stu1.printInfo()
+# # stu1.score = 90
+# # stu1.printInfo()
+# stu1.testPrivate()
+# Student.ViewInfo()
+#
+# # print(10 / 3)
 
+# class Car:
+#     price = 300000
+#
+#     def __init__(self, name):
+#         self.name = name
+#         self.color = '  '
+#
+#     def setColor(self, color):
+#         self.color = color
+#
+#     def printInfo(self):
+#         print("我是汽车：{0}".format(self.name))
+#
+#
+# # 子类 电动车
+# class ECar(Car):
+#     def __init__(self, name):
+#         super().__init__(name)
+#         self.batterySize = 0
+#
+#     def printInfo(self):
+#         print("我是电动车：{0}，电池容量是{1}公里".format(self.name, self.batterySize))
+#
+#
+# tesla = ECar('特斯拉')
+# tesla.batterySize = 300
+# tesla.printInfo()
 
-class Student:
-    # 姓名
-    name: ''
-    no: ''
-    age = 0
-    score = -1
-
-    def __init__(self, name, no, age):
-        self.age = age
-        self.name = name
-        self.no = no
-        score = -1
-
-    # 打印信息
-    def printInfo(self):
-        print("-" * 15)
-        print("姓名:{0}".format(self.name))
-        print("学号:{0}".format(self.no))
-        print("年龄:{0}".format(self.age))
-        if self.score < 0:
-            print("未录入成绩")
-        else:
-            print("成绩:{0}".format(self.score))
-        print("-" * 15)
-
-    # 打印信息
-    def setScore(self, score):
-        self.score = score
-
-
-# 姓名 学号 年龄
-stu1 = Student('Tim', '20200803', 20)
-stu1.printInfo()
-stu1.setScore(95)
-stu1.printInfo()
-stu1.score = 90
-stu1.printInfo()
-
-print(10/3)
-
+Python3 命名空间和作用域
