@@ -8,8 +8,7 @@
     &emsp;&emsp;&emsp;&emsp;Python3 OS 文件/目录方法     √     
     &emsp;&emsp;&emsp;&emsp;Python3 错误和异常     √  
     &emsp;&emsp;&emsp;&emsp;Python3 面向对象     √  
-    &emsp;&emsp;&emsp;&emsp;Python3 命名空间和作用域  
-    &emsp;&emsp;&emsp;&emsp;Python3 标准库概览
+    &emsp;&emsp;&emsp;&emsp;Python3 命名空间和作用域     √  
 3. 【学习】爬虫技术
 4. 【练习】爬虫项目
 5. 【学习】机器学习

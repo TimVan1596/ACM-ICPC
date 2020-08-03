@@ -1183,7 +1183,6 @@ print(tup)
 
 import sys
 
-
 # # {0}{1}.format
 # name = 'Cleopatra VII'
 # nation = 'Egypt(Ptolemaic Dynasty)'
@@ -1282,4 +1281,23 @@ import sys
 # tesla.batterySize = 300
 # tesla.printInfo()
 
-Python3 命名空间和作用域
+# Python3 命名空间和作用域
+# 命名空间的生命周期：
+# 命名空间的生命周期取决于对象的作用域，
+# 如果对象执行完成，
+# 则该命名空间的生命周期就结束。
+# 因此，
+# 我们无法从外部命名空间访问内部命名空间的对象。
+#
+# 实例
+# var1 是全局名称
+# var1 = 5
+#
+#
+# def some_func():
+#     # var2 是局部名称
+#     var2 = 6
+#
+#     def some_inner_func():
+#         # var3 是内嵌的局部名称
+#         var3 = 7
