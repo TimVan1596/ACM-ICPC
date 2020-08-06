@@ -27,7 +27,6 @@ import urllib.request
 #     print("结果超时:{0}".format(e))
 
 
-
 # import urllib.parse
 # data = bytes(urllib.parse.urlencode({"id": 2}), encoding="utf-8")
 # # postBaseUrl = "https://www.timvanx.com/php/getnewsitem.php"
@@ -41,9 +40,19 @@ import urllib.request
 # print(response.getheader("Server"))
 
 # 对豆瓣进行爬取
-douBanUrl = "https://www.baidu.com"
+import urllib.parse
+
+douBanUrl = "https://www.douban.com"
 # User-Agent:
 # Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36
-headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"}
-req = urllib.request.Request(url=douBanUrl,data=data
-                             ,headers=headers,method="get")
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+}
+data = bytes(urllib.parse.urlencode({"id": 2}), encoding="utf-8")
+req = urllib.request.Request(url=douBanUrl
+                             # , data=data
+                             , headers=headers
+                             # , method="post"
+                             )
+response = urllib.request.urlopen(req)
+print(response.read().decode("utf-8"))

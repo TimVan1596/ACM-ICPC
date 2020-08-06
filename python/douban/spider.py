@@ -22,9 +22,34 @@ def main():
     getData(baseUrl)
     saveData(savePath)
 
+
+# 读取一个URL，并返回其源码
+def askUrl(url):
+    header = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+    }
+    request = urllib.request.Request(url, headers=header)
+    # html=待返回源码
+    html = None
+    try:
+        response = urllib.request.urlopen(request)
+        html = response.read().decode("utf-8")
+    except urllib.error.URLError as e:
+        print("请求错误")
+        if hasattr(e, "code"):
+            print("，错误状态码为{}".format(e.code))
+        if hasattr(e, "reason"):
+            print("，原因为{}".format(e.reason))
+    return html
+
+
 # 1.爬取网页
 def getData(baseUrl):
     dataList = []
+
+    html = askUrl(baseUrl)
+    print(html)
+
     # 2.逐一解析数据
     return dataList
 
@@ -32,6 +57,7 @@ def getData(baseUrl):
 # 3.保存数据(SQL或Excel)
 def saveData(savePath):
     print()
+
 
 if __name__ == "__main__":
     main()
