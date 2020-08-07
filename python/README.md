@@ -182,3 +182,13 @@ print("in outer, a={}".format(a))
 ##### 43. \_\_name\_\_
     在当前运行文件下为__main__
     若为被引入文件下为被引入的文件名
+##### 44. urllib
+    注意请求和接收
+```
+    req = urllib.request.Request(url=douBanUrl
+                             # , data=data
+                             , headers=headers
+                             # , method="post"
+                             )
+    response = urllib.request.urlopen(req)
+```
