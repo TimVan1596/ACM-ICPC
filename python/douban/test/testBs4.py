@@ -95,6 +95,8 @@ import re
 
 # css选择器
 # res = bs.select('.carbon-text')
-res = bs.select('#tieba')
+# res = bs.select('#tieba')
+# res = bs.select('a[class="carbon-text"]')
+res = bs.select('div>a')
 for item in res:
     print(item)
