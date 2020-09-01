@@ -16,4 +16,4 @@ if __name__ == "__main__":
      # print(sess)
 
 
-     # print(tf.test.gpu_device_name())
+     print(tf.test.gpu_device_name())
