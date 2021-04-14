@@ -18,10 +18,17 @@ if __name__ == "__main__":
     # a = tf.constant([True, False])
     # print(a)
 
-    with tf.device("cpu"):
+    with tf.device("/cpu:0"):
         a = tf.constant([3])
-    with tf.device("gpu"):
-        b = tf.constant(True)
+    with tf.device("/gpu:0"):
+        b = tf.range(4)
 
-    print(a)
-    print(b)
+    print(a.device)
+    print(b.device)
+    aa = a.gpu()
+    bb = b.cpu()
+    print(aa.device)
+    print(bb.device)
+
+    # tensor 转 numpy
+    print(b.numpy())
