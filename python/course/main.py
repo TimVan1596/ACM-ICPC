@@ -1301,3 +1301,8 @@ import sys
 #     def some_inner_func():
 #         # var3 是内嵌的局部名称
 #         var3 = 7
+
+
+str1 = 'abcdef'
+str2 = str1[::-1]
+print(str2)
