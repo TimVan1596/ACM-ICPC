@@ -192,3 +192,6 @@ print("in outer, a={}".format(a))
                              )
     response = urllib.request.urlopen(req)
 ```
+---
+##### 45. python没有switch..case
+    
