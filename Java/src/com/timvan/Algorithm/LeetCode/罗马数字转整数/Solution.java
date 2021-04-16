@@ -31,36 +31,54 @@ class Solution {
 //    给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
 
     public int romanToInt(String s) {
-        HashMap<String, Integer> alphaBet = new HashMap<>();
-        alphaBet.put("I", 1);
-        alphaBet.put("IV", 4);
-        alphaBet.put("IX", 9);
-        alphaBet.put("V", 5);
-        alphaBet.put("X", 10);
-        alphaBet.put("XL", 40);
-        alphaBet.put("XC", 90);
-        alphaBet.put("L", 50);
-        alphaBet.put("C", 100);
-        alphaBet.put("CD", 400);
-        alphaBet.put("CM", 900);
-        alphaBet.put("D", 500);
-        alphaBet.put("M", 1000);
 
         int result = 0;
         int sLen = s.length();
         for (int i = 0; i < sLen; i++) {
-            String currentSymbol = s.charAt(i) + "";
+            String currentSymbol = String.valueOf(s.charAt(i));
             //判断是否是6种特殊情况之一
-            if ((i + 1 < sLen) && alphaBet
-                    .containsKey(currentSymbol + s.charAt(i + 1) + "")) {
-                currentSymbol = currentSymbol + s.charAt(i + 1) + "";
+            if ((i + 1 < sLen) && getValue(currentSymbol + s.charAt(i + 1)) > 0) {
+                currentSymbol = currentSymbol + s.charAt(i + 1);
                 i++;
             }
-            result += alphaBet.get(currentSymbol);
-
+            result += getValue(currentSymbol);
         }
         return result;
     }
+
+    private int getValue(String ch) {
+        switch (ch) {
+            case "I":
+                return 1;
+            case "V":
+                return 5;
+            case "IV":
+                return 4;
+            case "IX":
+                return 9;
+            case "X":
+                return 10;
+            case "XL":
+                return 40;
+            case "XC":
+                return 90;
+            case "L":
+                return 50;
+            case "C":
+                return 100;
+            case "CD":
+                return 400;
+            case "CM":
+                return 900;
+            case "D":
+                return 500;
+            case "M":
+                return 1000;
+            default:
+                return 0;
+        }
+    }
+
 
     public static void main(String[] args) {
         String roman = "MCMXCIV";
