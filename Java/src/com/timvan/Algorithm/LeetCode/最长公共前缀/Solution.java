@@ -1,49 +1,49 @@
-package com.timvan.Algorithm.LeetCode.×î³¤¹«¹²Ç°×º;
+package com.timvan.Algorithm.LeetCode.æœ€é•¿å…¬å…±å‰ç¼€;
 
 import java.time.chrono.MinguoChronology;
 
 /**
- * <h3>À¶ÇÅ±­</h3>
+ * <h3>è“æ¡¥æ¯</h3>
  * <p></p>
  *
  * @author : TimVan
  * @date : 2021-04-15 15:28
  **/
 class Solution {
-//    ±àĞ´Ò»¸öº¯ÊıÀ´²éÕÒ×Ö·û´®Êı×éÖĞµÄ×î³¤¹«¹²Ç°×º¡£
-//    Èç¹û²»´æÔÚ¹«¹²Ç°×º£¬·µ»Ø¿Õ×Ö·û´®""¡£
+//    ç¼–å†™ä¸€ä¸ªå‡½æ•°æ¥æŸ¥æ‰¾å­—ç¬¦ä¸²æ•°ç»„ä¸­çš„æœ€é•¿å…¬å…±å‰ç¼€ã€‚
+//    å¦‚æœä¸å­˜åœ¨å…¬å…±å‰ç¼€ï¼Œè¿”å›ç©ºå­—ç¬¦ä¸²""ã€‚
 //
-//    Ê¾Àı 1£º
+//    ç¤ºä¾‹ 1ï¼š
 //
-//    ÊäÈë£ºstrs =["flower","flow","flight"]
-//    Êä³ö£º"fl"
-//    Ê¾Àı 2£º
+//    è¾“å…¥ï¼šstrs =["flower","flow","flight"]
+//    è¾“å‡ºï¼š"fl"
+//    ç¤ºä¾‹ 2ï¼š
 //
-//    ÊäÈë£ºstrs =["dog","racecar","car"]
-//    Êä³ö£º""
-//    ½âÊÍ£ºÊäÈë²»´æÔÚ¹«¹²Ç°×º¡£
-//    ÌáÊ¾£º
+//    è¾“å…¥ï¼šstrs =["dog","racecar","car"]
+//    è¾“å‡ºï¼š""
+//    è§£é‡Šï¼šè¾“å…¥ä¸å­˜åœ¨å…¬å…±å‰ç¼€ã€‚
+//    æç¤ºï¼š
 //            0<=strs.length <=200
 //            0<=strs[i].length <=200
-//    strs[i]½öÓÉĞ¡Ğ´Ó¢ÎÄ×ÖÄ¸×é³É
+//    strs[i]ä»…ç”±å°å†™è‹±æ–‡å­—æ¯ç»„æˆ
 
     public String longestCommonPrefix(String[] strs) {
         int minLength = 201;
-        //Èç¿ÕÊı×é»ò½öº¬Ò»×éÖ±½Ó·µ»Ø
+        //å¦‚ç©ºæ•°ç»„æˆ–ä»…å«ä¸€ç»„ç›´æ¥è¿”å›
         if (strs.length == 0) {
             return "";
         } else if (strs.length == 1) {
             return strs[0];
         }
         for (String str : strs) {
-            //Èç¿Õ×Ö·û´®Ö±½Ó·µ»Ø
+            //å¦‚ç©ºå­—ç¬¦ä¸²ç›´æ¥è¿”å›
             if (str.length() == 0) {
                 return "";
             } else if (str.length() < minLength) {
                 minLength = str.length();
             }
         }
-        //Öğ¸öÔö¼ÓÅĞ¶Ï×î³¤
+        //é€ä¸ªå¢åŠ åˆ¤æ–­æœ€é•¿
         StringBuilder commonPrefix = new StringBuilder();
         for (int i = 0; i < minLength; i++) {
             char current = strs[0].charAt(i);
@@ -62,13 +62,13 @@ class Solution {
 
     public static void main(String[] args) {
         String[] roman = {"flower", "flow", "flight"};
-        System.out.println(new com.timvan.Algorithm.LeetCode.×î³¤¹«¹²Ç°×º
+        System.out.println(new com.timvan.Algorithm.LeetCode.æœ€é•¿å…¬å…±å‰ç¼€
                 .Solution().longestCommonPrefix(roman));
         String[] roman1 = {"dog", "racecar", "car"};
-        System.out.println(new com.timvan.Algorithm.LeetCode.×î³¤¹«¹²Ç°×º
+        System.out.println(new com.timvan.Algorithm.LeetCode.æœ€é•¿å…¬å…±å‰ç¼€
                 .Solution().longestCommonPrefix(roman1));
         String[] roman2 = {"cir", "car"};
-        System.out.println(new com.timvan.Algorithm.LeetCode.×î³¤¹«¹²Ç°×º
+        System.out.println(new com.timvan.Algorithm.LeetCode.æœ€é•¿å…¬å…±å‰ç¼€
                 .Solution().longestCommonPrefix(roman2));
     }
 }

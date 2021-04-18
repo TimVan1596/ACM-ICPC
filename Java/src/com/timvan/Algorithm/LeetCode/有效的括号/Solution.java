@@ -1,59 +1,59 @@
-package com.timvan.Algorithm.LeetCode.ÓĞĞ§µÄÀ¨ºÅ;
+package com.timvan.Algorithm.LeetCode.æœ‰æ•ˆçš„æ‹¬å·;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * <h3>À¶ÇÅ±­</h3>
+ * <h3>è“æ¡¥æ¯</h3>
  * <p></p>
  *
  * @author : TimVan
  * @date : 2021-04-15 15:56
  **/
 public class Solution {
-//    ¸ø¶¨Ò»¸öÖ»°üÀ¨ '('£¬')'£¬'{'£¬'}'£¬'['£¬']' µÄ×Ö·û´® s £¬ÅĞ¶Ï×Ö·û´®ÊÇ·ñÓĞĞ§¡£
-//    ÓĞĞ§×Ö·û´®ĞèÂú×ã£º
-//    ×óÀ¨ºÅ±ØĞëÓÃÏàÍ¬ÀàĞÍµÄÓÒÀ¨ºÅ±ÕºÏ¡£
-//    ×óÀ¨ºÅ±ØĞëÒÔÕıÈ·µÄË³Ğò±ÕºÏ¡£
+//    ç»™å®šä¸€ä¸ªåªåŒ…æ‹¬ '('ï¼Œ')'ï¼Œ'{'ï¼Œ'}'ï¼Œ'['ï¼Œ']' çš„å­—ç¬¦ä¸² s ï¼Œåˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦æœ‰æ•ˆã€‚
+//    æœ‰æ•ˆå­—ç¬¦ä¸²éœ€æ»¡è¶³ï¼š
+//    å·¦æ‹¬å·å¿…é¡»ç”¨ç›¸åŒç±»å‹çš„å³æ‹¬å·é—­åˆã€‚
+//    å·¦æ‹¬å·å¿…é¡»ä»¥æ­£ç¡®çš„é¡ºåºé—­åˆã€‚
 //
-//    Ê¾Àı 1£º
-//    ÊäÈë£ºs = "()"
-//    Êä³ö£ºtrue
-//    Ê¾Àı 2£º
+//    ç¤ºä¾‹ 1ï¼š
+//    è¾“å…¥ï¼šs = "()"
+//    è¾“å‡ºï¼štrue
+//    ç¤ºä¾‹ 2ï¼š
 //
-//    ÊäÈë£ºs = "()[]{}"
-//    Êä³ö£ºtrue
-//    Ê¾Àı 3£º
+//    è¾“å…¥ï¼šs = "()[]{}"
+//    è¾“å‡ºï¼štrue
+//    ç¤ºä¾‹ 3ï¼š
 //
-//    ÊäÈë£ºs = "(]"
-//    Êä³ö£ºfalse
-//    Ê¾Àı 4£º
+//    è¾“å…¥ï¼šs = "(]"
+//    è¾“å‡ºï¼šfalse
+//    ç¤ºä¾‹ 4ï¼š
 //
-//    ÊäÈë£ºs = "([)]"
-//    Êä³ö£ºfalse
-//    Ê¾Àı 5£º
+//    è¾“å…¥ï¼šs = "([)]"
+//    è¾“å‡ºï¼šfalse
+//    ç¤ºä¾‹ 5ï¼š
 //
-//    ÊäÈë£ºs = "{[]}"
-//    Êä³ö£ºtrue
-//    ÌáÊ¾£º
+//    è¾“å…¥ï¼šs = "{[]}"
+//    è¾“å‡ºï¼štrue
+//    æç¤ºï¼š
 //            1 <= s.length <= 104
-//    s ½öÓÉÀ¨ºÅ '()[]{}' ×é³É
+//    s ä»…ç”±æ‹¬å· '()[]{}' ç»„æˆ
 
     public boolean isValid(String s) {
-        //±£Ö¤sµÄ³¤¶È´óÓÚµÈÓÚ1ÇÒ²»ÎªÆæÊı
+        //ä¿è¯sçš„é•¿åº¦å¤§äºç­‰äº1ä¸”ä¸ä¸ºå¥‡æ•°
         if (s.length() % 2 > 0) {
             return false;
         }
         ArrayList<Character> symbolList = new ArrayList<>();
         symbolList.add(s.charAt(0));
-        //Ö±½Ó´ÓµÚÒ»¸ö¿ªÊ¼
+        //ç›´æ¥ä»ç¬¬ä¸€ä¸ªå¼€å§‹
         HashMap<Character, Character> bracketMap = new HashMap<>();
         bracketMap.put(')', '(');
         bracketMap.put(']', '[');
         bracketMap.put('}', '{');
         for (int i = 1; i < s.length(); i++) {
             char currentChar = s.charAt(i);
-            //Èç¹ûÊÇÓÒÀ¨ºÅ£¬ÇÒ²»Îª¿Õ
+            //å¦‚æœæ˜¯å³æ‹¬å·ï¼Œä¸”ä¸ä¸ºç©º
             if (bracketMap.containsKey(currentChar) && !symbolList.isEmpty()) {
                 char lastChar = symbolList.get(symbolList.size() - 1);
                 if (lastChar == bracketMap.get(currentChar)) {
@@ -70,16 +70,16 @@ public class Solution {
 
     public static void main(String[] args) {
         String str = "()[]{}";
-        System.out.println(new com.timvan.Algorithm.LeetCode.ÓĞĞ§µÄÀ¨ºÅ
+        System.out.println(new com.timvan.Algorithm.LeetCode.æœ‰æ•ˆçš„æ‹¬å·
                 .Solution().isValid(str));
         str = "()";
-        System.out.println(new com.timvan.Algorithm.LeetCode.ÓĞĞ§µÄÀ¨ºÅ
+        System.out.println(new com.timvan.Algorithm.LeetCode.æœ‰æ•ˆçš„æ‹¬å·
                 .Solution().isValid(str));
         str = "(]";
-        System.out.println(new com.timvan.Algorithm.LeetCode.ÓĞĞ§µÄÀ¨ºÅ
+        System.out.println(new com.timvan.Algorithm.LeetCode.æœ‰æ•ˆçš„æ‹¬å·
                 .Solution().isValid(str));
         str = "([)]";
-        System.out.println(new com.timvan.Algorithm.LeetCode.ÓĞĞ§µÄÀ¨ºÅ
+        System.out.println(new com.timvan.Algorithm.LeetCode.æœ‰æ•ˆçš„æ‹¬å·
                 .Solution().isValid(str));
     }
 }

@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-//遍历Map
+//閬嶅巻Map
 public class A_TraverseMap {
     public static void main(String[] args) {
 
@@ -20,7 +20,7 @@ public class A_TraverseMap {
     }
 
     static void TraverseMap1(HashMap<Integer,String> map){
-        System.out.println("------ 遍历Map方法1 ------");
+        System.out.println("------ 閬嶅巻Map鏂规硶1 ------");
 
         Set<Map.Entry<Integer,String>> entrySet = map.entrySet();
         Iterator<Map.Entry<Integer,String>> it = entrySet.iterator();
@@ -30,14 +30,14 @@ public class A_TraverseMap {
         }
     }
     static void TraverseMap2(HashMap<Integer,String> map){
-        System.out.println("------ 遍历Map方法2 ------");
+        System.out.println("------ 閬嶅巻Map鏂规硶2 ------");
         for (int i = 0; i < map.size(); i++) {
             System.out.println(i+":"+map.get(i));
         }
     }
 
     static void TraverseMap3(HashMap<Integer,String> map){
-        System.out.println("------ 遍历Map方法3 ------");
+        System.out.println("------ 閬嶅巻Map鏂规硶3 ------");
         for (Object temp:map.keySet()){
             temp = (Integer) temp;
             System.out.println(temp+":"+map.get(temp));

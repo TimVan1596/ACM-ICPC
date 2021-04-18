@@ -1,4 +1,4 @@
-package com.timvan.Algorithm.LeetCode.ºÏ²¢Á½¸öÓĞĞòÁ´±í;
+package com.timvan.Algorithm.LeetCode.åˆå¹¶ä¸¤ä¸ªæœ‰åºé“¾è¡¨;
 
 /**
  * Definition for singly-linked list.
@@ -30,8 +30,8 @@ class Solution {
         }
     }
 
-    //½«Á½¸öÉıĞòÁ´±íºÏ²¢ÎªÒ»¸öĞÂµÄ ÉıĞò Á´±í²¢·µ»Ø¡£
-    // ĞÂÁ´±íÊÇÍ¨¹ıÆ´½Ó¸ø¶¨µÄÁ½¸öÁ´±íµÄËùÓĞ½Úµã×é³ÉµÄ¡£
+    //å°†ä¸¤ä¸ªå‡åºé“¾è¡¨åˆå¹¶ä¸ºä¸€ä¸ªæ–°çš„ å‡åº é“¾è¡¨å¹¶è¿”å›ã€‚
+    // æ–°é“¾è¡¨æ˜¯é€šè¿‡æ‹¼æ¥ç»™å®šçš„ä¸¤ä¸ªé“¾è¡¨çš„æ‰€æœ‰èŠ‚ç‚¹ç»„æˆçš„ã€‚
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         ListNode newList = new ListNode();
         ListNode l1Pointer = l1;
@@ -41,7 +41,7 @@ class Solution {
             return null;
         }
 
-        //Öğ¸ö±È½ÏÈ»ºóÏòÏÂÒ»¸ö
+        //é€ä¸ªæ¯”è¾ƒç„¶åå‘ä¸‹ä¸€ä¸ª
         while (l1Pointer != null && l2Pointer != null) {
             if (l1Pointer.val <= l2Pointer.val) {
                 newPointer.val = l1Pointer.val;
@@ -53,7 +53,7 @@ class Solution {
             newPointer.next = new ListNode();
             newPointer = newPointer.next;
         }
-        //ÈôÒ»·½Îª¿Õ¾ÍÈ«²¿¸²¸Ç
+        //è‹¥ä¸€æ–¹ä¸ºç©ºå°±å…¨éƒ¨è¦†ç›–
         if (l1Pointer != null) {
             newPointer.val = l1Pointer.val;
             newPointer.next = l1Pointer.next;
