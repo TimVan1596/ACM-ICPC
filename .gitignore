@@ -56,13 +56,13 @@ fabric.properties
 .idea/httpRequests
 
 /.idea/encodings.xml
-.idea/.name
-.idea/artifacts/
-.idea/encodings.xml
-.idea/inspectionProfiles/
-.idea/modules.xml
-.idea/vcs.xml
+.idea/*
 classes/
 target/
 "\350\223\235\346\241\245\346\235\257.iml"
 "\346\225\260\346\215\256\347\273\223\346\236\204/\347\254\2542\347\253\240-\347\272\277\346\200\247\350\241\250/"
+.idea/compiler.xml
+.idea/ACM.iml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/
