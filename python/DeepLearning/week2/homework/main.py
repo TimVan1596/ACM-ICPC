@@ -24,32 +24,32 @@ index = 25
 # print("【使用np.squeeze：" + str(np.squeeze(train_set_y[:,index])) + "，不使用np.squeeze： " + str(train_set_y[:,index]) + "】")
 # 只有压缩后的值才能进行解码操作
 
-print("y=" + str(train_set_y[:, index])
-      + ", it's a " + classes[np.squeeze(train_set_y[:, index])]
-      .decode("utf-8") + "' picture")
+# print("y=" + str(train_set_y[:, index])
+#       + ", it's a " + classes[np.squeeze(train_set_y[:, index])]
+#       .decode("utf-8") + "' picture")
 
 # print("type(train_set_y)="+str(type(train_set_y)))
 # print("train_set_y="+train_set_y)
 
 
-print(np.shape(train_set_x_orig))
-print(np.shape(train_set_y))
-print(np.shape(test_set_x_orig))
-print(np.shape(test_set_y))
+# print(np.shape(train_set_x_orig))
+# print(np.shape(train_set_y))
+# print(np.shape(test_set_x_orig))
+# print(np.shape(test_set_y))
 
 m_train = train_set_y.shape[1]  # 训练集里图片的数量。
 m_test = test_set_y.shape[1]  # 测试集里图片的数量。
 num_px = train_set_x_orig.shape[1]  # 训练、测试集里面的图片的宽度和高度（均为64x64）。
 
 # 现在看一看我们加载的东西的具体情况
-print("训练集的数量: m_train = " + str(m_train))
-print("测试集的数量 : m_test = " + str(m_test))
-print("每张图片的宽/高 : num_px = " + str(num_px))
-print("每张图片的大小 : (" + str(num_px) + ", " + str(num_px) + ", 3)")
-print("训练集_图片的维数 : " + str(train_set_x_orig.shape))
-print("训练集_标签的维数 : " + str(train_set_y.shape))
-print("测试集_图片的维数: " + str(test_set_x_orig.shape))
-print("测试集_标签的维数: " + str(test_set_y.shape))
+# print("训练集的数量: m_train = " + str(m_train))
+# print("测试集的数量 : m_test = " + str(m_test))
+# print("每张图片的宽/高 : num_px = " + str(num_px))
+# print("每张图片的大小 : (" + str(num_px) + ", " + str(num_px) + ", 3)")
+# print("训练集_图片的维数 : " + str(train_set_x_orig.shape))
+# print("训练集_标签的维数 : " + str(train_set_y.shape))
+# print("测试集_图片的维数: " + str(test_set_x_orig.shape))
+# print("测试集_标签的维数: " + str(test_set_y.shape))
 
 # 为了方便，我们要把维度为（64，64，3）的numpy数组重新构造为（64 x 64 x 3，1）的数组，
 # 要乘以3的原因是每张图片是由64x64像素构成的，而每个像素点由（R，G，B）三原色构成的，所以要乘以3。
@@ -59,7 +59,54 @@ print("测试集_标签的维数: " + str(test_set_y.shape))
 # 当你想将形状（a，b，c，d）的矩阵X平铺成形状（b * c * d，a）的矩阵X_flatten时，可以使用以下代码：
 
 # X_flatten = X.reshape(X.shape [0]，-1).T ＃X.T是X的转置
+print(train_set_x_orig.shape[0])
+
 # 将训练集的维度降低并转置。
 train_set_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
+print(train_set_x_flatten.shape)
+print(train_set_x_flatten.shape[0])
+print(train_set_x_flatten)
 # 将测试集的维度降低并转置。
 test_set_x_flatten = test_set_x_orig.reshape(test_set_x_orig.shape[0], -1).T
+
+# 将数据进行标准化
+train_set_x = train_set_x_flatten / 255
+test_set_x = test_set_x_flatten / 255
+
+
+# 建立神经网络的主要步骤是：
+# 1、定义模型结构（例如输入特征的数量）
+# 2、初始化模型的参数
+# 3、循环：
+# 3.1 计算当前损失（正向传播）
+# 3.2 计算当前梯度（反向传播）
+# 3.3 更新参数（梯度下降）
+# z=任何大小的标量或numpy数组。
+def sigmoid(z):
+    # 对sigmoid函数的优化，避免了出现极大的数据溢出
+    if z >= 0:
+        return 1.0 / (1 + np.exp(-z))
+    else:
+        return np.exp(z) / (1 + np.exp(z))
+
+
+# 测试sigmoid()
+print("sigmoid(-1000) = " + str(sigmoid(-10000000)))
+print("sigmoid(0) = " + str(sigmoid(0)))
+print("sigmoid(1000) = " + str(sigmoid(10000000)))
+print("sigmoid(9.2) = " + str(sigmoid(9.2)))
+
+
+# 此函数为w创建一个维度为（dim，1）的0向量，并将b初始化为0。
+# dim = 我们想要的w矢量的大小（或者这种情况下的参数数量）
+def initialize_with_zeros(dim):
+    w = np.zeros(shape=(dim, 1))
+    b = 0
+    # 使用断言来确保我要的数据是正确的
+    assert (w.shape == (dim, 1))  # w的维度是(dim,1)
+    assert (isinstance(b, float) or isinstance(b, int))  # b的类型是float或者是int
+    # w  = 维度为（dim，1）的初始化向量。
+    # b  = 初始化的标量（对应于偏差）
+    return w, b
+
+
