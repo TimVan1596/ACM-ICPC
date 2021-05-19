@@ -54,15 +54,24 @@ class Solution:
 
     def postorderTraversal(self, root: TreeNode) -> List[int]:
         orderList = []
+        # 定义一个栈，先进后出
         stack = []
         point = root
-        while point is not None or len(stack) > 0:
-            if point is not None:
-                stack.append(point)
-                point = point.left
-            else:
+        while point is not None:
+            # 打印当前节点
+            orderList.append(point.val)
+            # 左节点是否为空，非空放入栈
+            if point.left is not None:
+                stack.append(point.left)
+            # 左节点如非空则进入，若为空从栈中取顶值
+            if point.right is not None:
+                point = point.right
+            elif len(stack) > 0:
                 point = stack.pop()
-
+            else:
+                break
+        # 后序遍历实际是 中右左 的倒序
+        orderList.reverse()
         return orderList
 
 
@@ -85,3 +94,5 @@ if __name__ == '__main__':
     print(solution.preorderTraversal(myBinaryTree))
     # 中序遍历
     print(solution.inorderTraversal(myBinaryTree))
+    # 后序遍历
+    print(solution.postorderTraversal(myBinaryTree))
