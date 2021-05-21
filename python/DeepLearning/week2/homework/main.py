@@ -3,6 +3,7 @@
 # @Author:TimVan
 # @File:main.py
 # @Software:PyCharm
+import numpy
 import numpy as np
 
 from lr_utils import load_dataset
@@ -63,9 +64,9 @@ print(train_set_x_orig.shape[0])
 
 # 将训练集的维度降低并转置。
 train_set_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
-print(train_set_x_flatten.shape)
-print(train_set_x_flatten.shape[0])
-print(train_set_x_flatten)
+# print(train_set_x_flatten.shape)
+# print(train_set_x_flatten.shape[0])
+# print(train_set_x_flatten)
 # 将测试集的维度降低并转置。
 test_set_x_flatten = test_set_x_orig.reshape(test_set_x_orig.shape[0], -1).T
 
@@ -91,10 +92,10 @@ def sigmoid(z):
 
 
 # 测试sigmoid()
-print("sigmoid(-1000) = " + str(sigmoid(-10000000)))
-print("sigmoid(0) = " + str(sigmoid(0)))
-print("sigmoid(1000) = " + str(sigmoid(10000000)))
-print("sigmoid(9.2) = " + str(sigmoid(9.2)))
+# print("sigmoid(-1000) = " + str(sigmoid(-10000000)))
+# print("sigmoid(0) = " + str(sigmoid(0)))
+# print("sigmoid(1000) = " + str(sigmoid(10000000)))
+# print("sigmoid(9.2) = " + str(sigmoid(9.2)))
 
 
 # 此函数为w创建一个维度为（dim，1）的0向量，并将b初始化为0。
@@ -108,15 +109,6 @@ def initialize_with_zeros(dim):
     # w  = 维度为（dim，1）的初始化向量。
     # b  = 初始化的标量（对应于偏差）
     return w, b
-
-
-# 测试initialize_with_zeros函数
-initialData = initialize_with_zeros(3)
-print(initialData)
-# print("w=" + initialData[0].shape)
-# print("b=" + initialData[1])
-print(initialData[0].shape)
-print(initialData[0])
 
 
 def propagate(w, b, X, Y):
@@ -155,3 +147,27 @@ def propagate(w, b, X, Y):
         "db": db
     }
     return (grads, cost)
+
+
+# 测试initialize_with_zeros函数
+# initialData = initialize_with_zeros(3)
+# print(initialData)
+# print(initialData[0].shape)
+# print(initialData[0])
+
+# a=3*1的列矩阵
+a = numpy.array([[1], [2], [3]])
+# b=1*3的行矩阵
+b = numpy.array([[4, 5, 6]])
+
+print(a.shape)
+print(b.shape)
+
+print("a*b =")
+print(a * b)
+# print("numpy.matmul(a, b) =")
+# print(numpy.matmul(a, b))
+print("numpy.dot(a, b) =")
+print(numpy.dot(a, b))
+# print("numpy.cross(a, b) =")
+# print(numpy.cross(a, b))
