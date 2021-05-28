@@ -5,7 +5,7 @@
 # @Software:PyCharm
 import numpy
 import numpy as np
-
+import matplotlib.pyplot as plt
 from lr_utils import load_dataset
 
 print("\n")
@@ -213,13 +213,13 @@ def optimize(w, b, X, Y, num_iterations, learning_rate, print_cost=False):
 
 
 # 测试optimize
-print("====================测试optimize====================")
-w, b, X, Y = np.array([[1], [2]]), 2, np.array([[1, 2], [3, 4]]), np.array([[1, 0]])
-params, grads, costs = optimize(w, b, X, Y, num_iterations=50000, learning_rate=0.009, print_cost=True)
-print("w = " + str(params["w"]))
-print("b = " + str(params["b"]))
-print("dw = " + str(grads["dw"]))
-print("db = " + str(grads["db"]))
+# print("====================测试optimize====================")
+# w, b, X, Y = np.array([[1], [2]]), 2, np.array([[1, 2], [3, 4]]), np.array([[1, 0]])
+# params, grads, costs = optimize(w, b, X, Y, num_iterations=50000, learning_rate=0.009, print_cost=True)
+# print("w = " + str(params["w"]))
+# print("b = " + str(params["b"]))
+# print("dw = " + str(grads["dw"]))
+# print("db = " + str(grads["db"]))
 
 
 def predict(w, b, X):
@@ -247,9 +247,9 @@ def predict(w, b, X):
 
 
 # 测试predict
-print("====================测试predict====================")
-w, b, X, Y = np.array([[1], [2]]), 2, np.array([[1, 2], [3, 4]]), np.array([[1, 0]])
-print("predictions = " + str(predict(w, b, X)))
+# print("====================测试predict====================")
+# w, b, X, Y = np.array([[1], [2]]), 2, np.array([[1, 2], [3, 4]]), np.array([[1, 0]])
+# print("predictions = " + str(predict(w, b, X)))
 
 
 def model(X_train, Y_train, X_test, Y_test, num_iterations=2000, learning_rate=0.5, print_cost=False):
@@ -292,3 +292,35 @@ def model(X_train, Y_train, X_test, Y_test, num_iterations=2000, learning_rate=0
         "learning_rate": learning_rate,
         "num_iterations": num_iterations}
     return d
+
+
+# print("====================测试model====================")
+# # 这里加载的是真实的数据，请参见上面的代码部分。
+# d = model(train_set_x, train_set_y, test_set_x, test_set_y, num_iterations=2000, learning_rate=0.005, print_cost=True)
+#
+# #绘制图
+# costs = np.squeeze(d['costs'])
+# plt.plot(costs)
+# plt.ylabel('cost')
+# plt.xlabel('iterations (per hundreds)')
+# plt.title("Learning rate =" + str(d["learning_rate"]))
+# plt.show()
+
+
+learning_rates = [0.01, 0.001, 0.0001]
+models = {}
+for i in learning_rates:
+    print ("learning rate is: " + str(i))
+    models[str(i)] = model(train_set_x, train_set_y, test_set_x, test_set_y, num_iterations = 1500, learning_rate = i, print_cost = False)
+    print ('\n' + "-------------------------------------------------------" + '\n')
+
+for i in learning_rates:
+    plt.plot(np.squeeze(models[str(i)]["costs"]), label= str(models[str(i)]["learning_rate"]))
+
+plt.ylabel('cost')
+plt.xlabel('iterations')
+
+legend = plt.legend(loc='upper center', shadow=True)
+frame = legend.get_frame()
+frame.set_facecolor('0.90')
+plt.show()
