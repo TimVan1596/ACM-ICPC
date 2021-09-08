@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/Java/src/com/timvan/Algorithm/Trick/CT0720/A_TraverseMap.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/Java/src/com/timvan/Lambda表达式/Main.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/python/README.md" charset="GBK" />
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/Java/src/com/timvan/Algorithm/LeetCode/子集_78/Solution.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Java/src/com/timvan/Algorithm/Trick/CT0720/A_TraverseMap.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Java/src/com/timvan/Lambda表达式/Main.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/python/README.md" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/python/course/main.py" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
