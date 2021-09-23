@@ -28,72 +28,94 @@ if __name__ == '__main__':
     # 初始化大写Y
     Y = np.array([0, 1])
 
-    # 初始化大写 W
     W1 = np.random.uniform(-1, 1, size=(HIDDEN_LAYER_NUM, X.shape[0]))
-    print('W1=')
-    print(W1)
-    print()
-
-    # 初始化 B
-    # b1 = np.random.randint(1, 1, size=(4, 2))
     b1 = np.random.uniform(-1, 1, size=(HIDDEN_LAYER_NUM, X.shape[1]))
-    print('b1=')
-    print(b1)
-    print()
 
-    Z1 = W1.dot(X) + b1
-    print('Z1=')
-    print(Z1)
-    print()
+    for i in range(0, 100, ):
+        print("-" * 15)
+        print("开始第{0}轮".format(i + 1))
+        print("-" * 15)
 
-    A1 = np.tanh(Z1)
-    print('A1=')
-    print(A1)
-    print()
+        # 初始化大写 W
+        print('W1=')
+        print(W1)
+        print()
 
-    W2 = np.random.uniform(-1, 1, size=(1, HIDDEN_LAYER_NUM))
-    print('W2=')
-    print(W2)
-    print()
+        print('b1=')
+        print(b1)
+        print()
 
-    b2 = np.random.uniform(-1, 1, size=(1, X.shape[1]))
-    print('b2=')
-    print(b2)
-    print()
+        Z1 = W1.dot(X) + b1
+        print('Z1=')
+        print(Z1)
+        print()
 
-    Z2 = W2.dot(A1) + b2
-    print('Z2=')
-    print(Z2)
-    print()
+        A1 = np.tanh(Z1)
+        print('A1=')
+        print(A1)
+        print()
 
-    A2 = sigmoid(Z2)
-    print('A2=')
-    print(A2)
-    print()
+        W2 = np.random.uniform(-1, 1, size=(1, HIDDEN_LAYER_NUM))
+        print('W2=')
+        print(W2)
+        print()
 
-    d_Z2 = A2 - Y
-    print('d_Z2=')
-    print(d_Z2)
-    print()
+        b2 = np.random.uniform(-1, 1, size=(1, X.shape[1]))
+        print('b2=')
+        print(b2)
+        print()
 
-    d_W2 = (1 / X.shape[1]) * (d_Z2.dot(A1.T))
-    print('d_W2=')
-    print(d_W2)
-    print()
+        Z2 = W2.dot(A1) + b2
+        print('Z2=')
+        print(Z2)
+        print()
 
-    d_b2 = (1 / X.shape[1]) * np.sum(d_Z2, axis=1, keepdims=True)
-    print('d_b2=')
-    print(d_b2)
-    print()
+        A2 = sigmoid(Z2)
+        print('A2=')
+        print(A2)
+        print()
 
-    print('np.sum(d_Z2, axis=1, keepdims=True)=')
-    print(np.sum(d_Z2, axis=1, keepdims=True))
-    print()
+        d_Z2 = A2 - Y
+        print('d_Z2=')
+        print(d_Z2)
+        print()
 
-    print('np.sum(d_Z2, axis=1)=')
-    print(np.sum(d_Z2, axis=1))
-    print()
+        d_W2 = (1 / X.shape[1]) * (d_Z2.dot(A1.T))
+        print('d_W2=')
+        print(d_W2)
+        print()
 
-    print('np.sum(d_Z2)=')
-    print(np.sum(d_Z2))
-    print()
+        d_b2 = (1 / X.shape[1]) * np.sum(d_Z2, axis=1, keepdims=True)
+        print('d_b2=')
+        print(d_b2)
+        print()
+
+        print('d_b2=np.sum(d_Z2, axis=1, keepdims=True)=')
+        print(np.sum(d_Z2, axis=1, keepdims=True))
+        print()
+
+        print('d_b2=np.sum(d_Z2, axis=1)=')
+        print(np.sum(d_Z2, axis=1))
+        print()
+
+        print('d_b2=np.sum(d_Z2)=')
+        print(np.sum(d_Z2))
+        print()
+
+        d_Z1 = np.multiply((W2.T.dot(d_Z2)), (1 - np.tanh(Z1) * np.tanh(Z1)))
+        print('d_Z1=')
+        print(d_Z1)
+        print()
+
+        d_W1 = (1 / X.shape[1]) * d_Z1.dot(X.T)
+        print('d_W1=')
+        print(d_W1)
+        print()
+
+        d_b1 = np.sum(d_Z1, axis=1, keepdims=True)
+        print('d_b1=')
+        print(d_b1)
+        print()
+
+        W1 = W1 + d_W1
+        b1 = W2 + d_W2
