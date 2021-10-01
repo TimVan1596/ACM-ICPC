@@ -241,62 +241,62 @@ if __name__ == "__main__":
     X, Y = load_planar_dataset()
 
     # # 测试layer_sizes
-    print("=========================测试layer_sizes=========================")
-    X_asses, Y_asses = layer_sizes_test_case()
-    (n_x, n_h, n_y) = layer_sizes(X_asses, Y_asses)
-    print("输入层的节点数量为: n_x = " + str(n_x))
-    print("隐藏层的节点数量为: n_h = " + str(n_h))
-    print("输出层的节点数量为: n_y = " + str(n_y))
-
-    # # 测试initialize_parameters
-    print("=========================测试initialize_parameters=========================")
-    n_x, n_h, n_y = initialize_parameters_test_case()
-    parameters = initialize_parameters(n_x, n_h, n_y)
-    print("W1 = " + str(parameters["W1"]))
-    print("b1 = " + str(parameters["b1"]))
-    print("W2 = " + str(parameters["W2"]))
-    print("b2 = " + str(parameters["b2"]))
-
-    # 测试forward_propagation
-    print("=========================测试forward_propagation=========================")
-    X_assess, parameters = forward_propagation_test_case()
-    A2, cache = forward_propagation(X_assess, parameters)
-    print(np.mean(cache["Z1"]), np.mean(cache["A1"]), np.mean(cache["Z2"]), np.mean(cache["A2"]))
-
-    # 测试compute_cost
-    print("=========================测试compute_cost=========================")
-    A2, Y_assess, parameters = compute_cost_test_case()
-    print("cost = " + str(compute_cost(A2, Y_assess, parameters)))
-
-    # 测试backward_propagation
-    print("=========================测试backward_propagation=========================")
-    parameters, cache, X_assess, Y_assess = backward_propagation_test_case()
-
-    grads = backward_propagation(parameters, cache, X_assess, Y_assess)
-    print("dW1 = " + str(grads["dW1"]))
-    print("db1 = " + str(grads["db1"]))
-    print("dW2 = " + str(grads["dW2"]))
-    print("db2 = " + str(grads["db2"]))
-
-    # 测试update_parameters
-    print("=========================测试update_parameters=========================")
-    parameters, grads = update_parameters_test_case()
-    parameters = update_parameters(parameters, grads)
-
-    print("W1 = " + str(parameters["W1"]))
-    print("b1 = " + str(parameters["b1"]))
-    print("W2 = " + str(parameters["W2"]))
-    print("b2 = " + str(parameters["b2"]))
+    # print("=========================测试layer_sizes=========================")
+    # X_asses, Y_asses = layer_sizes_test_case()
+    # (n_x, n_h, n_y) = layer_sizes(X_asses, Y_asses)
+    # print("输入层的节点数量为: n_x = " + str(n_x))
+    # print("隐藏层的节点数量为: n_h = " + str(n_h))
+    # print("输出层的节点数量为: n_y = " + str(n_y))
+    #
+    # # # 测试initialize_parameters
+    # print("=========================测试initialize_parameters=========================")
+    # n_x, n_h, n_y = initialize_parameters_test_case()
+    # parameters = initialize_parameters(n_x, n_h, n_y)
+    # print("W1 = " + str(parameters["W1"]))
+    # print("b1 = " + str(parameters["b1"]))
+    # print("W2 = " + str(parameters["W2"]))
+    # print("b2 = " + str(parameters["b2"]))
+    #
+    # # 测试forward_propagation
+    # print("=========================测试forward_propagation=========================")
+    # X_assess, parameters = forward_propagation_test_case()
+    # A2, cache = forward_propagation(X_assess, parameters)
+    # print(np.mean(cache["Z1"]), np.mean(cache["A1"]), np.mean(cache["Z2"]), np.mean(cache["A2"]))
+    #
+    # # 测试compute_cost
+    # print("=========================测试compute_cost=========================")
+    # A2, Y_assess, parameters = compute_cost_test_case()
+    # print("cost = " + str(compute_cost(A2, Y_assess, parameters)))
+    #
+    # # 测试backward_propagation
+    # print("=========================测试backward_propagation=========================")
+    # parameters, cache, X_assess, Y_assess = backward_propagation_test_case()
+    #
+    # grads = backward_propagation(parameters, cache, X_assess, Y_assess)
+    # print("dW1 = " + str(grads["dW1"]))
+    # print("db1 = " + str(grads["db1"]))
+    # print("dW2 = " + str(grads["dW2"]))
+    # print("db2 = " + str(grads["db2"]))
+    #
+    # # 测试update_parameters
+    # print("=========================测试update_parameters=========================")
+    # parameters, grads = update_parameters_test_case()
+    # parameters = update_parameters(parameters, grads)
+    #
+    # print("W1 = " + str(parameters["W1"]))
+    # print("b1 = " + str(parameters["b1"]))
+    # print("W2 = " + str(parameters["W2"]))
+    # print("b2 = " + str(parameters["b2"]))
 
     # 测试nn_model
-    print("=========================测试nn_model=========================")
-    X_assess, Y_assess = nn_model_test_case()
-
-    parameters = nn_model(X_assess, Y_assess, 4, num_iterations=10000, print_cost=False)
-    print("W1 = " + str(parameters["W1"]))
-    print("b1 = " + str(parameters["b1"]))
-    print("W2 = " + str(parameters["W2"]))
-    print("b2 = " + str(parameters["b2"]))
+    # print("=========================测试nn_model=========================")
+    # X_assess, Y_assess = nn_model_test_case()
+    #
+    # parameters = nn_model(X_assess, Y_assess, 4, num_iterations=1000, print_cost=False)
+    # print("W1 = " + str(parameters["W1"]))
+    # print("b1 = " + str(parameters["b1"]))
+    # print("W2 = " + str(parameters["W2"]))
+    # print("b2 = " + str(parameters["b2"]))
 
     # 测试predict
     print("=========================测试predict=========================")
@@ -306,7 +306,7 @@ if __name__ == "__main__":
     predictions = predict(parameters, X_assess)
     print("预测的平均值 = " + str(np.mean(predictions)))
 
-    parameters = nn_model(X, Y, n_h=100, num_iterations=10000, print_cost=True)
+    parameters = nn_model(X, Y, n_h=100, num_iterations=2000, print_cost=True)
 
     # 绘制边界
     plot_decision_boundary(lambda x: predict(parameters, x.T), X, Y)

@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 # 设置常量
 # HIDDEN_LAYER_NUM = 隐层的个数
 # LEARNING_RATE = 学习率
-HIDDEN_LAYER_NUM = 6
-LEARNING_RATE = 1.2
+HIDDEN_LAYER_NUM = 8
+LEARNING_RATE = 1
 
 
 # 激活函数
@@ -38,10 +38,15 @@ def forward_propagation(X, parameter):
 
 # 计算该结果的成本
 def cost(A2, Y):
+    A2 = np.squeeze(A2)
+    Y = np.squeeze(Y)
+    assert (A2.shape[0] == Y.shape[0])
     # 这里使用 np.multiply 是因为只有一维所以对应想乘
     temp = np.multiply(np.log(A2), Y) + np.multiply((1 - Y), np.log(1 - A2))
-    print(temp.shape)
-    print(temp)
+    # 取了一次绝对值
+    temp = np.maximum(temp, -temp)
+    cost_ret = np.sum(temp) * (1 / A2.shape[0])
+    return float(cost_ret)
 
 
 # 浅层神经网络主驱动
@@ -49,7 +54,7 @@ def shallow_neural_network(X, Y, round=5000):
     # 绘图
     plt.title("week3 浅层的神经网络")
     plt.xlabel("x/times")
-    plt.ylabel("J")
+    plt.ylabel("损失值（越小越好）")
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
     plt.rcParams['axes.unicode_minus'] = False  # 这两行需要手动设置
 
@@ -73,10 +78,10 @@ def shallow_neural_network(X, Y, round=5000):
             'W2': W2,
             'b2': b2,
         })
-
         A1 = forward_parameter.get('A1')
         Z1 = forward_parameter.get('Z1')
         A2 = forward_parameter.get('A2')
+        cost_value = cost(A2, Y)
 
         d_Z2 = A2 - Y
         d_W2 = (1 / X.shape[1]) * (d_Z2.dot(A1.T))
@@ -85,18 +90,9 @@ def shallow_neural_network(X, Y, round=5000):
         d_W1 = (1 / X.shape[1]) * d_Z1.dot(X.T)
         d_b1 = (1 / X.shape[1]) * np.sum(d_Z1, axis=1, keepdims=True)
 
-        # 计算成本
-        ret = np.multiply(Y, np.log(A2)) + np.multiply((1 - Y), np.log(1 - A2))
-        J = np.squeeze((-1 / X.shape[1]) * np.sum(ret, axis=1, keepdims=True))
-
-        logprobs = np.multiply(np.log(A2), Y) + np.multiply((1 - Y), np.log(1 - A2))
-        cost = - np.sum(logprobs) / X.shape[1]
-        cost = float(np.squeeze(cost))
-
         if i % 50 == 0:
             x.append(i)
-            y.append(J)
-            y1.append(cost)
+            y.append(cost_value)
 
         W1 = W1 - LEARNING_RATE * d_W1
         b1 = b1 - LEARNING_RATE * d_b1
@@ -104,8 +100,8 @@ def shallow_neural_network(X, Y, round=5000):
         b2 = b2 - LEARNING_RATE * d_b2
 
     # plt.plot(x, y)
-    plt.plot(x, y1, color='orange')
-    # plt.show()
+    plt.plot(x, y, color='orange')
+    plt.show()
 
     parameter = {
         'W1': W1,
@@ -120,27 +116,54 @@ def shallow_neural_network(X, Y, round=5000):
 def test_network(X, Y, parameter):
     forward_parameter = forward_propagation(X, parameter)
     A2 = forward_parameter.get('A2')
-    cost(A2, Y)
+    cost_value = cost(A2, Y)
+    print("cost_value=" + str(cost_value))
+
+
+def load_planar_dataset():
+    np.random.seed(1)
+    m = 400  # number of examples
+    N = int(m / 2)  # number of points per class
+    D = 2  # dimensionality
+    X = np.zeros((m, D))  # data matrix where each row is a single example
+    Y = np.zeros((m, 1), dtype='uint8')  # labels vector (0 for red, 1 for blue)
+    a = 4  # maximum ray of the flower
+
+    for j in range(2):
+        ix = range(N * j, N * (j + 1))
+        t = np.linspace(j * 3.12, (j + 1) * 3.12, N) + np.random.randn(N) * 0.2  # theta
+        r = a * np.sin(4 * t) + np.random.randn(N) * 0.2  # radius
+        X[ix] = np.c_[r * np.sin(t), r * np.cos(t)]
+        Y[ix] = j
+
+    X = X.T
+    Y = Y.T
+
+    return X, Y
 
 
 if __name__ == '__main__':
     # 测试集进行学习的次数
-    round = 5000
 
     # 初始化训练的数据
-    data_X = np.array([
-        [220, 1100, 100, 500, 300, 100, 400, 848, 1, 0, 2, 8, 2, 0, 100, 200],
-        [221, 600, 120, 600, 1000, 200, 500, 35153, 1, 0, 2, 1, 1, 5, 200, 300],
-        [290, 800, 130, 700, 2000, 300, 600, 5245, 1, 0, 3, 2, 3, 9, 300, 400],
-    ])
-    data_Y = np.array([1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1])
-    parameter = shallow_neural_network(data_X, data_Y)
+    # data_X = np.array([
+    #     [220, 1100, 100, 500, 300, 100, 400, 848, 1, 0, 2, 8, 2, 0, 100, 200],
+    #     [221, 600, 120, 600, 1000, 200, 500, 35153, 1, 0, 2, 1, 1, 5, 200, 300],
+    #     [290, 800, 130, 700, 2000, 300, 600, 5245, 1, 0, 3, 2, 3, 9, 300, 400],
+    # ])
+    # data_Y = np.array([1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1])
+
+    data_X, data_Y = load_planar_dataset()
+    print(data_X.shape)
+    print(data_Y.shape)
+
+    parameter = shallow_neural_network(data_X, data_Y, round=100000)
 
     # 初始化测试集的数据
-    test_X = np.array([
-        [1, 600, 0],
-        [2, 300, 4],
-        [5, 500, 2]
-    ])
-    test_Y = np.array([0, 1, 0])
-    test_network(test_X, test_Y, parameter=parameter)
+    # test_X = np.array([
+    #     [1, 600, 0],
+    #     [2, 300, 4],
+    #     [5, 500, 2]
+    # ])
+    # test_Y = np.array([0, 1, 0])
+    # test_network(test_X, test_Y, parameter=parameter)
