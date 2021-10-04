@@ -17,7 +17,7 @@ def get_number(num):
         x = random.randint(0, 50)
         y = random.randint(0, 100)
         z = random.randint(0, 100)
-        temp = math.pow(x, 2) + y - 6 * z
+        temp = math.pow(x, 2) + y - 10 * z
         result = 1
         if temp < 0:
             result = 0

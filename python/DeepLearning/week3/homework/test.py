@@ -2,11 +2,47 @@ import numpy as np
 import numpy.random
 import matplotlib.pyplot as plt
 
+import random
+import math
+
+
+# 获得数据
+# num = 样本数量
+def get_number(num):
+    X = [
+        [],
+        [],
+        []
+    ]
+    Y = []
+    i = 0
+    for i in range(num):
+        x = random.randint(0, 50)
+        y = random.randint(0, 100)
+        z = random.randint(0, 100)
+        temp = math.pow(x, 2) + y - 10 * z
+        result = 1
+        if temp < 0:
+            result = 0
+        X[0].append(x)
+        X[1].append(y)
+        X[2].append(z)
+        Y.append(result)
+        # print("-- 当 i =" + str(i))
+        # print("x=" + str(x))
+        # print("y=" + str(y))
+        # print("z=" + str(z))
+        # print("temp=" + str(temp))
+        # print("result=" + str(result))
+        # print("-" * 10)
+    return X, Y
+
+
 # 设置常量
 # HIDDEN_LAYER_NUM = 隐层的个数
 # LEARNING_RATE = 学习率
-HIDDEN_LAYER_NUM = 8
-LEARNING_RATE = 1
+HIDDEN_LAYER_NUM = 6
+LEARNING_RATE = 1.2
 
 
 # 激活函数
@@ -117,6 +153,8 @@ def test_network(X, Y, parameter):
     forward_parameter = forward_propagation(X, parameter)
     A2 = forward_parameter.get('A2')
     cost_value = cost(A2, Y)
+    print(A2)
+    print(Y)
     print("cost_value=" + str(cost_value))
 
 
@@ -153,17 +191,16 @@ if __name__ == '__main__':
     # ])
     # data_Y = np.array([1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1])
 
-    data_X, data_Y = load_planar_dataset()
+    data_X, data_Y = get_number(5000)
+    data_X = np.array(data_X)
+    data_Y = np.array(data_Y)
     print(data_X.shape)
     print(data_Y.shape)
 
-    parameter = shallow_neural_network(data_X, data_Y, round=100000)
+    parameter = shallow_neural_network(data_X, data_Y, round=5000)
 
     # 初始化测试集的数据
-    # test_X = np.array([
-    #     [1, 600, 0],
-    #     [2, 300, 4],
-    #     [5, 500, 2]
-    # ])
-    # test_Y = np.array([0, 1, 0])
-    # test_network(test_X, test_Y, parameter=parameter)
+    test_X, test_Y = get_number(5)
+    test_X = np.array(test_X)
+    test_Y = np.array(test_Y)
+    test_network(test_X, test_Y, parameter=parameter)
