@@ -104,36 +104,18 @@ def shallow_neural_network(X, Y
             })
             Z[L] = forward_parameter.get('Z')
             A[L] = forward_parameter.get('A')
-        # 增加一个sigmoid
-        if i == 0:
-            W.append(np.array([]))
-            b.append(np.array([]))
-            Z.append(np.array([]))
-            A.append(np.array([]))
-            dW.append(np.array([]))
-            db.append(np.array([]))
-            dZ.append(np.array([]))
-            dA.append(np.array([]))
-            W[net_deep] = np.random.randn(1, net_deep_array[net_deep - 1]) * 0.01
-            b[net_deep] = np.zeros(shape=(1, 1))
-        # 进行前向传播
-        Z[net_deep] = np.dot(W[net_deep], A[net_deep - 1]) + b[net_deep]
-        A[net_deep] = sigmoid(Z[net_deep])
 
         # 计算成本cost
-        cost_value = cost(A[net_deep], Y)
+        cost_value = cost(A[net_deep - 1], Y)
         if i % 50 == 0:
             x.append(i)
             y.append(cost_value)
 
         # 后向传播用于梯度下降
         # 倒序计算出
-        dZ[net_deep] = A[net_deep] - Y
-        dW[net_deep] = (1 / m) * (dZ[net_deep].dot(A[net_deep - 1].T))
-        db[net_deep] = (1 / m) * np.sum(dZ[net_deep], axis=1, keepdims=True)
-        W[net_deep] = W[net_deep] - learning_rate * dW[net_deep]
-        b[net_deep] = b[net_deep] - learning_rate * db[net_deep]
-        dA[net_deep - 1] = np.dot(W[net_deep].T, dZ[net_deep])
+        dA[net_deep - 1] = np.multiply(
+            (-1) * Y / A[net_deep - 1] + (1 - Y) / (1 - A[net_deep - 1])
+            , (1 - np.tanh(Z[net_deep - 1]) * np.tanh(Z[net_deep - 1])))
         for L in range(net_deep - 1, 0, -1):
             dZ[L] = np.multiply(dA[L], (1 - np.tanh(Z[L]) * np.tanh(Z[L])))
             dW[L] = (1 / m) * (np.dot(dZ[L], A[net_deep - 1].T))
