@@ -41,9 +41,14 @@ def forward_propagation(A_Last, parameter):
 # 计算该结果的成本
 def cost(A, Y):
     A = np.squeeze(A)
+    A = np.maximum(A, -A)
     Y = np.squeeze(Y)
     assert (A.shape[0] == Y.shape[0])
     # 这里使用 np.multiply 是因为只有一维所以对应想乘
+    a = np.log(A)
+    b = np.multiply(np.log(A), Y)
+    c = np.log(1 - A)
+    c = np.multiply((1 - Y), np.log(1 - A))
     temp = np.multiply(np.log(A), Y) + np.multiply((1 - Y), np.log(1 - A))
     # 取了一次绝对值
     temp = np.maximum(temp, -temp)
@@ -53,7 +58,7 @@ def cost(A, Y):
 
 # 浅层神经网络主驱动
 def shallow_neural_network(X, Y
-                           , net_deep_array=[0, 6, 1], learning_rate=LEARNING_RATE
+                           , net_deep_array=[0, 2, 1], learning_rate=LEARNING_RATE
                            , train_times=DEFAULT_TRAIN_TIMES, random_seed=RANDOM_SEED):
     # 绘图
     plt.title("week4 深层神经网络")
@@ -84,7 +89,7 @@ def shallow_neural_network(X, Y
     # 训练次数
     for i in range(0, train_times, 1):
         # 每次前向传播中的纵向深度
-        for L in range(1, net_deep, 1):
+        for L in range(1, net_deep - 1, 1):
             # 初始化参数W和B
             if i == 0:
                 W.append(np.array([]))
@@ -95,7 +100,7 @@ def shallow_neural_network(X, Y
                 db.append(np.array([]))
                 dZ.append(np.array([]))
                 dA.append(np.array([]))
-                W[L] = np.random.randn(net_deep_array[L], net_deep_array[L - 1]) * 0.01
+                W[L] = np.random.randn(net_deep_array[L], net_deep_array[L - 1]) * np.sqrt(net_deep_array[L])
                 b[L] = np.zeros(shape=(net_deep_array[L], 1))
             # 进行前向传播
             forward_parameter = forward_propagation(A[L - 1], {
@@ -104,20 +109,37 @@ def shallow_neural_network(X, Y
             })
             Z[L] = forward_parameter.get('Z')
             A[L] = forward_parameter.get('A')
+            # 初始化参数W和B
+        L = net_deep - 1
+        if i == 0:
+            W.append(np.array([]))
+            b.append(np.array([]))
+            Z.append(np.array([]))
+            A.append(np.array([]))
+            dW.append(np.array([]))
+            db.append(np.array([]))
+            dZ.append(np.array([]))
+            dA.append(np.array([]))
+            W[L] = np.random.randn(net_deep_array[L], net_deep_array[L - 1]) * 0.01
+            b[L] = np.zeros(shape=(net_deep_array[L], 1))
+        Z[L] = np.dot(W[L], A[L - 1]) + b[L]
+        A[L] = np.tanh(Z[L])
 
         # 计算成本cost
         cost_value = cost(A[net_deep - 1], Y)
-        if i % 50 == 0:
+        if i % 1 == 0:
             x.append(i)
             y.append(cost_value)
 
         # 后向传播用于梯度下降
         # 倒序计算出
-        dA[net_deep - 1] = np.multiply(
-            (-1) * Y / A[net_deep - 1] + (1 - Y) / (1 - A[net_deep - 1])
-            , (1 - np.tanh(Z[net_deep - 1]) * np.tanh(Z[net_deep - 1])))
+
         for L in range(net_deep - 1, 0, -1):
-            dZ[L] = np.multiply(dA[L], (1 - np.tanh(Z[L]) * np.tanh(Z[L])))
+            if L == net_deep - 1:
+                dZ[L] = A[L] - Y
+            else:
+                dZ[L] = np.multiply(dA[L], (1 - np.tanh(Z[L]) * np.tanh(Z[L])))
+
             dW[L] = (1 / m) * (np.dot(dZ[L], A[net_deep - 1].T))
             db[L] = (1 / m) * np.sum(dZ[L], axis=1, keepdims=True)
             dA[L - 1] = np.dot(W[L].T, dZ[L])
@@ -186,14 +208,14 @@ if __name__ == '__main__':
     # 测试集进行学习的次数
 
     # 初始化训练的数据
-    data_X, data_Y = get_number(5000)
+    data_X, data_Y = get_number(1)
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
 
     print(data_X.shape)
     print(data_Y.shape)
 
-    parameter = shallow_neural_network(data_X, data_Y, train_times=5000)
+    parameter = shallow_neural_network(data_X, data_Y, train_times=1)
 
     # 初始化测试集的数据
     test_X, test_Y = get_number(10)
