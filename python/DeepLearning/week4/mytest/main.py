@@ -2,13 +2,14 @@ import numpy as np
 import numpy.random
 import matplotlib.pyplot as plt
 from get_data import get_number
+import random
 
 # 设置常量
 # HIDDEN_LAYER_NUM = 隐层的个数
 # LEARNING_RATE = 学习率
 # NET_DEEP_ARRAY = 神经网络的深度(输入层X为0)对应的神经元个数
 # DEFAULT_TRAIN_TIMES = 默认训练次数
-LEARNING_RATE = 1.0
+LEARNING_RATE = 1.2
 NET_DEEP_ARRAY = []
 DEFAULT_TRAIN_TIMES = 5000
 # RANDOM_SEED = 随机数的种子
@@ -201,6 +202,38 @@ def test_network(X, Y, parameter):
 
     print("成本cost=" + str(cost_value))
     print("准确性: " + str(float(np.sum((A == Y)) * 100 / m)) + "%")
+
+
+# 获得数据
+# num = 样本数量
+def get_number(num):
+    X = [
+        [],
+        [],
+        []
+    ]
+    Y = []
+    i = 0
+    for i in range(num):
+        x = random.randint(-5, 15)
+        y = random.randint(0, 150)
+        z = random.randint(0, 150)
+        temp = np.exp(x) + 3 * y + z
+        result = 1
+        if temp < 500:
+            result = 0
+        X[0].append(x)
+        X[1].append(y)
+        X[2].append(z)
+        Y.append(result)
+        # print("-- 当 i =" + str(i))
+        # print("x=" + str(x))
+        # print("y=" + str(y))
+        # print("z=" + str(z))
+        # print("temp=" + str(temp))
+        # print("result=" + str(result))
+        # print("-" * 10)
+    return X, Y
 
 
 if __name__ == '__main__':
