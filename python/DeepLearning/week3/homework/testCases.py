@@ -107,7 +107,7 @@ def nn_model_test_case():
     Y_assess = np.random.randn(1, 3)
     return X_assess, Y_assess
 
-def predict_test_case():
+def  predict_test_case():
     np.random.seed(1)
     X_assess = np.random.randn(2, 3)
     parameters = {'W1': np.array([[-0.00615039,  0.0169021 ],

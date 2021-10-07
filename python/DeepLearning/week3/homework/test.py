@@ -17,12 +17,12 @@ def get_number(num):
     Y = []
     i = 0
     for i in range(num):
-        x = random.randint(0, 50)
+        x = random.randint(0, 40)
         y = random.randint(0, 100)
         z = random.randint(0, 100)
-        temp = math.pow(x, 2) + y - 10 * z
+        temp = math.pow(x, 2) + 3 * y + 3 * z
         result = 1
-        if temp < 0:
+        if temp < 500:
             result = 0
         X[0].append(x)
         X[1].append(y)
@@ -41,8 +41,8 @@ def get_number(num):
 # 设置常量
 # HIDDEN_LAYER_NUM = 隐层的个数
 # LEARNING_RATE = 学习率
-HIDDEN_LAYER_NUM = 6
-LEARNING_RATE = 1.2
+HIDDEN_LAYER_NUM = 8
+LEARNING_RATE = 0.8
 
 
 # 激活函数
@@ -101,9 +101,9 @@ def shallow_neural_network(X, Y, round=5000):
     # 设置随机种子
     numpy.random.seed(20210922)
 
-    W1 = np.random.randn(HIDDEN_LAYER_NUM, X.shape[0]) * 0.01
+    W1 = np.random.randn(HIDDEN_LAYER_NUM, X.shape[0]) * 0.001
     b1 = np.zeros(shape=(HIDDEN_LAYER_NUM, 1))
-    W2 = np.random.randn(1, HIDDEN_LAYER_NUM) * 0.01
+    W2 = np.random.randn(1, HIDDEN_LAYER_NUM) * 0.001
     b2 = np.zeros(shape=(1, 1))
 
     for i in range(0, round, 1):
@@ -153,6 +153,7 @@ def test_network(X, Y, parameter):
     forward_parameter = forward_propagation(X, parameter)
     A2 = forward_parameter.get('A2')
     cost_value = cost(A2, Y)
+    print(X)
     print(A2)
     print(Y)
     print("cost_value=" + str(cost_value))
@@ -191,16 +192,22 @@ if __name__ == '__main__':
     # ])
     # data_Y = np.array([1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1])
 
-    data_X, data_Y = get_number(5000)
+    data_X, data_Y = get_number(4000)
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
     print(data_X.shape)
     print(data_Y.shape)
 
-    parameter = shallow_neural_network(data_X, data_Y, round=5000)
+    parameter = shallow_neural_network(data_X, data_Y, round=10000)
 
     # 初始化测试集的数据
-    test_X, test_Y = get_number(5)
+    test_X, test_Y = get_number(8)
+    # test_X = [
+    #     [0, 10],
+    #     [100, 100],
+    #     [100, 1000],
+    # ]
+    # test_Y = [0, 1]
     test_X = np.array(test_X)
     test_Y = np.array(test_Y)
     test_network(test_X, test_Y, parameter=parameter)
