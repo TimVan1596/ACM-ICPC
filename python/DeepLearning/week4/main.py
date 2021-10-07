@@ -64,6 +64,7 @@ def initialize_parameters_deep(layers_dims):
 
     for i in range(1, L):
         parameters["W" + str(i)] = np.random.randn(layers_dims[i], layers_dims[i - 1]) / np.sqrt(layers_dims[i - 1])
+        parameters["W" + str(i)] = np.random.randn(layers_dims[i], layers_dims[i - 1]) / np.sqrt(layers_dims[i - 1])
         parameters["b" + str(i)] = np.zeros((layers_dims[i], 1))
 
         # 确保我要的数据的格式是正确的

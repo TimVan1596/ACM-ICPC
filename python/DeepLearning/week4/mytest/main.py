@@ -1,7 +1,6 @@
 import numpy as np
 import numpy.random
 import matplotlib.pyplot as plt
-from get_data import get_number
 import random
 
 # 设置常量
@@ -77,6 +76,9 @@ def deep_neural_network(X, Y
         if i % 20 == 0:
             x.append(i)
             y.append(cost_value)
+
+        if i % 500 == 0:
+            print("第", i, "次迭代，成本值为：", np.squeeze(cost_value))
 
         # 后向传播用于梯度下降
         # 倒序计算出
@@ -240,14 +242,14 @@ if __name__ == '__main__':
     # 测试集进行学习的次数
 
     # 初始化训练的数据
-    data_X, data_Y = get_number(8000)
+    data_X, data_Y = get_number(10000)
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
 
     print(data_X.shape)
     print(data_Y.shape)
 
-    parameter = deep_neural_network(data_X, data_Y, train_times=4000)
+    parameter = deep_neural_network(data_X, data_Y, train_times=5000)
 
     # 对测试集数据进行评估准确性
     test_X, test_Y = get_number(15)
