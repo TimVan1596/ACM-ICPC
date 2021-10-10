@@ -2,13 +2,14 @@ import numpy as np
 import numpy.random
 import matplotlib.pyplot as plt
 import random
+import lr_utils  # 参见资料包，或者在文章底部copy
 
 # 设置常量
 # HIDDEN_LAYER_NUM = 隐层的个数
 # LEARNING_RATE = 学习率
 # NET_DEEP_ARRAY = 神经网络的深度(输入层X为0)对应的神经元个数
 # DEFAULT_TRAIN_TIMES = 默认训练次数
-LEARNING_RATE = 1.2
+LEARNING_RATE = 0.12
 NET_DEEP_ARRAY = []
 DEFAULT_TRAIN_TIMES = 5000
 # RANDOM_SEED = 随机数的种子
@@ -25,14 +26,9 @@ def sigmoid(x):
 
 # 深层神经网络主驱动
 def deep_neural_network(X, Y
-                        , net_deep_array=[0, 6, 1], learning_rate=LEARNING_RATE
+                        , net_deep_array=[0, 7, 1], learning_rate=LEARNING_RATE
                         , train_times=DEFAULT_TRAIN_TIMES, random_seed=RANDOM_SEED):
     # 绘图
-    plt.title("week4 深层神经网络")
-    plt.xlabel("x/times")
-    plt.ylabel("损失值（越小越好）")
-    plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
-    plt.rcParams['axes.unicode_minus'] = False  # 这两行需要手动设置
     x = []
     y = []
 
@@ -73,12 +69,13 @@ def deep_neural_network(X, Y
 
         # 计算成本cost
         cost_value = cost(A[net_deep - 1], Y)
-        if i % 20 == 0:
+        if i % 30 == 0:
             x.append(i)
             y.append(cost_value)
 
-        if i % 500 == 0:
-            print("第", i, "次迭代，成本值为：", np.squeeze(cost_value))
+            # 打印成本值
+            if i % 300 == 0:
+                print("第", i, "次迭代，成本值为：", np.squeeze(cost_value))
 
         # 后向传播用于梯度下降
         # 倒序计算出
@@ -98,9 +95,6 @@ def deep_neural_network(X, Y
             # 更新参数
             W[L] = W[L] - learning_rate * dWL
             b[L] = b[L] - learning_rate * dbL
-
-    plt.plot(x, y, color='orange')
-    plt.show()
 
     parameter = {
         'W': W,
@@ -239,22 +233,42 @@ def get_number(num):
 
 
 if __name__ == '__main__':
-    # 测试集进行学习的次数
+    # 初始化输入数据
+    train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = lr_utils.load_dataset()
+
+    train_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
+    test_x_flatten = test_set_x_orig.reshape(test_set_x_orig.shape[0], -1).T
+
+    train_x = train_x_flatten / 255
+    train_y = train_set_y
+    test_x = test_x_flatten / 255
+    test_y = test_set_y
 
     # 初始化训练的数据
-    data_X, data_Y = get_number(5000)
-    data_X = np.array(data_X)
-    data_Y = np.array(data_Y)
+    # data_X, data_Y = get_number(5000)
+    # data_X = np.array(data_X)
+    # data_Y = np.array(data_Y)
+
+    data_X = train_x
+    data_Y = train_y
 
     print(data_X.shape)
     print(data_Y.shape)
 
-    parameter = deep_neural_network(data_X, data_Y, train_times=5000)
+    # 初始化超参数
+    net_deep_array = [0, 7, 3, 1]
+    learning_rate = 0.1
+
+    parameter = deep_neural_network(data_X, data_Y, train_times=200000
+                                    , net_deep_array=net_deep_array, learning_rate=learning_rate)
 
     # 对测试集数据进行评估准确性
-    test_X, test_Y = get_number(15)
-    test_X = np.array(test_X)
-    test_Y = np.array(test_Y)
+    # test_X, test_Y = get_number(15)
+    # test_X = np.array(test_X)
+    # test_Y = np.array(test_Y)
+
+    test_X = test_x
+    test_Y = test_y
     test_network(test_X, test_Y, parameter=parameter)
 
     plt.title("week4 深层神经网络")
