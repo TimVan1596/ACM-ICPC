@@ -5,39 +5,6 @@ import matplotlib.pyplot as plt
 import random
 import math
 
-
-# 获得数据
-# num = 样本数量
-def get_number(num):
-    X = [
-        [],
-        [],
-        []
-    ]
-    Y = []
-    i = 0
-    for i in range(num):
-        x = random.randint(0, 40)
-        y = random.randint(0, 100)
-        z = random.randint(0, 100)
-        temp = math.pow(x, 2) + 3 * y + 3 * z
-        result = 1
-        if temp < 500:
-            result = 0
-        X[0].append(x)
-        X[1].append(y)
-        X[2].append(z)
-        Y.append(result)
-        # print("-- 当 i =" + str(i))
-        # print("x=" + str(x))
-        # print("y=" + str(y))
-        # print("z=" + str(z))
-        # print("temp=" + str(temp))
-        # print("result=" + str(result))
-        # print("-" * 10)
-    return X, Y
-
-
 # 设置常量
 # HIDDEN_LAYER_NUM = 隐层的个数
 # LEARNING_RATE = 学习率
@@ -129,6 +96,8 @@ def shallow_neural_network(X, Y, round=5000):
         if i % 50 == 0:
             x.append(i)
             y.append(cost_value)
+            if i % 200 == 0:
+                print("第", i, "次迭代，成本值为：", np.squeeze(cost_value))
 
         W1 = W1 - LEARNING_RATE * d_W1
         b1 = b1 - LEARNING_RATE * d_b1
@@ -181,6 +150,38 @@ def load_planar_dataset():
     return X, Y
 
 
+# 获得数据
+# num = 样本数量
+def get_number(num):
+    X = [
+        [],
+        [],
+        []
+    ]
+    Y = []
+    i = 0
+    for i in range(num):
+        x = random.randint(0, 40)
+        y = random.randint(0, 100)
+        z = random.randint(0, 100)
+        temp = math.pow(x, 2) - 3 * y - 3 * z
+        result = 1
+        if temp < 0:
+            result = 0
+        X[0].append(x)
+        X[1].append(y)
+        X[2].append(z)
+        Y.append(result)
+        # print("-- 当 i =" + str(i))
+        # print("x=" + str(x))
+        # print("y=" + str(y))
+        # print("z=" + str(z))
+        # print("temp=" + str(temp))
+        # print("result=" + str(result))
+        # print("-" * 10)
+    return X, Y
+
+
 if __name__ == '__main__':
     # 测试集进行学习的次数
 
@@ -198,10 +199,10 @@ if __name__ == '__main__':
     print(data_X.shape)
     print(data_Y.shape)
 
-    parameter = shallow_neural_network(data_X, data_Y, round=10000)
+    parameter = shallow_neural_network(data_X, data_Y, round=3500)
 
     # 初始化测试集的数据
-    test_X, test_Y = get_number(8)
+    test_X, test_Y = get_number(10)
     # test_X = [
     #     [0, 10],
     #     [100, 100],
