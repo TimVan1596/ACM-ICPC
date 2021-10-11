@@ -7,21 +7,22 @@ import h5py
 # 导入必要的包
 
 def get_files(file_dir):
-    cats = []
-    label_cats = []
-    dogs = []
-    label_dogs = []
+    yes_list = []
+    label_yes_list = []
+
+    not_list = []
+    label_not_list = []
 
     for file in os.listdir(file_dir + '/not_tumble'):
-        cats.append(file_dir + '/not_tumble' + '/' + file)
-        label_cats.append(0)  # 添加标签，该类标签为0，此为2分类例子，多类别识别问题自行添加
+        not_list.append(file_dir + '/not_tumble' + '/' + file)
+        label_not_list.append(0)  # 添加标签，该类标签为0，此为2分类例子，多类别识别问题自行添加
     for file in os.listdir(file_dir + '/yes_tumble'):
-        dogs.append(file_dir + '/yes_tumble' + '/' + file)
-        label_dogs.append(1)
+        yes_list.append(file_dir + '/yes_tumble' + '/' + file)
+        label_yes_list.append(1)
 
     # 把cat和dog合起来组成一个list（img和lab）
-    image_list = np.hstack((cats, dogs))
-    label_list = np.hstack((label_cats, label_dogs))
+    image_list = np.hstack((not_list, yes_list))
+    label_list = np.hstack((label_not_list, label_yes_list))
 
     # 利用shuffle打乱顺序
     temp = np.array([image_list, label_list])

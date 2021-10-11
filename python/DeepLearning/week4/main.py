@@ -1,13 +1,11 @@
-import numpy as np
-import h5py
-import matplotlib.pyplot as plt
-import testCases  # 参见资料包，或者在文章底部copy
-from dnn_utils import sigmoid, sigmoid_backward, relu, relu_backward  # 参见资料包
-import lr_utils  # 参见资料包，或者在文章底部copy
-from mytest.get_data import get_number
 # 用于获取数据
 import random
-import math
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+import lr_utils  # 参见资料包，或者在文章底部copy
+from dnn_utils import sigmoid, sigmoid_backward, relu, relu_backward  # 参见资料包
 
 np.random.seed(1)
 
@@ -427,6 +425,75 @@ def get_number(num):
     return X, Y
 
 
+def L_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False, isPlot=True):
+    """
+    实现一个L层神经网络：[LINEAR-> RELU] *（L-1） - > LINEAR-> SIGMOID。
+
+    参数：
+	    X - 输入的数据，维度为(n_x，例子数)
+        Y - 标签，向量，0为非猫，1为猫，维度为(1,数量)
+        layers_dims - 层数的向量，维度为(n_y,n_h,···,n_h,n_y)
+        learning_rate - 学习率
+        num_iterations - 迭代的次数
+        print_cost - 是否打印成本值，每100次打印一次
+        isPlot - 是否绘制出误差值的图谱
+
+    返回：
+     parameters - 模型学习的参数。 然后他们可以用来预测。
+    """
+    np.random.seed(1)
+    costs = []
+
+    parameters = initialize_parameters_deep(layers_dims)
+
+    for i in range(0, num_iterations):
+        AL, caches = L_model_forward(X, parameters)
+
+        cost = compute_cost(AL, Y)
+
+        grads = L_model_backward(AL, Y, caches)
+
+        parameters = update_parameters(parameters, grads, learning_rate)
+
+        # 打印成本值，如果print_cost=False则忽略
+        if i % 100 == 0:
+            # 记录成本
+            costs.append(cost)
+            # 是否打印成本值
+            if print_cost:
+                print("第", i, "次迭代，成本值为：", np.squeeze(cost))
+    # 迭代完成，根据条件绘制图
+    if isPlot:
+        plt.plot(np.squeeze(costs))
+        plt.ylabel('cost')
+        plt.xlabel('iterations (per tens)')
+        plt.title("Learning rate =" + str(learning_rate))
+        plt.show()
+    return parameters
+
+
+def print_mislabeled_images(classes, X, y, p):
+    """
+	绘制预测和实际不同的图像。
+	    X - 数据集
+	    y - 实际的标签
+	    p - 预测
+    """
+    a = p + y
+    mislabeled_indices = np.asarray(np.where(a == 1))
+    plt.rcParams['figure.figsize'] = (40.0, 40.0)  # set default size of plots
+    num_images = len(mislabeled_indices[0])
+    for i in range(num_images):
+        index = mislabeled_indices[1][i]
+
+        plt.subplot(2, num_images, i + 1)
+        plt.imshow(X[:, index].reshape(64, 64, 3), interpolation='nearest')
+        plt.axis('off')
+        plt.title(
+            "Prediction: " + classes[int(p[0, index])].decode("utf-8") + " \n Class: " + classes[y[0, index]].decode(
+                "utf-8"))
+
+
 if __name__ == '__main__':
     train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = lr_utils.load_dataset()
 
@@ -443,9 +510,9 @@ if __name__ == '__main__':
     data_Y = np.array(data_Y)
     data_Y = data_Y.reshape((1, data_X.shape[1]))
 
-    train_x = data_X
-    train_y = data_Y
-    train_set_y = train_y
+    # train_x = data_X
+    # train_y = data_Y
+    # train_set_y = train_y
 
     # n_x - 输入层节点数量
     # n_h - 隐藏层节点数量
@@ -456,15 +523,22 @@ if __name__ == '__main__':
     n_y = 1
     layers_dims = (n_x, n_h, n_y)
 
-    parameters = two_layer_model(train_x, train_set_y, layers_dims=(n_x, n_h, n_y), num_iterations=8000,
-                                 print_cost=True, isPlot=True)
+    # parameters = two_layer_model(train_x, train_set_y, layers_dims=(n_x, n_h, n_y), num_iterations=8000,
+    #                              print_cost=True, isPlot=True)
+
+    layers_dims = [12288, 20, 7, 5, 1]  # 5-layer model
+    parameters = L_layer_model(train_x, train_y, layers_dims, num_iterations=200, print_cost=True, isPlot=True)
 
     # 初始化测试集的数据
-    test_X, test_Y = get_number(30)
-    test_X = np.array(test_X)
-    test_Y = np.array(test_Y)
-    test_x = test_X
-    test_y = test_Y
+    # test_X, test_Y = get_number(30)
+    # test_X = np.array(test_X)
+    # test_Y = np.array(test_Y)
+    # test_x = test_X
+    # test_y = test_Y
 
-    predictions_train = predict(train_x, train_y, parameters)  # 训练集
-    predictions_test = predict(test_x, test_y, parameters)  # 测试集
+    # predictions_train = predict(train_x, train_y, parameters)  # 训练集
+    # predictions_test = predict(test_x, test_y, parameters)  # 测试集
+
+    pred_train = predict(train_x, train_y, parameters)  # 训练集
+    pred_test = predict(test_x, test_y, parameters)  # 测试集
+    print_mislabeled_images(classes, test_x, test_y, pred_test)

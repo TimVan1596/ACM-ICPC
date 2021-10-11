@@ -5,15 +5,9 @@ import random
 import lr_utils  # 参见资料包，或者在文章底部copy
 
 # 设置常量
-# HIDDEN_LAYER_NUM = 隐层的个数
-# LEARNING_RATE = 学习率
-# NET_DEEP_ARRAY = 神经网络的深度(输入层X为0)对应的神经元个数
-# DEFAULT_TRAIN_TIMES = 默认训练次数
-LEARNING_RATE = 0.12
-NET_DEEP_ARRAY = []
-DEFAULT_TRAIN_TIMES = 5000
-# RANDOM_SEED = 随机数的种子
-RANDOM_SEED = 2021
+# 激活函数的标识字符串
+SIGMOID_NAME = 'sigmoid'
+TANH_NAME = 'tanh'
 
 
 # 激活函数
@@ -25,9 +19,13 @@ def sigmoid(x):
 
 
 # 深层神经网络主驱动
+# net_deep_array = 深度数组
+# learning_rate = 学习率，默认为 0.12
+# train_times = 训练次数，默认为 3000
+# random_seed = 随机数的种子，默认为 2021
 def deep_neural_network(X, Y
-                        , net_deep_array=[0, 7, 1], learning_rate=LEARNING_RATE
-                        , train_times=DEFAULT_TRAIN_TIMES, random_seed=RANDOM_SEED):
+                        , net_deep_array=[0, 7, 1], learning_rate=0.12
+                        , train_times=3000, random_seed=2021):
     # 绘图
     x = []
     y = []
@@ -39,9 +37,9 @@ def deep_neural_network(X, Y
     m = X.shape[1]
     W, b = initial_parameters(net_deep_array)
 
-    # 暂存每一个深度的参数值
-    Z = [0] * net_deep
-    A = [0] * net_deep
+    # 对每一个深度的参数进行保存
+    Z = [np.array([])] * net_deep
+    A = [np.array([])] * net_deep
     # 后向传播用于梯度下降
     dZ = [0] * net_deep
     dW = [0] * net_deep
@@ -63,34 +61,34 @@ def deep_neural_network(X, Y
                 'W': W[L],
                 'b': b[L],
             }, activate)
-            Z[L] = forward_parameter.get('Z')
-            A[L] = forward_parameter.get('A')
+            Z[L] = np.array(forward_parameter.get('Z'))
+            A[L] = np.array(forward_parameter.get('A'))
             assert (Z[L].shape == (net_deep_array[L], m))
 
         # 计算成本cost
         cost_value = cost(A[net_deep - 1], Y)
-        if i % 30 == 0:
+        if i % 50 == 0:
             x.append(i)
             y.append(cost_value)
 
             # 打印成本值
-            if i % 300 == 0:
+            if i % 200 == 0:
                 print("第", i, "次迭代，成本值为：", np.squeeze(cost_value))
 
         # 后向传播用于梯度下降
         # 倒序计算出
-        dAL = 0
+        dA = -np.divide(Y, A[net_deep - 1]) + np.divide(1 - Y, 1 - A[net_deep - 1])
         for L in range(net_deep - 1, 0, -1):
+            parameter_back = {}
+            activate = 'tanh'
             if L == net_deep - 1:
-                dAL = -np.divide(Y, A[net_deep - 1]) + np.divide(1 - Y, 1 - A[net_deep - 1])
-                dZL = dAL * sigmoid(Z[net_deep - 1]) * sigmoid(1 - Z[net_deep - 1])
-            else:
-                dZL = dAL * (1 - (np.tanh(Z[L]) * np.tanh(Z[L])))
-
-            dWL = (1 / m) * (np.dot(dZL, A[L - 1].T))
-            dbL = (1 / m) * np.sum(dZL, axis=1, keepdims=True)
-            # 提供给下一次的循环
-            dAL = np.dot(W[L].T, dZL)
+                activate = 'sigmoid'
+            parameter_back = backward_propagation(dA, A[L - 1], Z[L], W[L], activate)
+            dWL = np.array(parameter_back.get('dWL'))
+            dbL = np.array(parameter_back.get('dbL'))
+            # 提供给下一次循环的AL
+            dAL = np.array(parameter_back.get('dAL'))
+            assert dWL.shape == (net_deep_array[L], net_deep_array[L - 1])
 
             # 更新参数
             W[L] = W[L] - learning_rate * dWL
@@ -123,9 +121,37 @@ def forward_propagation(A_Last, parameter, activate='tanh'):
     }
 
 
-# 后向传播
-def backward_propagation(dA, Z, A_Last_T, W):
-    dZ = dA * sigmoid(Z) * (1 - sigmoid(Z))
+# 反向传播，梯度下降
+# 以下L=当前层
+# --input：
+# dA = 第L层的A的导数
+# ZL = 第L层的Z
+# A_last = 第L-1层的A
+# WL = 第L层的W
+# activate = 激活函数类型，'tanh'或'sigmoid'
+# --output:
+# 字典键值对形式
+# dA_last = 第L-1层的A的导数
+# dZL = 第L层的Z的导数
+# dWL = 第L层的W的导数
+# dbL = 第L层的b的导数
+def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME):
+    # m = 样本数量
+    global dZL
+    m = ZL.shape[1]
+    if activate == TANH_NAME:
+        dZL = dA * (1 - (pow(np.tanh(ZL), 2)))
+    elif activate == SIGMOID_NAME:
+        dZL = dA * pow(sigmoid(ZL), 2)
+    dWL = (1 / m) * (np.dot(dZL, A_last.T))
+    dbL = (1 / m) * np.sum(dZL, axis=1, keepdims=True)
+    dAL = np.dot(WL.T, dZL)
+    return {
+        'dA_last': dAL,
+        'dZL': dZL,
+        'dWL': dWL,
+        'dbL': dbL,
+    }
 
 
 # 计算该结果的成本
@@ -150,7 +176,6 @@ def cost(A, Y):
 
 
 # 初始化W和b的参数
-
 
 def initial_parameters(net_deep_array):
     net_deep = len(net_deep_array)
@@ -256,10 +281,9 @@ if __name__ == '__main__':
     print(data_Y.shape)
 
     # 初始化超参数
-    net_deep_array = [0, 7, 3, 1]
-    learning_rate = 0.1
-
-    parameter = deep_neural_network(data_X, data_Y, train_times=200000
+    net_deep_array = [12288, 20, 7, 5, 1]
+    learning_rate = 0.0075
+    parameter = deep_neural_network(data_X, data_Y, train_times=2000
                                     , net_deep_array=net_deep_array, learning_rate=learning_rate)
 
     # 对测试集数据进行评估准确性
