@@ -247,13 +247,6 @@ def get_number(num):
         X[1].append(y)
         X[2].append(z)
         Y.append(result)
-        # print("-- 当 i =" + str(i))
-        # print("x=" + str(x))
-        # print("y=" + str(y))
-        # print("z=" + str(z))
-        # print("temp=" + str(temp))
-        # print("result=" + str(result))
-        # print("-" * 10)
     return X, Y
 
 
@@ -270,29 +263,33 @@ if __name__ == '__main__':
     test_y = test_set_y
 
     # 初始化训练的数据
-    # data_X, data_Y = get_number(5000)
-    # data_X = np.array(data_X)
-    # data_Y = np.array(data_Y)
+    data_X, data_Y = get_number(10000)
+    data_X = np.array(data_X)
+    data_Y = np.array(data_Y)
 
-    data_X = train_x
-    data_Y = train_y
+    # data_X = train_x
+    # data_Y = train_y
 
     print(data_X.shape)
     print(data_Y.shape)
 
     # 初始化超参数
-    net_deep_array = [12288, 20, 7, 5, 1]
+    net_deep_array = [12288, 7, 5, 1]
     learning_rate = 0.0075
-    parameter = deep_neural_network(data_X, data_Y, train_times=2000
-                                    , net_deep_array=net_deep_array, learning_rate=learning_rate)
+    random_seed = 1
+    parameter = deep_neural_network(data_X, data_Y, train_times=1600
+                                    , net_deep_array=net_deep_array
+                                    , learning_rate=learning_rate
+                                    , random_seed=random_seed
+                                    )
 
     # 对测试集数据进行评估准确性
-    # test_X, test_Y = get_number(15)
-    # test_X = np.array(test_X)
-    # test_Y = np.array(test_Y)
+    test_X, test_Y = get_number(15)
+    test_X = np.array(test_X)
+    test_Y = np.array(test_Y)
 
-    test_X = test_x
-    test_Y = test_y
+    # test_X = test_x
+    # test_Y = test_y
     test_network(test_X, test_Y, parameter=parameter)
 
     plt.title("week4 深层神经网络")

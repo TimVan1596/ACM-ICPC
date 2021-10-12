@@ -527,7 +527,7 @@ if __name__ == '__main__':
     #                              print_cost=True, isPlot=True)
 
     layers_dims = [12288, 20, 7, 5, 1]  # 5-layer model
-    parameters = L_layer_model(train_x, train_y, layers_dims, num_iterations=200, print_cost=True, isPlot=True)
+    parameters = L_layer_model(train_x, train_y, layers_dims, num_iterations=2000, print_cost=True, isPlot=True)
 
     # 初始化测试集的数据
     # test_X, test_Y = get_number(30)
