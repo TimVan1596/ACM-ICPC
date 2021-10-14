@@ -19,23 +19,23 @@ def sigmoid(x):
 
 
 # 深层神经网络主驱动
-# net_deep_array = 深度数组
+# net_array = 深度数组，如 [{'neurons': 3, 'activate': 'tanh'}]
 # learning_rate = 学习率，默认为 0.12
 # train_times = 训练次数，默认为 3000
 # random_seed = 随机数的种子，默认为 2021
 def deep_neural_network(X, Y
-                        , net_deep_array=[0, 7, 1], learning_rate=0.12
+                        , net_array, learning_rate=0.12
                         , train_times=3000, random_seed=2021):
     # 绘图
     x = []
     y = []
 
     # 初始化基本参数
-    net_deep = len(net_deep_array)
-    net_deep_array[0] = X.shape[0]
+    net_deep = len(net_array)
+    net_array[0]['neurons'] = X.shape[0]
     numpy.random.seed(random_seed)
     m = X.shape[1]
-    W, b = initial_parameters(net_deep_array)
+    W, b = initial_parameters(net_array)
 
     # 对每一个深度的参数进行保存
     Z = [np.array([])] * net_deep
@@ -51,11 +51,7 @@ def deep_neural_network(X, Y
     for i in range(0, train_times, 1):
         # 每次前向传播中的纵向深度
         for L in range(1, net_deep, 1):
-
-            activate = 'tanh'
-            # 最后一次使用sigmoid激活函数
-            if L == net_deep - 1:
-                activate = 'sigmoid'
+            activate = net_array[L]['activate']
             # 进行前向传播
             forward_parameter = forward_propagation(A[L - 1], {
                 'W': W[L],
@@ -63,7 +59,7 @@ def deep_neural_network(X, Y
             }, activate)
             Z[L] = np.array(forward_parameter.get('Z'))
             A[L] = np.array(forward_parameter.get('A'))
-            assert (Z[L].shape == (net_deep_array[L], m))
+            assert (Z[L].shape == (net_array[L]['neurons'], m))
 
         # 计算成本cost
         cost_value = cost(A[net_deep - 1], Y)
@@ -73,22 +69,22 @@ def deep_neural_network(X, Y
 
             # 打印成本值
             if i % 200 == 0:
-                print("第", i, "次迭代，成本值为：", np.squeeze(cost_value))
+                accuracy = getAccuracy(A[net_deep - 1], Y)
+                print("第" + str(i) + "次迭代，成本值为："
+                      + str(round(cost_value, 5)) + "，准确性为" + str(accuracy) + "%")
 
         # 后向传播用于梯度下降
         # 倒序计算出
         dA = -np.divide(Y, A[net_deep - 1]) + np.divide(1 - Y, 1 - A[net_deep - 1])
         for L in range(net_deep - 1, 0, -1):
             parameter_back = {}
-            activate = 'tanh'
-            if L == net_deep - 1:
-                activate = 'sigmoid'
+            activate = net_array[L]['activate']
             parameter_back = backward_propagation(dA, A[L - 1], Z[L], W[L], activate)
             dWL = np.array(parameter_back.get('dWL'))
             dbL = np.array(parameter_back.get('dbL'))
             # 提供给下一次循环的AL
             dAL = np.array(parameter_back.get('dAL'))
-            assert dWL.shape == (net_deep_array[L], net_deep_array[L - 1])
+            assert dWL.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
 
             # 更新参数
             W[L] = W[L] - learning_rate * dWL
@@ -99,7 +95,7 @@ def deep_neural_network(X, Y
         'b': b,
         'x': x,
         'y': y,
-        'net_deep_array': net_deep_array,
+        'net_array': net_array,
     }
     return parameter
 
@@ -176,14 +172,15 @@ def cost(A, Y):
 
 
 # 初始化W和b的参数
-
-def initial_parameters(net_deep_array):
-    net_deep = len(net_deep_array)
+# net_array = 深度数组，如 [{'neurons': 3, 'activate': 'tanh'}]
+def initial_parameters(net_array):
+    net_deep = len(net_array)
     W = []
     b = []
     for L in range(net_deep):
-        WL = np.random.randn(net_deep_array[L], net_deep_array[L - 1]) * 0.01
-        bL = np.zeros(shape=(net_deep_array[L], 1))
+        WL = np.random.randn(net_array[L]['neurons']
+                             , net_array[L - 1]['neurons']) * 0.01
+        bL = np.zeros(shape=(net_array[L]['neurons'], 1))
         W.append(WL)
         b.append(bL)
     return W, b
@@ -193,8 +190,8 @@ def initial_parameters(net_deep_array):
 def test_network(X, Y, parameter):
     W = parameter.get('W')
     b = parameter.get('b')
-    net_deep_array = parameter.get('net_deep_array')
-    net_deep = len(net_deep_array)
+    net_array = parameter.get('net_array')
+    net_deep = len(net_array)
     A = X
 
     # 每次前向传播中的纵向深度
@@ -212,17 +209,33 @@ def test_network(X, Y, parameter):
     # 计算成本cost
     cost_value = cost(A, Y)
 
-    print(numpy.around(np.squeeze(A), 1))
+    print(numpy.around(np.squeeze(A), 3))
     print(Y)
-    m = A.shape[1]
-    for i in range(0, A.shape[1]):
-        if A[0, i] > 0.5:
-            A[0, i] = 1
-        else:
-            A[0, i] = 0
 
-    print("成本cost=" + str(cost_value))
-    print("准确性: " + str(float(np.sum((A == Y)) * 100 / m)) + "%")
+    accuracy = getAccuracy(A, Y)
+
+    print("成本cost=" + str(round(cost_value, 5)))
+    print("准确性: " + str(accuracy) + "%")
+
+
+# 获取准确性评估，将A转为Y_hat并与Y进行比较，返回准确率
+# input：
+# A : np.array(1,m)
+# Y : np.array(1,m)
+# output:
+# accuracy (float)
+def getAccuracy(A, Y):
+    # 获取总样本数
+    A_dummy = A.copy()
+    m = A_dummy.shape[1]
+    for i in range(0, A_dummy.shape[1]):
+        if A_dummy[0, i] > 0.5:
+            A_dummy[0, i] = 1
+        else:
+            A_dummy[0, i] = 0
+    a = float(np.sum((A_dummy == Y)))
+    accuracy = float(np.sum((A_dummy == Y))) * 100 / m
+    return accuracy
 
 
 # 获得数据
@@ -251,7 +264,7 @@ def get_number(num):
 
 
 if __name__ == '__main__':
-    # 初始化输入数据
+    # 从给定的猫训练集来初始化输入数据
     train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = lr_utils.load_dataset()
 
     train_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
@@ -262,8 +275,8 @@ if __name__ == '__main__':
     test_x = test_x_flatten / 255
     test_y = test_set_y
 
-    # 初始化训练的数据
-    data_X, data_Y = get_number(10000)
+    # 从我自己写的生成函数来，初始化训练的数据
+    data_X, data_Y = get_number(20000)
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
 
@@ -274,17 +287,22 @@ if __name__ == '__main__':
     print(data_Y.shape)
 
     # 初始化超参数
-    net_deep_array = [12288, 7, 5, 1]
+    net_array = [
+        {'neurons': 1, 'activate': 'tanh'},
+        {'neurons': 7, 'activate': 'tanh'},
+        {'neurons': 5, 'activate': 'tanh'},
+        {'neurons': 1, 'activate': 'sigmoid'},
+    ]
     learning_rate = 0.0075
     random_seed = 1
-    parameter = deep_neural_network(data_X, data_Y, train_times=1600
-                                    , net_deep_array=net_deep_array
+    parameter = deep_neural_network(data_X, data_Y, train_times=2000
+                                    , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
                                     )
 
     # 对测试集数据进行评估准确性
-    test_X, test_Y = get_number(15)
+    test_X, test_Y = get_number(400)
     test_X = np.array(test_X)
     test_Y = np.array(test_Y)
 
