@@ -1,16 +1,18 @@
 import numpy as np
 
+
+# 激活函数
+def sigmoid(x):
+    s = 1 / (1 + np.exp(-x))
+    return s
+
+
 if __name__ == '__main__':
-    W1 = np.array([
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        [1, 6, 2],
-    ])
-    X = np.array([
-        [20, 11],
-        [21, 6],
-        [9, 8],
-    ])
-    ret = np.dot(W1, X)
+    a = np.array([[1, 2, 3]])
+    assert a.shape == (1, 3)
+
+    a = np.squeeze(a)
+    print(a.shape)
+
+    ret = sigmoid(np.array([-10000000, -4, -3, -2, -1, 0, 1, 2, 3, 4]))
     print(ret)
