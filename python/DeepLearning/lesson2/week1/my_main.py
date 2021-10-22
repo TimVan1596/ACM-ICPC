@@ -1,34 +1,17 @@
 import numpy as np
 import numpy.random
 import matplotlib.pyplot as plt
-import random
-import lr_utils
+import acivate_fun as act
 from generate_data import get_normal_data, get_simple_data
+from numpy import seterr
+
+seterr(all='raise')
 
 # 设置常量
 # 激活函数的标识字符串
 SIGMOID_NAME = 'sigmoid'
 TANH_NAME = 'tanh'
 RELU_NAME = 'ReLU'
-
-
-# 激活函数
-# def sigmoid(x):
-#     return 1 / (1 + np.exp(-x))
-def sigmoid(inX):
-    from numpy import exp
-    # return 1.0/(1+exp(-inX))
-    # 优化
-    return 1.0 / (1 + exp(-inX))
-
-
-def ReLU(Idata):
-    return 1 * (Idata > 0) * Idata
-
-
-def d_ReLU(x):
-    y = (x > 0) * 1
-    return y
 
 
 # 深层神经网络主驱动
@@ -75,20 +58,33 @@ def deep_neural_network(X, Y
             assert (Z[L].shape == (net_array[L]['neurons'], m))
 
         # 计算成本cost
-        cost_value = cost(A[net_deep - 1], Y)
+        A_last = A[net_deep - 1]
+        cost_value = cost(A_last, Y)
         if i % 50 == 0:
             x.append(i)
             y.append(cost_value)
 
             # 打印成本值
             if i % 200 == 0:
-                accuracy = getAccuracy(A[net_deep - 1], Y)
+                accuracy = getAccuracy(A_last, Y)
                 print("第" + str(i) + "次迭代，成本值为："
                       + str(round(cost_value, 5)) + "，准确性为" + str(accuracy) + "%")
 
         # 后向传播用于梯度下降
         # 倒序计算出
-        dA = -np.divide(Y, A[net_deep - 1]) + np.divide(1 - Y, 1 - A[net_deep - 1])
+        try:
+            dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
+        except FloatingPointError:
+            print("np.divide(Y, A_last)")
+            print(np.divide(Y, A_last))
+            print("1 - Y")
+            a = 1 - Y
+            print(a)
+            print("1 - A_last")
+            b = 1 - A_last + 1e-5
+            print(b)
+            print("np.divide(1 - Y, 1 - A_last)")
+            print(np.divide(1 - Y, b))
         for L in range(net_deep - 1, 0, -1):
             parameter_back = {}
             activate = net_array[L]['activate']
@@ -122,9 +118,9 @@ def forward_propagation(A_Last, parameter, activate='tanh'):
     if activate == 'tanh':
         A = np.tanh(Z)
     elif activate == 'sigmoid':
-        A = sigmoid(Z)
+        A = act.sigmoid(Z)
     elif activate == RELU_NAME:
-        A = ReLU(Z)
+        A = act.ReLU(Z)
 
     return {
         'Z': Z,
@@ -153,9 +149,9 @@ def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME):
     if activate == TANH_NAME:
         dZL = dA * (1 - (pow(np.tanh(ZL), 2)))
     elif activate == SIGMOID_NAME:
-        dZL = dA * pow(sigmoid(ZL), 2)
+        dZL = dA * pow(act.sigmoid(ZL) + 1e-5, 2)
     elif activate == RELU_NAME:
-        dZL = dA * d_ReLU(ZL)
+        dZL = dA * act.d_ReLU(ZL)
     dWL = (1 / m) * (np.dot(dZL, A_last.T))
     dbL = (1 / m) * np.sum(dZL, axis=1, keepdims=True)
     dAL = np.dot(WL.T, dZL)
@@ -176,12 +172,12 @@ def cost(A, Y):
     # 这里使用 np.multiply 是因为只有一维所以对应想乘
 
     try:
-        temp = np.multiply(np.log(A), Y) + np.multiply((1 - Y), np.log(1 - A))
-    except RuntimeWarning:
+        temp = np.multiply(np.log(A + 1e-5), Y) + np.multiply((1 - Y), np.log((1 - A) + 1e-5))
+    except RuntimeWarning or FloatingPointError:
         a = np.log(A)
         b = np.multiply(np.log(A), Y)
-        c = np.log(1 - A)
-        d = np.multiply((1 - Y), np.log(1 - A))
+        c = np.log((1 - A) + 1e-5)
+        d = np.multiply((1 - Y), np.log((1 - A) + 1e-5))
         print(a)
         print(b)
         print(c)
@@ -273,7 +269,7 @@ if __name__ == '__main__':
 
     # 从我自己写的生成函数来，初始化训练的数据
     X_shape = 3
-    data_X, data_Y = get_simple_data(50000, X_shape=X_shape)
+    data_X, data_Y = get_simple_data(20000, X_shape=X_shape)
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
 
@@ -287,9 +283,9 @@ if __name__ == '__main__':
     net_array = [
         {'neurons': 2, 'activate': RELU_NAME},
         {'neurons': 7, 'activate': RELU_NAME},
-        {'neurons': 1, 'activate': 'sigmoid'},
+        {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 0.0001
+    learning_rate = 0.0000006
 
     random_seed = 1
     parameter = deep_neural_network(data_X, data_Y, train_times=3000
@@ -307,7 +303,7 @@ if __name__ == '__main__':
     # test_Y = test_y
     mytest_network(test_X, test_Y, parameter=parameter)
 
-    plt.title("week4 深层神经网络")
+    plt.title("L2-Week1 优化的深层神经网络")
     plt.xlabel("x/times")
     plt.ylabel("损失值（越小越好）")
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
