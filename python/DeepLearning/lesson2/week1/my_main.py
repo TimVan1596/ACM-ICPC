@@ -44,6 +44,7 @@ def deep_neural_network(X, Y
     A[0] = X
 
     # 训练次数
+    last_cost = 0
     for i in range(0, train_times, 1):
         # 每次前向传播中的纵向深度
         for L in range(1, net_deep, 1):
@@ -60,15 +61,17 @@ def deep_neural_network(X, Y
         # 计算成本cost
         A_last = A[net_deep - 1]
         cost_value = cost(A_last, Y)
-        if i % 50 == 0:
+        if i % 100 == 0:
+            accuracy = getAccuracy(A_last, Y)
             x.append(i)
-            y.append(cost_value)
-
+            y.append(accuracy)
+            # 打印成本值
             # 打印成本值
             if i % 200 == 0:
-                accuracy = getAccuracy(A_last, Y)
                 print("第" + str(i) + "次迭代，成本值为："
-                      + str(round(cost_value, 5)) + "，准确性为" + str(accuracy) + "%")
+                      + str(round(cost_value, 10)) + "，准确性为" + str(accuracy) + "%"
+                      + "，成本较上次减少" + str((last_cost - cost_value) * (1e6)))
+                last_cost = cost_value
 
         # 后向传播用于梯度下降
         # 倒序计算出
@@ -231,7 +234,7 @@ def mytest_network(X, Y, parameter):
 
     accuracy = getAccuracy(A, Y)
 
-    print("成本cost=" + str(round(cost_value, 5)))
+    print("成本cost=" + str(round(cost_value, 10)))
     print("准确性: " + str(accuracy) + "%")
 
 
@@ -268,34 +271,36 @@ if __name__ == '__main__':
     # test_y = test_set_y
 
     # 从我自己写的生成函数来，初始化训练的数据
-    X_shape = 3
-    data_X, data_Y = get_simple_data(20000, X_shape=X_shape)
+    X_shape = 1
+    data_X, data_Y = get_normal_data(20000, X_shape=X_shape)
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
 
     # data_X = train_x
     # data_Y = train_y
 
-    print(data_X.shape)
-    print(data_Y.shape)
-
     # 初始化超参数
     net_array = [
         {'neurons': 2, 'activate': RELU_NAME},
         {'neurons': 7, 'activate': RELU_NAME},
+        {'neurons': 3, 'activate': RELU_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 0.0000006
-
+    learning_rate = 1e-4
     random_seed = 1
-    parameter = deep_neural_network(data_X, data_Y, train_times=3000
+
+    print("训练集输入的维度为：" + str(data_X.shape))
+    print("训练集输入的维度为：" + str(data_Y.shape))
+    print("学习率为：" + str(learning_rate))
+
+    parameter = deep_neural_network(data_X, data_Y, train_times=12000
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
                                     )
 
     # 对测试集数据进行评估准确性
-    test_X, test_Y = get_simple_data(500, X_shape=X_shape)
+    test_X, test_Y = get_normal_data(500, X_shape=X_shape)
     test_X = np.array(test_X)
     test_Y = np.array(test_Y)
 
@@ -305,7 +310,7 @@ if __name__ == '__main__':
 
     plt.title("L2-Week1 优化的深层神经网络")
     plt.xlabel("x/times")
-    plt.ylabel("损失值（越小越好）")
+    plt.ylabel("准确度")
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
     plt.rcParams['axes.unicode_minus'] = False  # 这两行需要手动设置
     x = parameter.get('x')
