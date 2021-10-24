@@ -115,8 +115,15 @@ def initialize_parameters_zeros(layers_dims):
 
 if __name__ == '__main__':
     # %matplotlib inline #如果你使用的是Jupyter Notebook，请取消注释。
-    plt.rcParams['figure.figsize'] = (5, 5)  # set default size of plots
-    plt.rcParams['image.interpolation'] = 'nearest'
-    plt.rcParams['image.cmap'] = 'gray'
-    train_X, train_Y, test_X, test_Y = init_utils.load_dataset(is_plot=True)
-    plt.show()
+    # plt.rcParams['figure.figsize'] = (5, 5)  # set default size of plots
+    # plt.rcParams['image.interpolation'] = 'nearest'
+    # plt.rcParams['image.cmap'] = 'gray'
+    # train_X, train_Y, test_X, test_Y = init_utils.load_dataset(is_plot=True)
+    # plt.show()
+
+    parameters = initialize_parameters_zeros([3, 2, 1])
+    print("W1 = " + str(parameters["W1"]))
+    print("b1 = " + str(parameters["b1"]))
+    print("W2 = " + str(parameters["W2"]))
+    print("b2 = " + str(parameters["b2"]))
+
