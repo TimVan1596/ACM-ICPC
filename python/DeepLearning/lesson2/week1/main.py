@@ -39,11 +39,9 @@ def model(X, Y, learning_rate=0.01, num_iterations=15000, print_cost=True, initi
 
     # 选择初始化参数的类型
     if initialization == "zeros":
-        pass
-        # parameters = initialize_parameters_zeros(layers_dims)
+        parameters = initialize_parameters_zeros(layers_dims)
     elif initialization == "random":
-        pass
-        # parameters = initialize_parameters_random(layers_dims)
+        parameters = initialize_parameters_random(layers_dims)
     elif initialization == "he":
         pass
         # parameters = initialize_parameters_he(layers_dims)
@@ -113,17 +111,52 @@ def initialize_parameters_zeros(layers_dims):
     return parameters
 
 
+def initialize_parameters_random(layers_dims):
+    """
+    参数：
+        layers_dims - 列表，模型的层数和对应每一层的节点的数量
+    返回
+        parameters - 包含了所有W和b的字典
+            W1 - 权重矩阵，维度为（layers_dims[1], layers_dims[0]）
+            b1 - 偏置向量，维度为（layers_dims[1],1）
+            ···
+            WL - 权重矩阵，维度为（layers_dims[L], layers_dims[L -1]）
+            b1 - 偏置向量，维度为（layers_dims[L],1）
+    """
+
+    np.random.seed(3)  # 指定随机种子
+    parameters = {}
+    L = len(layers_dims)  # 层数
+
+    for l in range(1, L):
+        parameters['W' + str(l)] = np.random.randn(layers_dims[l], layers_dims[l - 1]) * 10  # 使用10倍缩放
+        parameters['b' + str(l)] = np.zeros((layers_dims[l], 1))
+
+        # 使用断言确保我的数据格式是正确的
+        assert (parameters["W" + str(l)].shape == (layers_dims[l], layers_dims[l - 1]))
+        assert (parameters["b" + str(l)].shape == (layers_dims[l], 1))
+
+    return parameters
+
+
 if __name__ == '__main__':
     # %matplotlib inline #如果你使用的是Jupyter Notebook，请取消注释。
     # plt.rcParams['figure.figsize'] = (5, 5)  # set default size of plots
     # plt.rcParams['image.interpolation'] = 'nearest'
     # plt.rcParams['image.cmap'] = 'gray'
-    # train_X, train_Y, test_X, test_Y = init_utils.load_dataset(is_plot=True)
+    train_X, train_Y, test_X, test_Y = init_utils.load_dataset(is_plot=False)
     # plt.show()
 
-    parameters = initialize_parameters_zeros([3, 2, 1])
-    print("W1 = " + str(parameters["W1"]))
-    print("b1 = " + str(parameters["b1"]))
-    print("W2 = " + str(parameters["W2"]))
-    print("b2 = " + str(parameters["b2"]))
+    # parameters = initialize_parameters_zeros([3, 2, 1])
+    # print("W1 = " + str(parameters["W1"]))
+    # print("b1 = " + str(parameters["b1"]))
+    # print("W2 = " + str(parameters["W2"]))
+    # print("b2 = " + str(parameters["b2"]))
 
+parameters = model(train_X, train_Y, initialization="random", is_polt=True)
+
+plt.title("Model with large random initialization")
+axes = plt.gca()
+axes.set_xlim([-1.5, 1.5])
+axes.set_ylim([-1.5, 1.5])
+init_utils.plot_decision_boundary(lambda x: init_utils.predict_dec(parameters, x.T), train_X, train_Y)

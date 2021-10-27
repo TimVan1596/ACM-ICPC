@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import acivate_fun as act
 from generate_data import get_normal_data, get_simple_data
 from numpy import seterr
+import init_utils  # 第一部分，初始化
 
 seterr(all='raise')
 
@@ -260,6 +261,9 @@ def getAccuracy(A, Y):
 
 
 if __name__ == '__main__':
+    # 导入官方给的例子
+    train_X, train_Y, test_X, test_Y = init_utils.load_dataset(is_plot=False)
+
     # 从给定的猫训练集来初始化输入数据
     # train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = lr_utils.load_dataset()
     #
@@ -289,38 +293,34 @@ if __name__ == '__main__':
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
 
-    # data_X = train_x
-    # data_Y = train_y
+    data_X = train_X
+    data_Y = train_Y
 
     # 初始化超参数
     net_array = [
         {'neurons': 2, 'activate': TANH_NAME},
         {'neurons': 7, 'activate': TANH_NAME},
         {'neurons': 3, 'activate': TANH_NAME},
-        {'neurons': 3, 'activate': TANH_NAME},
-        {'neurons': 3, 'activate': TANH_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 0.00075
+    learning_rate = 0.035
     random_seed = 1
 
     print("训练集输入的维度为：" + str(data_X.shape))
     print("训练集输入的维度为：" + str(data_Y.shape))
     print("学习率为：" + str(learning_rate))
 
-    parameter = deep_neural_network(data_X, data_Y, train_times=3000
+    parameter = deep_neural_network(data_X, data_Y, train_times=5000
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
                                     )
 
     # 对测试集数据进行评估准确性
-    test_X, test_Y = get_normal_data(500, X_shape=X_shape)
-    test_X = np.array(test_X)
-    test_Y = np.array(test_Y)
+    # test_X, test_Y = get_normal_data(500, X_shape=X_shape)
+    # test_X = np.array(test_X)
+    # test_Y = np.array(test_Y)
 
-    # test_X = test_x
-    # test_Y = test_y
     mytest_network(test_X, test_Y, parameter=parameter)
 
     plt.title("L2-Week1 优化的深层神经网络")
