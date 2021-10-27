@@ -152,7 +152,8 @@ def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME):
     if activate == TANH_NAME:
         dZL = dA * (1 - (pow(np.tanh(ZL), 2)))
     elif activate == SIGMOID_NAME:
-        dZL = dA * pow(act.sigmoid(ZL) + 1e-5, 2)
+        sig = act.sigmoid(ZL)
+        dZL = dA * sig * (1 - sig)
     elif activate == RELU_NAME:
         dZL = dA * act.d_ReLU(ZL)
     dWL = (1 / m) * (np.dot(dZL, A_last.T))
@@ -284,7 +285,7 @@ if __name__ == '__main__':
 
     # 从我自己写的生成函数来，初始化训练的数据
     X_shape = 1
-    data_X, data_Y = get_normal_data(20000, X_shape=X_shape)
+    data_X, data_Y = get_normal_data(2000, X_shape=X_shape)
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
 
@@ -293,19 +294,21 @@ if __name__ == '__main__':
 
     # 初始化超参数
     net_array = [
-        {'neurons': 2, 'activate': RELU_NAME},
-        {'neurons': 7, 'activate': RELU_NAME},
-        {'neurons': 3, 'activate': RELU_NAME},
+        {'neurons': 2, 'activate': TANH_NAME},
+        {'neurons': 7, 'activate': TANH_NAME},
+        {'neurons': 3, 'activate': TANH_NAME},
+        {'neurons': 3, 'activate': TANH_NAME},
+        {'neurons': 3, 'activate': TANH_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 1e-4
+    learning_rate = 0.00075
     random_seed = 1
 
     print("训练集输入的维度为：" + str(data_X.shape))
     print("训练集输入的维度为：" + str(data_Y.shape))
     print("学习率为：" + str(learning_rate))
 
-    parameter = deep_neural_network(data_X, data_Y, train_times=12000
+    parameter = deep_neural_network(data_X, data_Y, train_times=3000
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed

@@ -50,7 +50,7 @@ def deep_neural_network(X, Y
     # 训练次数
     for i in range(0, train_times, 1):
         # 每次前向传播中的纵向深度
-        for L in range(1, net_deep, 1):
+        for L in range(1, net_deep , 1):
             activate = net_array[L]['activate']
             # 进行前向传播
             forward_parameter = forward_propagation(A[L - 1], {
@@ -138,7 +138,8 @@ def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME):
     if activate == TANH_NAME:
         dZL = dA * (1 - (pow(np.tanh(ZL), 2)))
     elif activate == SIGMOID_NAME:
-        dZL = dA * pow(sigmoid(ZL), 2)
+        sig = sigmoid(ZL)
+        dZL = dA * sig * (1 - sig)
     dWL = (1 / m) * (np.dot(dZL, A_last.T))
     dbL = (1 / m) * np.sum(dZL, axis=1, keepdims=True)
     dAL = np.dot(WL.T, dZL)
@@ -280,22 +281,24 @@ if __name__ == '__main__':
     data_X = np.array(data_X)
     data_Y = np.array(data_Y)
 
-    # data_X = train_x
-    # data_Y = train_y
+    data_X = train_x
+    data_Y = train_y
 
     print(data_X.shape)
     print(data_Y.shape)
 
     # 初始化超参数
+    # net_array的下表为0的元素是输入层，其neurons和activate无效
     net_array = [
         {'neurons': 1, 'activate': 'tanh'},
+        {'neurons': 2, 'activate': 'tanh'},
         {'neurons': 7, 'activate': 'tanh'},
         {'neurons': 5, 'activate': 'tanh'},
         {'neurons': 1, 'activate': 'sigmoid'},
     ]
-    learning_rate = 0.0075
+    learning_rate = 0.0045
     random_seed = 1
-    parameter = deep_neural_network(data_X, data_Y, train_times=2000
+    parameter = deep_neural_network(data_X, data_Y, train_times=1800
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
@@ -306,8 +309,8 @@ if __name__ == '__main__':
     test_X = np.array(test_X)
     test_Y = np.array(test_Y)
 
-    # test_X = test_x
-    # test_Y = test_y
+    test_X = test_x
+    test_Y = test_y
     test_network(test_X, test_Y, parameter=parameter)
 
     plt.title("week4 深层神经网络")
