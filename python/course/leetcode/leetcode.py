@@ -5,5 +5,7 @@
 # @Software:PyCharm
 # Definition for singly-linked list.
 
-for j in range(10, 5, -1):
-    print(j)
+# for j in range(10, 5, -1):
+#     print(j)
+
+print('a'.find(' '))

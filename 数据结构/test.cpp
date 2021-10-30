@@ -5,9 +5,12 @@ using namespace std;
 
 int main() {
 
-	//¸ºÊıÈ¡Óà
-	int a = -11;
-	cout<<a%4<<endl;
-	return 0;
+//	int	a£Û£İ = {1,2,3,5};
+//	int	a£Û 4£İ= {1,2,3,4,5};
+//	char	a£Û 4£İ= {A,B,C,D};
+//	char	a£Û 4£İ="ABCD";
+	int	a[] = {1,2,3,5};
+//	char a[4]= {A,B,C,D};
+	char b[4]="ABCD";
 }
 
