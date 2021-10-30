@@ -652,7 +652,7 @@ print(tup)
 # test.py引入support模块：
 # test.py文件代码
 # # !/usr/bin/python3
-# # Filename: test.py
+# # Filename: app.py
 #
 # # 导入模块
 # import support
@@ -661,7 +661,7 @@ print(tup)
 # support.print_func("Runoob")
 #
 # 以上实例输出结果：
-# $ python3 test.py
+# $ python3 app.py
 # Hello: Runoob
 #
 #
