@@ -12,22 +12,22 @@ from matplotlib import pyplot as plt
 
 
 if __name__ == '__main__':
-    # path = 'C://'
-    # name = 'train.h5'
-    # file = h5py.File(path+'/'+name, 'r')
-    # print(file.keys())
-    #
-    # print('train_y')
-    # print(np.array(file['train_y']))
-    #
-    #
-    # key_name = 'train_x'
-    # value = file[key_name]
-    # train_set_x = value
-    # arr = np.array(train_set_x)
-    # plt.imshow(arr[2])
-    # print(arr[2].shape)
-    # plt.show()
+    path = 'C:/Users/TimVan/Desktop/XM/ACM/python/deep_learning/datasetx/data/'
+    name = 'test.h5'
+    file = h5py.File(path+'/'+name, 'r')
+    print(file.keys())
+
+    print('y')
+    print(np.array(file['y']))
+
+
+    key_name = 'x'
+    value = file[key_name]
+    train_set_x = value
+    arr = np.array(train_set_x)
+    plt.imshow(arr[2])
+    print(arr[2].shape)
+    plt.show()
 
     # import numpy as np
     #
@@ -39,8 +39,8 @@ if __name__ == '__main__':
     #
     # print(a, b)
     # result:[16 14 15 13 17 12 10 11 18 19]
-    arr = [(1, 10), (2, 20), (3, 30)]
-    arr1 = [elem[0] for elem in arr]
-    arr2 = [elem[1] for elem in arr]
-    print(arr1)
-    print(arr2)
+    # arr = [(1, 10), (2, 20), (3, 30)]
+    # arr1 = [elem[0] for elem in arr]
+    # arr2 = [elem[1] for elem in arr]
+    # print(arr1)
+    # print(arr2)

@@ -7,11 +7,10 @@
 # 图片缩放为 64*64
 import numpy as np
 import random
-
 import os
 from PIL import Image
-import matplotlib.pyplot as plt
 import h5py
+import logging
 
 '''
     # 1.读取当前目录下的train/test文件夹
@@ -34,7 +33,17 @@ import h5py
 # label_dict = 标签和值对应的字典，如{'yes':1,'no;:0}
 # train_percent = 训练集占总样本的比例，默认为0.9
 # pic_size = 生成数据集中缩放图片的尺寸，默认为224*224
-def gen_from_pictures(path, label_dict, train_percent=0.9, pic_size=224):
+# isLog = 是否需要日志
+def gen_from_pictures(path, label_dict, train_percent=0.9, pic_size=224, isLog=False):
+    if isLog:
+        init_logging()
+
+    logging.info('datasetX 开始转换')
+    logging.debug('--path=' + path)
+    logging.debug('--label_dict=' + str(label_dict))
+    logging.debug('--train_percent=' + str(train_percent))
+    logging.debug('--pic_size=' + str(pic_size))
+
     # pic_cnt = 图片的个数
     pic_cnt = 0
     data_path = path + '/data'
@@ -54,6 +63,7 @@ def gen_from_pictures(path, label_dict, train_percent=0.9, pic_size=224):
             re_image = image.resize((pic_size, pic_size))
             # 新增一个(图片元素,标签数字)元组
             data_list.append((np.array(re_image), label_dict.get(label)))
+            logging.debug('--正在处理第' + str(len(data_list)) + '个文件')
 
     # 检验两者是否相等
     assert len(data_list) == pic_cnt
@@ -64,8 +74,14 @@ def gen_from_pictures(path, label_dict, train_percent=0.9, pic_size=224):
     test_list = data_list[train_cnt:]
 
     assert len(train_list) + len(test_list) == pic_cnt
-    train_file_path = gen_h5(train_list, data_path, file_name='train')
-    test_file_path = gen_h5(test_list, data_path, file_name='test')
+    logging.info('共有文件' + str(pic_cnt) + '个文件'
+                 + ',其中训练集有' + str(len(train_list)) + '个'
+                 + ',测试集集有' + str(len(test_list)) + '个')
+
+    train_file_path = gen_h5(train_list, path, file_name='train')
+    test_file_path = gen_h5(test_list, path, file_name='test')
+    logging.info('训练集保存在' + train_file_path)
+    logging.info('测试集保存在' + test_file_path)
 
 
 # 同序shuffle-按相同顺序打乱两个数组
@@ -86,12 +102,24 @@ def gen_h5(data_list, file_path, file_name='file'):
     for elem in data_list:
         x.append(elem[0])
         y.append(elem[1])
-    path = file_path + '/' + file_name + '.h5'
-    file = h5py.File(path, 'w')
+    path = file_path + '/output/'
+    # 判断文件夹是否存在，不存在则创建
+    if not os.path.exists(path):
+        os.mkdir(path)
+    file = h5py.File(path + file_name + '.h5', 'w')
     file.create_dataset('x', data=x)
     file.create_dataset('y', data=y)
     file.close()
     return path
+
+
+# 初始化日志logging
+def init_logging():
+    LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"  # 日志格式化输出
+    DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"  # 日期格式
+    fp = logging.FileHandler('log.txt', encoding='utf-8')
+    fs = logging.StreamHandler()
+    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, datefmt=DATE_FORMAT, handlers=[fp, fs])  # 调用
 
 
 if __name__ == '__main__':
@@ -102,9 +130,9 @@ if __name__ == '__main__':
     }
 
     # 训练集占的比例
-    train_percent = 0.95
+    train_percent = 0.85
     # 图片缩放的尺寸
-    pic_size = 128
+    pic_size = 168
 
-    path = 'C:/Users/TimVan/Desktop/XM/ACM/python/deep_learning/datasetx/'
-    gen_from_pictures(path, label_dict, train_percent)
+    path = './'
+    gen_from_pictures(path, label_dict, train_percent, pic_size=pic_size, isLog=True)
