@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # @Time:2020/8/18 2:11
 # @Author:TimVan
-# @File:main.py
+# @File:gen_dataset.py
 # @Software:PyCharm
 
 import os

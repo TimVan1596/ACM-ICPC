@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # @Time:2021/4/30 16:39
 # @Author:TimVan
-# @File:main.py
+# @File:gen_dataset.py
 # @Software:PyCharm
 import numpy
 import numpy as np

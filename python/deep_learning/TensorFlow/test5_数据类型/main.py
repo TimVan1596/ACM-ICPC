@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # @Time:2020/9/1 23:18
 # @Author:TimVan
-# @File:main.py
+# @File:gen_dataset.py
 # @Software:PyCharm
 import tensorflow as tf
 

@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # @Time:2020/9/1 11:33
 # @Author:TimVan
-# @File:main.py
+# @File:gen_dataset.py
 # @Software:PyCharm
 import random
 from typing import Tuple
