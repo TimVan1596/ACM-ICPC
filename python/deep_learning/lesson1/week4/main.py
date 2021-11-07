@@ -499,35 +499,39 @@ if __name__ == '__main__':
 
     train_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
     test_x_flatten = test_set_x_orig.reshape(test_set_x_orig.shape[0], -1).T
+    print(train_set_x_orig.shape)
+    print(train_x_flatten.shape)
 
     train_x = train_x_flatten / 255
     train_y = train_set_y
     test_x = test_x_flatten / 255
     test_y = test_set_y
 
-    data_X, data_Y = get_number(50000)
-    data_X = np.array(data_X)
-    data_Y = np.array(data_Y)
-    data_Y = data_Y.reshape((1, data_X.shape[1]))
+    print(train_x.shape)
 
-    # train_x = data_X
-    # train_y = data_Y
-    # train_set_y = train_y
-
-    # n_x - 输入层节点数量
-    # n_h - 隐藏层节点数量
-    # n_y - 输出层节点数量
-
-    n_x = data_X.shape[0]
-    n_h = 7
-    n_y = 1
-    layers_dims = (n_x, n_h, n_y)
-
-    # parameters = two_layer_model(train_x, train_set_y, layers_dims=(n_x, n_h, n_y), num_iterations=8000,
-    #                              print_cost=True, isPlot=True)
-
-    layers_dims = [12288, 20, 7, 5, 1]  # 5-layer model
-    parameters = L_layer_model(train_x, train_y, layers_dims, num_iterations=2000, print_cost=True, isPlot=True)
+    # data_X, data_Y = get_number(50000)
+    # data_X = np.array(data_X)
+    # data_Y = np.array(data_Y)
+    # data_Y = data_Y.reshape((1, data_X.shape[1]))
+    #
+    # # train_x = data_X
+    # # train_y = data_Y
+    # # train_set_y = train_y
+    #
+    # # n_x - 输入层节点数量
+    # # n_h - 隐藏层节点数量
+    # # n_y - 输出层节点数量
+    #
+    # n_x = data_X.shape[0]
+    # n_h = 7
+    # n_y = 1
+    # layers_dims = (n_x, n_h, n_y)
+    #
+    # # parameters = two_layer_model(train_x, train_set_y, layers_dims=(n_x, n_h, n_y), num_iterations=8000,
+    # #                              print_cost=True, isPlot=True)
+    #
+    # layers_dims = [12288, 20, 7, 5, 1]  # 5-layer model
+    # parameters = L_layer_model(train_x, train_y, layers_dims, num_iterations=2000, print_cost=True, isPlot=True)
 
     # 初始化测试集的数据
     # test_X, test_Y = get_number(30)
@@ -539,6 +543,6 @@ if __name__ == '__main__':
     # predictions_train = predict(train_x, train_y, parameters)  # 训练集
     # predictions_test = predict(test_x, test_y, parameters)  # 测试集
 
-    pred_train = predict(train_x, train_y, parameters)  # 训练集
-    pred_test = predict(test_x, test_y, parameters)  # 测试集
-    print_mislabeled_images(classes, test_x, test_y, pred_test)
+    # pred_train = predict(train_x, train_y, parameters)  # 训练集
+    # pred_test = predict(test_x, test_y, parameters)  # 测试集
+    # print_mislabeled_images(classes, test_x, test_y, pred_test)

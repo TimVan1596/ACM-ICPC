@@ -17,3 +17,7 @@ def load_dataset():
     test_set_y_orig = test_set_y_orig.reshape((1, test_set_y_orig.shape[0]))
 
     return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig, classes
+
+if __name__ == '__main__':
+    train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig,classes = load_dataset()
+    print(train_set_x_orig.shape)
