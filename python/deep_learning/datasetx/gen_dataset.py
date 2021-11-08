@@ -20,14 +20,16 @@ import logging
     # 5.博客总结，可视化预期,readme介绍
     # 指出输入的格式和输出的格式，告诉hdpy是什么
 
-    # 未来：自动分配train/test的比重，指定的path，path自动转换，放到线上，每一步的文字提示
-    # 运行环境为windows
+    # 未来：自动分配train/test的比重，path自动转换，放到线上
+    # 运行环境为Windows
     # 假如样本小于10,0.9的问题
     # 应该包含classes信息
+    # 将parameter也保存到文件，可读取
+    # 新增ignore
 '''
 
 
-# 主驱动
+# 主处理函数
 # 通过jpg图片，生成train.h5dy和test.h5dy格式的数据集
 # path = 数据集的目录
 # label_dict = 标签和值对应的字典，如{'yes':1,'no;:0}
@@ -36,7 +38,7 @@ import logging
 # isLog = 是否需要日志
 def gen_from_pictures(path, label_dict, train_percent=0.9, pic_size=224, isLog=False):
     if isLog:
-        init_logging()
+        init_logging(path)
 
     logging.info('datasetX 开始转换')
     logging.debug('--path=' + path)
@@ -84,6 +86,24 @@ def gen_from_pictures(path, label_dict, train_percent=0.9, pic_size=224, isLog=F
     logging.info('测试集保存在' + test_file_path)
 
 
+# 主驱动
+def driver(user_config: dict):
+    config = {
+        # 训练集占的比例
+        'train_percent': 0.9
+        # 图片缩放的尺寸
+        , 'pic_size': 224
+        # 是否开启日志
+        , 'isLog': False
+    }
+    config.update(user_config)
+    gen_from_pictures(path=user_config.get('path')
+                      , label_dict=user_config.get('label_dict')
+                      , train_percent=user_config.get('train_percent')
+                      , pic_size=user_config.get('pic_size')
+                      , isLog=user_config.get('isLog'))
+
+
 # 同序shuffle-按相同顺序打乱两个数组
 def same_shuffle(arr1: list, arr2: list):
     rand_state = np.random.get_state()
@@ -103,9 +123,8 @@ def gen_h5(data_list, file_path, file_name='file'):
         x.append(elem[0])
         y.append(elem[1])
     path = file_path + '/output/'
-    # 判断文件夹是否存在，不存在则创建
-    if not os.path.exists(path):
-        os.mkdir(path)
+    # 路径不存在则创建
+    create_folder(path)
     file = h5py.File(path + file_name + '.h5', 'w')
     file.create_dataset('x', data=x)
     file.create_dataset('y', data=y)
@@ -114,25 +133,34 @@ def gen_h5(data_list, file_path, file_name='file'):
 
 
 # 初始化日志logging
-def init_logging():
+def init_logging(path):
     LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"  # 日志格式化输出
     DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"  # 日期格式
-    fp = logging.FileHandler('log.txt', encoding='utf-8')
+    create_folder(path + '/output/')
+    fp = logging.FileHandler(path + '/output/log.txt', encoding='utf-8')
     fs = logging.StreamHandler()
     logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, datefmt=DATE_FORMAT, handlers=[fp, fs])  # 调用
 
 
+# 判断文件夹是否存在，不存在则创建
+def create_folder(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+
 if __name__ == '__main__':
-    # 标签字典
-    label_dict = {
-        'yes': 1,
-        'no': 0
+    # datasetx的配置
+    dtx_config = {
+        'path': './'
+        # 标签字典
+        , 'label_dict': {
+            'yes': 1,
+            'no': 0
+        }
+        # 训练集占的比例
+        , 'train_percent': 0.85
+        # 图片缩放的尺寸
+        , 'pic_size': 168
+        , 'isLog': True
     }
-
-    # 训练集占的比例
-    train_percent = 0.85
-    # 图片缩放的尺寸
-    pic_size = 168
-
-    path = './'
-    gen_from_pictures(path, label_dict, train_percent, pic_size=pic_size, isLog=True)
+    driver(dtx_config)

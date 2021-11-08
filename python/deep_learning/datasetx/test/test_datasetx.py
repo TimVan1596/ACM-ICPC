@@ -354,23 +354,24 @@ if __name__ == '__main__':
     path = '../output/'
 
     train_set_x_orig, train_set_y, test_set_x_orig, test_set_y = load_dataset(path)
-
+    print(train_set_x_orig.shape)
     train_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
     test_x_flatten = test_set_x_orig.reshape(test_set_x_orig.shape[0], -1).T
-    print(train_set_x_orig.shape)
-    print(train_x_flatten.shape)
 
     train_x = train_x_flatten / 255
     train_y = train_set_y
     test_x = test_x_flatten / 255
     test_y = test_set_y
 
-    print(train_x.shape)
 
     parameters = model(train_x, train_y, keep_prob=0.86, learning_rate=0.001
-                       ,num_iterations=4000, is_plot=True)
+                       , num_iterations=5, is_plot=True)
 
     print("使用随机删除节点，训练集:")
     predictions_train = reg_utils.predict(train_x, train_y, parameters)
     print("使用随机删除节点，测试集:")
     reg_utils.predictions_test = reg_utils.predict(test_x, test_y, parameters)
+    np.save('parameters.npy', parameters)
+
+    read_dictionary = np.load('parameters.npy').item()
+    print(read_dictionary)

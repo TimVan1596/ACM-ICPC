@@ -266,6 +266,33 @@ def predict_dec(parameters, X):
     return predictions
 
 
+def my_predict(X, parameters):
+    """
+    This function is used to predict the results of a  n-layer neural network.
+
+    Arguments:
+    X -- data set of examples you would like to label
+    parameters -- parameters of the trained model
+
+    Returns:
+    p -- predictions for the given dataset X
+    """
+
+    p = np.zeros((1, X.shape[1]), dtype=np.int)
+
+    # Forward propagation
+    a3, caches = forward_propagation(X, parameters)
+
+    # convert probas to 0/1 predictions
+    for i in range(0, a3.shape[1]):
+        if a3[0, i] > 0.5:
+            p[0, i] = 1
+        else:
+            p[0, i] = 0
+
+    return p
+
+
 # 获取准确性评估，将A转为Y_hat并与Y进行比较，返回准确率
 # input：
 # A : np.array(1,m)
