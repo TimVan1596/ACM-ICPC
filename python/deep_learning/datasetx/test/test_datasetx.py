@@ -363,15 +363,12 @@ if __name__ == '__main__':
     test_x = test_x_flatten / 255
     test_y = test_set_y
 
-
     parameters = model(train_x, train_y, keep_prob=0.86, learning_rate=0.001
-                       , num_iterations=5, is_plot=True)
+                       , num_iterations=2500, is_plot=True)
 
     print("使用随机删除节点，训练集:")
     predictions_train = reg_utils.predict(train_x, train_y, parameters)
     print("使用随机删除节点，测试集:")
     reg_utils.predictions_test = reg_utils.predict(test_x, test_y, parameters)
-    np.save('parameters.npy', parameters)
-
-    read_dictionary = np.load('parameters.npy').item()
-    print(read_dictionary)
+    # 将结果通过numpy保存参数
+    np.save('parameters', parameters, allow_pickle=True)

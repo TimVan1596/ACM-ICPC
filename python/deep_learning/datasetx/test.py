@@ -12,35 +12,12 @@ from matplotlib import pyplot as plt
 
 
 if __name__ == '__main__':
-    path = 'C:/Users/TimVan/Desktop/XM/ACM/python/deep_learning/datasetx/data/'
-    name = 'test.h5'
-    file = h5py.File(path+'/'+name, 'r')
-    print(file.keys())
+    parameters = {
+        'W1': np.array([1, 2, 3])
+    }
 
-    print('y')
-    print(np.array(file['y']))
+    # 保存到 outfile.npy 文件上
+    np.save('outfile.npy', parameters, allow_pickle=True)
 
-
-    key_name = 'x'
-    value = file[key_name]
-    train_set_x = value
-    arr = np.array(train_set_x)
-    plt.imshow(arr[2])
-    print(arr[2].shape)
-    plt.show()
-
-    # import numpy as np
-    #
-    # a = np.arange(0, 10, 1)
-    # b = np.arange(10, 20, 1)
-    # print(a, b)
-    #
-    # a, b = same_shuffle(a, b)
-    #
-    # print(a, b)
-    # result:[16 14 15 13 17 12 10 11 18 19]
-    # arr = [(1, 10), (2, 20), (3, 30)]
-    # arr1 = [elem[0] for elem in arr]
-    # arr2 = [elem[1] for elem in arr]
-    # print(arr1)
-    # print(arr2)
+    a = np.load('outfile.npy', allow_pickle=True)
+    print(a)
