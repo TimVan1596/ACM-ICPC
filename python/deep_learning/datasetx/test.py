@@ -10,14 +10,17 @@ from matplotlib import pyplot as plt
 #     np.random.shuffle(arr2)
 #     return arr1, arr2
 
+import os
+from urllib.parse import urlparse
+
+
+# 根据url获取文件名和后缀
+# 返回 （文件名,后缀）
+def get_url_file_info(url):
+    file_name = os.path.basename(urlparse(url).path)
+    return os.path.splitext(file_name)
+
 
 if __name__ == '__main__':
-    parameters = {
-        'W1': np.array([1, 2, 3])
-    }
-
-    # 保存到 outfile.npy 文件上
-    np.save('outfile.npy', parameters, allow_pickle=True)
-
-    a = np.load('outfile.npy', allow_pickle=True)
-    print(a)
+    url = 'https://img95.699pic.com/photo/50071/9458.jpeg_wh300.jpg'
+    get_url_file_info(url)

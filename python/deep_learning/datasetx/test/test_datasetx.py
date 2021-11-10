@@ -363,7 +363,7 @@ if __name__ == '__main__':
     test_x = test_x_flatten / 255
     test_y = test_set_y
 
-    parameters = model(train_x, train_y, keep_prob=0.86, learning_rate=0.001
+    parameters = model(train_x, train_y, keep_prob=0.76, learning_rate=0.001
                        , num_iterations=2500, is_plot=True)
 
     print("使用随机删除节点，训练集:")

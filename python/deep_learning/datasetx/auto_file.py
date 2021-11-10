@@ -25,7 +25,7 @@ def pic_to_np(path, label_dict, pic_size: 224):
             result = detect_pic(pic_path=pic_path, parameters=parameters, pic_size=pic_size)
             label = label_dict.get(result)
             # 目的地的地址
-            dst_path = path + '/' + label
+            dst_path = path + '/' + label+'/'
             my_copyfile(pic_path, dst_path)
 
 
@@ -78,9 +78,9 @@ if __name__ == '__main__':
             0: 'no'
         }
         # 训练集占的比例
-        , 'train_percent': 0.85
+        , 'train_percent': 0.9
         # 图片缩放的尺寸
-        , 'pic_size': 168
+        , 'pic_size': 192
         , 'isLog': True
         # 训练出来的模型结果
         , 'parameter_path': './test/parameters.npy'
