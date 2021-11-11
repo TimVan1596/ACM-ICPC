@@ -80,7 +80,7 @@ if __name__ == '__main__':
         # 训练集占的比例
         , 'train_percent': 0.9
         # 图片缩放的尺寸
-        , 'pic_size': 192
+        , 'pic_size': 224
         , 'isLog': True
         # 训练出来的模型结果
         , 'parameter_path': './test/parameters.npy'

@@ -26,6 +26,8 @@ import logging
     # 应该包含classes信息
     # 将parameter也保存到文件，可读取
     # 新增ignore
+    # 根据训练集和测试集的图片尺寸，自动计算page_size
+    # 一键自动化脚本
 '''
 
 
@@ -36,15 +38,19 @@ import logging
 # train_percent = 训练集占总样本的比例，默认为0.9
 # pic_size = 生成数据集中缩放图片的尺寸，默认为224*224
 # isLog = 是否需要日志
-def gen_from_pictures(path, label_dict, train_percent=0.9, pic_size=224, isLog=False):
+def gen_from_pictures(user_config):
+    path = user_config.get('path')
+    label_dict = user_config.get('label_dict')
+    train_percent = user_config.get('train_percent')
+    pic_size = user_config.get('pic_size')
+    isLog = user_config.get('isLog')
+
     if isLog:
         init_logging(path)
 
     logging.info('datasetX 开始转换')
-    logging.debug('--path=' + path)
-    logging.debug('--label_dict=' + str(label_dict))
-    logging.debug('--train_percent=' + str(train_percent))
-    logging.debug('--pic_size=' + str(pic_size))
+    logging.debug('--user_config=' + path)
+    logging.debug(user_config)
 
     # pic_cnt = 图片的个数
     pic_cnt = 0
@@ -80,10 +86,20 @@ def gen_from_pictures(path, label_dict, train_percent=0.9, pic_size=224, isLog=F
                  + ',其中训练集有' + str(len(train_list)) + '个'
                  + ',测试集集有' + str(len(test_list)) + '个')
 
-    train_file_path = gen_h5(train_list, path, file_name='train')
-    test_file_path = gen_h5(test_list, path, file_name='test')
+    # 最终文件将要保存的路径
+    output_path = path + '/output/'
+    create_folder(output_path)
+
+    train_file_path = gen_h5_sets(train_list, output_path, file_name='train')
+    test_file_path = gen_h5_sets(test_list, output_path, file_name='test')
+    config_file_path = gen_h5_sets(user_config, output_path, file_name='config')
+
+    # 将结果通过numpy保存参数
+    np.save('config', user_config, allow_pickle=True)
+
     logging.info('训练集保存在' + train_file_path)
     logging.info('测试集保存在' + test_file_path)
+    logging.info('配置保存在' + config_file_path)
 
 
 # 主驱动
@@ -97,11 +113,7 @@ def driver(user_config: dict):
         , 'isLog': False
     }
     config.update(user_config)
-    gen_from_pictures(path=user_config.get('path')
-                      , label_dict=user_config.get('label_dict')
-                      , train_percent=user_config.get('train_percent')
-                      , pic_size=user_config.get('pic_size')
-                      , isLog=user_config.get('isLog'))
+    gen_from_pictures(user_config)
 
 
 # 同序shuffle-按相同顺序打乱两个数组
@@ -113,23 +125,32 @@ def same_shuffle(arr1: list, arr2: list):
     return arr1, arr2
 
 
-# 通过x,y生成h5文件
+# 通过x,y(训练集/测试集)生成h5文件
 # data_list = 元素是(图片元素,标签数字)元组的数组
-def gen_h5(data_list, file_path, file_name='file'):
+def gen_h5_sets(data_list, output_path, file_name='datasets'):
     x = []
     y = []
     # 从(图片元素,标签数字)取出两列成数组
     for elem in data_list:
         x.append(elem[0])
         y.append(elem[1])
-    path = file_path + '/output/'
-    # 路径不存在则创建
-    create_folder(path)
-    file = h5py.File(path + file_name + '.h5', 'w')
+
+    file_path = output_path + file_name + '.h5', 'w'
+    file = h5py.File(file_path)
     file.create_dataset('x', data=x)
     file.create_dataset('y', data=y)
     file.close()
-    return path
+    return file_path
+
+
+# 通过字典生成h5文件
+# config = 字典保存的配置
+def gen_h5_config(config, output_path, file_name='config'):
+    file_path = output_path + file_name + '.h5', 'w'
+    file = h5py.File(file_path)
+    file.create_dataset('config', data=config)
+    file.close()
+    return file_path
 
 
 # 初始化日志logging
@@ -158,9 +179,11 @@ if __name__ == '__main__':
             'no': 0
         }
         # 训练集占的比例
-        , 'train_percent': 0.85
+        , 'train_percent': 0.9
         # 图片缩放的尺寸
-        , 'pic_size': 168
+        , 'pic_size': 224
         , 'isLog': True
+        # 训练出来的模型结果存放路径
+        , 'parameter_path': './test/parameters.npy'
     }
     driver(dtx_config)
