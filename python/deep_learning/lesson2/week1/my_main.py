@@ -20,9 +20,11 @@ RELU_NAME = 'ReLU'
 # learning_rate = 学习率，默认为 0.12
 # train_times = 训练次数，默认为 3000
 # random_seed = 随机数的种子，默认为 2021
+# L2_lmd = L2正则的lambda参数，若L2_lmd<=0，则关闭L2正则
 def deep_neural_network(X, Y
                         , net_array, learning_rate=0.12
-                        , train_times=3000, random_seed=2021):
+                        , train_times=3000, random_seed=2021
+                        , L2_lmd=0.0):
     # 绘图
     x = []
     y = []
@@ -61,12 +63,11 @@ def deep_neural_network(X, Y
 
         # 计算成本cost
         A_last = A[net_deep - 1]
-        cost_value = cost(A_last, Y)
+        cost_value = cost(A_last, Y, W, L2_lmd)
         if i % 100 == 0:
             accuracy = getAccuracy(A_last, Y)
             x.append(i)
             y.append(accuracy)
-            # 打印成本值
             # 打印成本值
             if i % 200 == 0:
                 print("第" + str(i) + "次迭代，成本值为："
@@ -76,23 +77,13 @@ def deep_neural_network(X, Y
 
         # 后向传播用于梯度下降
         # 倒序计算出
-        try:
-            dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
-        except FloatingPointError:
-            print("np.divide(Y, A_last)")
-            print(np.divide(Y, A_last))
-            print("1 - Y")
-            a = 1 - Y
-            print(a)
-            print("1 - A_last")
-            b = 1 - A_last + 1e-5
-            print(b)
-            print("np.divide(1 - Y, 1 - A_last)")
-            print(np.divide(1 - Y, b))
+        dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
+
         for L in range(net_deep - 1, 0, -1):
             parameter_back = {}
             activate = net_array[L]['activate']
-            parameter_back = backward_propagation(dA, A[L - 1], Z[L], W[L], activate)
+            parameter_back = backward_propagation(dA, A[L - 1], Z[L], W[L]
+                                                  , activate, L2_lbd=L2_lmd)
             dWL = np.array(parameter_back.get('dWL'))
             dbL = np.array(parameter_back.get('dbL'))
             # 提供给下一次循环的AL
@@ -114,7 +105,8 @@ def deep_neural_network(X, Y
 
 
 # 前向传播
-def forward_propagation(A_Last, parameter, activate='tanh'):
+# keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
+def forward_propagation(A_Last, parameter, activate='tanh', keep_prob=1):
     W = parameter.get('W')
     b = parameter.get('b')
 
@@ -126,6 +118,13 @@ def forward_propagation(A_Last, parameter, activate='tanh'):
     elif activate == RELU_NAME:
         A = act.ReLU(Z)
 
+    # 是否dropout
+    if 0 < keep_prob < 1:
+        # 构造、判断、丢弃、放缩
+        D = np.random.rand(A.shape[0], A.shape[0])
+        D = D < keep_prob
+        A = A * D
+        A = A / keep_prob
     return {
         'Z': Z,
         'A': A,
@@ -146,7 +145,7 @@ def forward_propagation(A_Last, parameter, activate='tanh'):
 # dZL = 第L层的Z的导数
 # dWL = 第L层的W的导数
 # dbL = 第L层的b的导数
-def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME):
+def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME, L2_lbd=0.2):
     # m = 样本数量
     global dZL
     m = ZL.shape[1]
@@ -157,7 +156,11 @@ def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME):
         dZL = dA * sig * (1 - sig)
     elif activate == RELU_NAME:
         dZL = dA * act.d_ReLU(ZL)
+
     dWL = (1 / m) * (np.dot(dZL, A_last.T))
+    # 若L2_lmd>0，则开启L2正则项的求导
+    if L2_lbd > 0:
+        dWL = dWL + (L2_lbd / m) * WL
     dbL = (1 / m) * np.sum(dZL, axis=1, keepdims=True)
     dAL = np.dot(WL.T, dZL)
     return {
@@ -168,8 +171,8 @@ def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME):
     }
 
 
-# 计算该结果的成本
-def cost(A, Y):
+# 计算基于交叉熵的成本
+def cost_cross(A, Y):
     A = np.squeeze(A)
     Y = np.squeeze(Y)
     assert (A.shape[0] == Y.shape[0])
@@ -195,6 +198,24 @@ def cost(A, Y):
     cost_ret = np.maximum(cost_ret, -cost_ret)
 
     return float(cost_ret)
+
+
+# 计算经过L2正则化的成本
+# parameters = 训练出来的w1w2w3
+def cost(A, Y, W, L2_lbd):
+    # 若L2_lmd<=0，则关闭L2正则
+    origin_cost = cost_cross(A, Y)
+    if L2_lbd <= 0:
+        return origin_cost
+
+    m = A.shape[0]
+    L2_cost = 0
+    for w in W:
+        L2_cost = L2_cost + np.sum(np.square(w))
+    L2_cost = (L2_lbd / (2 * m)) * L2_cost
+
+    # L2正则化为原成本（交叉熵）+L2项
+    return origin_cost + L2_cost
 
 
 # 初始化W和b的参数
@@ -229,7 +250,7 @@ def mytest_network(X, Y, parameter):
         }, activate)
         A = forward_parameter.get('A')
     # 计算成本cost
-    cost_value = cost(A, Y)
+    cost_value = cost_cross(A, Y)
 
     print(numpy.around(np.squeeze(A), 3))
     print(Y)
@@ -310,10 +331,11 @@ if __name__ == '__main__':
     print("训练集输入的维度为：" + str(data_Y.shape))
     print("学习率为：" + str(learning_rate))
 
-    parameter = deep_neural_network(data_X, data_Y, train_times=5000
+    parameter = deep_neural_network(data_X, data_Y, train_times=6000
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
+                                    , L2_lmd=0.2
                                     )
 
     # 对测试集数据进行评估准确性
