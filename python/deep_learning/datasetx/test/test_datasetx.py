@@ -363,8 +363,8 @@ if __name__ == '__main__':
     test_x = test_x_flatten / 255
     test_y = test_set_y
 
-    parameters = model(train_x, train_y, keep_prob=0.75, learning_rate=0.0005
-                       , num_iterations=10000, is_plot=True)
+    parameters = model(train_x, train_y, keep_prob=0.75, learning_rate=0.0003
+                       , num_iterations=20000, is_plot=True)
 
     print("使用随机删除节点，训练集:")
     predictions_train = reg_utils.predict(train_x, train_y, parameters)

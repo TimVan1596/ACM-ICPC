@@ -70,6 +70,6 @@ def getImage(keyword, path):
 
 
 if __name__ == '__main__':
-    keyword = 'ren'
+    keyword = 'renwu'
     path = './origin/test/'
     getImage(keyword, path)

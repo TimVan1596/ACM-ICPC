@@ -14,13 +14,6 @@ import os
 from urllib.parse import urlparse
 
 
-# 根据url获取文件名和后缀
-# 返回 （文件名,后缀）
-def get_url_file_info(url):
-    file_name = os.path.basename(urlparse(url).path)
-    return os.path.splitext(file_name)
-
 
 if __name__ == '__main__':
-    url = 'https://img95.699pic.com/photo/50071/9458.jpeg_wh300.jpg'
-    get_url_file_info(url)
+    pass

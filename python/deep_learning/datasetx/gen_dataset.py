@@ -48,7 +48,7 @@ def gen_from_pictures(user_config):
     if isLog:
         init_logging(path)
 
-    logging.info('datasetX 开始转换')
+    logging.info('\ndatasetX 开始转换')
     logging.debug('--user_config=' + path)
     logging.debug(user_config)
 
@@ -92,14 +92,13 @@ def gen_from_pictures(user_config):
 
     train_file_path = gen_h5_sets(train_list, output_path, file_name='train')
     test_file_path = gen_h5_sets(test_list, output_path, file_name='test')
-    config_file_path = gen_h5_sets(user_config, output_path, file_name='config')
 
     # 将结果通过numpy保存参数
-    np.save('config', user_config, allow_pickle=True)
+    np.save(output_path + 'config', user_config, allow_pickle=True)
 
     logging.info('训练集保存在' + train_file_path)
     logging.info('测试集保存在' + test_file_path)
-    logging.info('配置保存在' + config_file_path)
+    logging.info('配置保存在' + output_path + 'config')
 
 
 # 主驱动
@@ -135,20 +134,10 @@ def gen_h5_sets(data_list, output_path, file_name='datasets'):
         x.append(elem[0])
         y.append(elem[1])
 
-    file_path = output_path + file_name + '.h5', 'w'
-    file = h5py.File(file_path)
+    file_path = output_path + file_name + '.h5'
+    file = h5py.File(file_path, 'w')
     file.create_dataset('x', data=x)
     file.create_dataset('y', data=y)
-    file.close()
-    return file_path
-
-
-# 通过字典生成h5文件
-# config = 字典保存的配置
-def gen_h5_config(config, output_path, file_name='config'):
-    file_path = output_path + file_name + '.h5', 'w'
-    file = h5py.File(file_path)
-    file.create_dataset('config', data=config)
     file.close()
     return file_path
 
