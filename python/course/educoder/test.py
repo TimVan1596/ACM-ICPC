@@ -1,66 +1,16 @@
-import matplotlib as mpl
-
-mpl.use('Agg')
-import matplotlib.pyplot as plt
-#  不要改变上面的顺序
-
-import datetime
+# 请用函数实现Machin公式计算，包含隐含参数N
+import math
 
 
-def Draw():
-    appl = "step3/AAPL.csv"  # 苹果
-    google = "step3/GOOG.csv"  # 谷歌
-    ms = "step3/MSFT.csv"  # 微软
-
-    # 在此绘制折线图
-    #   请在此添加实现代码   #
+def arctg(x, N=5):  # 迭代项数N的缺省值是5，即如果调用时不给值就用5
     # ********** Begin *********#
-    # 初始化plt绘图
-    # plt.xlim((2014, 2019))
-    plt.ylabel('Open')
-    # plt.ylim((0, 1200))
-    # arr = [i for i in range(0, 1201, 200)]
-    # plt.yticks(arr)
-    plt.xticks(rotation=45)  # x轴的刻度数值，45度倾斜
-
-    appl = ['Apple', appl, 'red']
-    google = ['Google', google, 'green']
-    ms = ['Microsoft', ms, 'blue']
-    result = {}
-    file_path_list = [appl, google, ms]
-    for file_path in file_path_list:
-        data = read_csv(file_path[1])
-        result[file_path[0]] = data
-        # print(result[file_path[0]])
-
-        # 获取横轴和纵轴，并把日期格式化
-        dates = list(data.keys())
-        dates = [datetime.datetime.strptime(d, '%Y-%m-%d').date() for d in dates]
-        opens = list(data.values())
-        plt.plot(dates, opens, linewidth=1.0, color=file_path[2], label=file_path[0])
-
-    plt.legend(loc='upper left')
-
+    # 为了使用Machin方法更快的计算出π值，请在右侧代码框中编写程序实现arctg函数，根据输入的x和迭代项数N返回相应的arctg值。
+    sum = 0
+    for i in range(1, N + 1):
+        value = math.pow(-1, i - 1)
+        value = value * ((math.pow(x, 2 * i - 1)) / (2 * i - 1))
+        sum = sum + value
     # ********** End **********#
+    return sum
 
-    plt.savefig("step3/output/data.png")
-
-
-# 如果有必要，可以增加别的函数协助完成任务，可在此添加实现代码
-# ********** Begin *********#
-# 对csv的内容进行解析，返回date:open的字典
-def read_csv(path):
-    info_dict = {}
-
-    with open(path, 'r') as file:
-        file_lines = file.readlines()
-        for index in range(1, len(file_lines)):
-            line = file_lines[index]
-            line = line.strip().replace('\n', '').replace('\r', '')
-            line_split = line.split(',')
-            Date = line_split[0]
-            Open = float(line_split[1])
-            info_dict[Date] = Open
-    return info_dict
-
-# ********** End **********#
+print('%.20f' % arctg(float(0.1)))
