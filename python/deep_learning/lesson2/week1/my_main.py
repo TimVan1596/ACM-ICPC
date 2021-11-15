@@ -22,10 +22,11 @@ RELU_NAME = 'ReLU'
 # random_seed = 随机数的种子，默认为 2021
 # L2_lmd = L2正则的lambda参数，若L2_lmd<=0，则关闭L2正则
 # keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
+# normalizing = 是否归一化处理
 def deep_neural_network(X, Y
                         , net_array, learning_rate=0.12
                         , train_times=3000, random_seed=2021
-                        , L2_lmd=0.0, keep_prob=1):
+                        , L2_lmd=0.0, keep_prob=1, normalizing=False):
     # 绘图
     x = []
     y = []
@@ -297,6 +298,12 @@ def getAccuracy(A, Y):
     a = float(np.sum((A_dummy == Y)))
     accuracy = float(np.sum((A_dummy == Y))) * 100 / m
     return accuracy
+
+
+# 对传入数据进行归一化处理
+def normalizing(data: np.ndarray):
+    u = np.sum
+    pass
 
 
 if __name__ == '__main__':
