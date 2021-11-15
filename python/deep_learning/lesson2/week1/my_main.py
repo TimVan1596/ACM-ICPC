@@ -21,10 +21,11 @@ RELU_NAME = 'ReLU'
 # train_times = 训练次数，默认为 3000
 # random_seed = 随机数的种子，默认为 2021
 # L2_lmd = L2正则的lambda参数，若L2_lmd<=0，则关闭L2正则
+# keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
 def deep_neural_network(X, Y
                         , net_array, learning_rate=0.12
                         , train_times=3000, random_seed=2021
-                        , L2_lmd=0.0):
+                        , L2_lmd=0.0, keep_prob=1):
     # 绘图
     x = []
     y = []
@@ -39,6 +40,7 @@ def deep_neural_network(X, Y
     # 对每一个深度的参数进行保存
     Z = [np.array([])] * net_deep
     A = [np.array([])] * net_deep
+    D = [np.array([])] * net_deep
     # 后向传播用于梯度下降
     dZ = [0] * net_deep
     dW = [0] * net_deep
@@ -56,9 +58,10 @@ def deep_neural_network(X, Y
             forward_parameter = forward_propagation(A[L - 1], {
                 'W': W[L],
                 'b': b[L],
-            }, activate)
+            }, activate, keep_prob=keep_prob)
             Z[L] = np.array(forward_parameter.get('Z'))
             A[L] = np.array(forward_parameter.get('A'))
+            D[L] = np.array(forward_parameter.get('D'))
             assert (Z[L].shape == (net_array[L]['neurons'], m))
 
         # 计算成本cost
@@ -82,8 +85,10 @@ def deep_neural_network(X, Y
         for L in range(net_deep - 1, 0, -1):
             parameter_back = {}
             activate = net_array[L]['activate']
+            # 由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
             parameter_back = backward_propagation(dA, A[L - 1], Z[L], W[L]
-                                                  , activate, L2_lbd=L2_lmd)
+                                                  , activate, L2_lbd=L2_lmd,
+                                                  keep_prob=keep_prob if L != 1 else 1, D_last=D[L - 1])
             dWL = np.array(parameter_back.get('dWL'))
             dbL = np.array(parameter_back.get('dbL'))
             # 提供给下一次循环的AL
@@ -118,17 +123,20 @@ def forward_propagation(A_Last, parameter, activate='tanh', keep_prob=1):
     elif activate == RELU_NAME:
         A = act.ReLU(Z)
 
-    # 是否dropout
-    if 0 < keep_prob < 1:
-        # 构造、判断、丢弃、放缩
-        D = np.random.rand(A.shape[0], A.shape[0])
-        D = D < keep_prob
-        A = A * D
-        A = A / keep_prob
-    return {
+    result = {
         'Z': Z,
         'A': A,
     }
+
+    # 是否dropout
+    if 0 < keep_prob < 1:
+        # 构造、判断、丢弃、放缩
+        D = np.random.rand(A.shape[0], A.shape[1])
+        D = D < keep_prob
+        A = A * D
+        A = A / keep_prob
+        result['D'] = D
+    return result
 
 
 # 反向传播，梯度下降
@@ -145,7 +153,10 @@ def forward_propagation(A_Last, parameter, activate='tanh', keep_prob=1):
 # dZL = 第L层的Z的导数
 # dWL = 第L层的W的导数
 # dbL = 第L层的b的导数
-def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME, L2_lbd=0.2):
+# keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
+# D_last = 第L-1层的D,dropout的参数
+def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME, L2_lbd=0.2
+                         , keep_prob=1, D_last: np.ndarray = 0):
     # m = 样本数量
     global dZL
     m = ZL.shape[1]
@@ -163,6 +174,13 @@ def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME, L2_lbd=0.2):
         dWL = dWL + (L2_lbd / m) * WL
     dbL = (1 / m) * np.sum(dZL, axis=1, keepdims=True)
     dAL = np.dot(WL.T, dZL)
+
+    # 是否dropout
+    if 0 < keep_prob < 1:
+        assert dAL.shape == D_last.shape
+        dAL *= D_last
+        dAL /= keep_prob
+
     return {
         'dA_last': dAL,
         'dZL': dZL,
@@ -324,18 +342,19 @@ if __name__ == '__main__':
         {'neurons': 3, 'activate': TANH_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 0.035
+    learning_rate = 0.034
     random_seed = 1
 
     print("训练集输入的维度为：" + str(data_X.shape))
     print("训练集输入的维度为：" + str(data_Y.shape))
     print("学习率为：" + str(learning_rate))
 
-    parameter = deep_neural_network(data_X, data_Y, train_times=6000
+    parameter = deep_neural_network(data_X, data_Y, train_times=10000
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
                                     , L2_lmd=0.2
+                                    , keep_prob=0.5
                                     )
 
     # 对测试集数据进行评估准确性
