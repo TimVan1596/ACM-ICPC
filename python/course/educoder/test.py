@@ -1,22 +1,33 @@
-# coding:utf-8
-from math import sqrt
+def Parse():
+    path = "step2/oxforddata.txt" #文件路径
 
-a = float(input());
-b = float(input());
-c = float(input())
+    #将文件内容解析成一个多级字典，并返回
+    #   请在此添加实现代码   #
+	# ********** Begin *********#
+    temp_dict = {}
+    with open(path,'r') as f:
+        lines = f.readlines()
+        lines = lines[7:]
+        for line in lines:
+            arr = line.split()
+            year = int(arr[0])
+            mm = int(arr[1])
+            tmax = float(arr[2])
+            tmin = float(arr[3])
+            af = float(arr[4])
+            rain = float(arr[5])
+            sun = arr[6]
+            if sun == '---':
+                sun = None
+            m_dict = {
+                'tmax' : tmax,
+                'tmin' : tmin,
+                'af' : af,
+                'rain' : rain,
+                'sun' : sun
+            }
+            temp_dict[mm] = m_dict
+    return temp_dict
 
 
-def roots(a, b, c):
-    # 请在此添加代码，求方程 ax^2+bx+c = 0的解,返回由方程根构成的列表,若方程有无数解，返回['inf']
-    # ********** Begin *********#
-    delta = b * b - 4 * a * c
-    if delta < 0:
-        return ['inf']
-    else:
-        x1 = (-b + sqrt(delta)) / (2 * a)
-        x2 = ((-b) / a) - x1
-        return [x1, x2]
-
-
-# ********** End **********#
-print(roots(a, b, c))
+	# ********** End **********#
