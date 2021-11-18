@@ -27,7 +27,7 @@ def initial_plt(x, y, f, fx_ln=[], fx_label='二次拟合', ln_fx_label='对数�
     plt.rcParams['axes.unicode_minus'] = False
     plt.xlabel('t/min 时间')
     plt.ylabel('P 所占产物的百分比')
-    plt.title('最小平方和拟合')
+    plt.title('最小二乘法拟合')
 
     plt.scatter(x, y, linewidth=2, color='orange', label='真实')
     plt.plot(x, f, linewidth=2, color='dodgerblue', label=fx_label)
