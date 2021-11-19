@@ -22,7 +22,8 @@ def get_data(t_str, P_str):
 
 # 初始化matplotlib.pyplot
 # y是真实值的list，f是拟合后的list
-def initial_plt(x, y, f, fx_ln=[], fx_label='二次拟合', ln_fx_label='对数函数', is_show=True):
+def initial_plt(x, y, f, fx_ln=[], fx_third=[], fx_label='二次拟合', ln_fx_label='对数函数', third_fx_label='三次拟合',
+                is_show=True):
     plt.rcParams['font.sans-serif'] = ['SimHei']
     plt.rcParams['axes.unicode_minus'] = False
     plt.xlabel('t/min 时间')
@@ -32,6 +33,7 @@ def initial_plt(x, y, f, fx_ln=[], fx_label='二次拟合', ln_fx_label='对数�
     plt.scatter(x, y, linewidth=2, color='orange', label='真实')
     plt.plot(x, f, linewidth=2, color='dodgerblue', label=fx_label)
     plt.plot(x, fx_ln, linewidth=2, color='green', label=ln_fx_label)
+    plt.plot(x, fx_third, linewidth=2, color='red', label=third_fx_label)
 
     plt.legend(loc='upper left')
     if is_show:
@@ -263,5 +265,41 @@ if __name__ == '__main__':
     print("最终拟合出的方程为 s(x)={0} (保留{1}位)".format(fit_ln_fun, precision))
     print("误差为{0}".format(ln_diff))
 
+    print("-" * 5 + '使用三次函数拟合：')
+    # 函数空间:phi=[1,x,x^2]
+    phi_third = [lambda x: 1, lambda x: x, lambda x: x * x, lambda x: x * x * x]
+    # phi_str方便最后展示方程
+    phi_third_str = ['', 'x', 'x^2', 'x^2']
+    xishu_third = ['a' + str(elem) for elem in range(len(phi_third))]
+    fun_third_str = get_fun(xishu_third, phi_str=phi_third_str)
+
+    # 打印提示消息
+    print("已知样本数有{0}个，令m={1}，拟合函数为 s(x)={2}".format(m + 1, m, fun_third_str))
+
+    # 获得phi的计算值，每个下标是函数空间对应的
+    phi_third_values = get_phi_value(t, phi_third)
+
+    # 计算法方程中的G
+    G = list(get_G(phi_third_values))
+    print_list(G, name='G')
+
+    # 计算法方程中的d
+    d = list(get_d(phi_third_values, P))
+    print_list(d, name='d')
+
+    # 通过克拉默法则求解答案
+    print("计算法方程 Ga=d，从而解得")
+    result = crame(G, d)
+    print('，'.join([str('a{}={}'.format(index, float(result[index]))) for index in range(len(result))]))
+    # 修改precision可调精度,默认保留4位小数
+    precision = 5
+    fit_third_fun = get_fit_fun_str(result, phi_third_str, precision=precision)
+    print("最终拟合出的方程为 s(x)={0} (保留{1}位)".format(fit_third_fun, precision))
+    # 计算最后的拟合值的序列
+    fx_third = [get_fit(result, phi_third, x) for x in t]
+    diff = get_diff(fx=fx_third, y=P)
+    print("误差为{0}".format(diff))
+
     # 图表设置
-    initial_plt(t, P, f=fx, fx_ln=fx_ln, is_show=True, fx_label='二次函数', ln_fx_label='对数函数')
+    initial_plt(t, P, f=fx, fx_ln=fx_ln, fx_third=fx_third, is_show=True
+                , fx_label='二次函数', ln_fx_label='对数函数', third_fx_label="三次函数")
