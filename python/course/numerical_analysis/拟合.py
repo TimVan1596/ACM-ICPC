@@ -36,9 +36,9 @@ def initial_plt(x, y, f, fx_ln=[], fx_third=[], fx_label='二次拟合', ln_fx_l
     plt.plot(x, fx_third, linewidth=2, color='red', label=third_fx_label)
 
     plt.legend(loc='upper left')
+    plt.savefig("result.png")
     if is_show:
         plt.show()
-    plt.savefig("result.png")
 
 
 # 计算phi的值的方法
@@ -269,7 +269,7 @@ if __name__ == '__main__':
     # 函数空间:phi=[1,x,x^2]
     phi_third = [lambda x: 1, lambda x: x, lambda x: x * x, lambda x: x * x * x]
     # phi_str方便最后展示方程
-    phi_third_str = ['', 'x', 'x^2', 'x^2']
+    phi_third_str = ['', 'x', 'x^2', 'x^3']
     xishu_third = ['a' + str(elem) for elem in range(len(phi_third))]
     fun_third_str = get_fun(xishu_third, phi_str=phi_third_str)
 
