@@ -301,9 +301,29 @@ def getAccuracy(A, Y):
 
 
 # 对传入数据进行归一化处理
+# data的shape应该是(x,m)，其中x是特征值的个数，m是样本数量
+# 返回归一化结果、u和delta_double
 def normalizing(data: np.ndarray):
-    u = np.sum
-    pass
+    # m = 样本数量
+    m = data.shape[1]
+    # 1.零均值：对每一个特征值分别求均值
+    u = (1 / m) * data.sum(axis=1, keepdims=True)
+    cache = data - u
+
+    # 2.归一化方差：注意，是先平方再求和，这是为了避免如[-1,0,1]数据造成求和为0，之后产生除以0
+    delta_double = (1 / m) * (cache ** 2).sum(axis=1, keepdims=True)
+    cache = cache / delta_double
+    return cache, u, delta_double
+
+
+# 已知u和delta_double进行归一化输入
+def normalizing_full(data: np.ndarray, u, delta_double):
+    assert data.shape[0] == u.shape[0]
+    assert data.shape[0] == delta_double.shape[0]
+
+    cache = data - u
+    cache = cache / delta_double
+    return cache, u, delta_double
 
 
 if __name__ == '__main__':
@@ -356,7 +376,10 @@ if __name__ == '__main__':
     print("训练集输入的维度为：" + str(data_Y.shape))
     print("学习率为：" + str(learning_rate))
 
-    parameter = deep_neural_network(data_X, data_Y, train_times=10000
+    # 对训练集进行归一化输入
+    new_data_X, u, delta_double = normalizing(data=data_X)
+
+    parameter = deep_neural_network(new_data_X, data_Y, train_times=4000
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
@@ -369,7 +392,9 @@ if __name__ == '__main__':
     # test_X = np.array(test_X)
     # test_Y = np.array(test_Y)
 
-    mytest_network(test_X, test_Y, parameter=parameter)
+    # 对测试集进行归一化输入
+    new_test_X, u, delta_double = normalizing_full(data=test_X, u=u, delta_double=delta_double)
+    mytest_network(new_test_X, test_Y, parameter=parameter)
 
     plt.title("L2-Week1 优化的深层神经网络")
     plt.xlabel("x/times")

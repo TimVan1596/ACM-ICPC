@@ -27,8 +27,8 @@ n = len(labels)
 
 women_sum = sum(womenCount)
 pers = list(map(lambda x: x / women_sum, womenCount))
-plt.pie(pers, explode=explode, labels=labels, shadow=True, colors=colors,radius=1.1)
-plt.axis('equal')   #该行代码使饼图长宽相等
+plt.pie(pers, explode=explode, labels=labels, shadow=True, colors=colors, radius=1.1)
+plt.axis('equal')  # 该行代码使饼图长宽相等
 # plt.savefig("picture/step3/fig3.png")
 plt.show()
 
