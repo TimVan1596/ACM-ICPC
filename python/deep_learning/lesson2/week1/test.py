@@ -1,37 +1,38 @@
-import numpy as np
+import math
 
 
-# 对传入数据进行归一化处理
-# data的shape应该是(x,m)，其中x是特征值的个数，m是样本数量
-# 返回归一化结果、u和delta_double
-def normalizing(data: np.ndarray):
-    # m = 样本数量
-    m = data.shape[1]
-    # 1.零均值：对每一个特征值分别求均值
-    u = (1 / m) * data.sum(axis=1, keepdims=True)
-    cache = data - u
+# 梯度检验
+# 第一步、首先需要给出原函数、导函数、自变量的求导点和精度epsilon
+# 第二步、分别求出梯度值和求导值
+# 第三步、求出diff并与epsilon对比，返回是否正常和diff
+def grad_check(fun, d_fun, x, theta=1e-4, epsilon=1e-3):
+    def grad():
+        first = fun(x + theta)
+        second = fun(x - theta)
+        return (first - second) / (2 * theta)
 
-    # 2.归一化方差：注意，是先平方再求和，这是为了避免如[-1,0,1]数据造成求和为0，之后产生除以0
-    delta_double = (1 / m) * (cache ** 2).sum(axis=1, keepdims=True)
-    cache = cache / delta_double
-    return cache, u, delta_double
+    gradient = grad()
+    derivation = d_fun(x)
+    print("gradient=", gradient)
+    print("derivation=", derivation)
 
-
-# 已知u和delta_double进行归一化输入
-def normalizing_full(data: np.ndarray, u, delta_double):
-    assert data.shape[0] == u.shape[0]
-    assert data.shape[0] == delta_double.shape[0]
-
-    cache = data - u
-    cache = cache / delta_double
-    return cache, u, delta_double
+    diff = (gradient - derivation) / (gradient + derivation)
+    return abs(diff) < epsilon, diff
 
 
 if __name__ == '__main__':
-    # 输入的数组 shape=(2,3)
-    arr = np.array([[1, 2, 3], [4, 5, 6]])
-    new_arr, u, delta_double = normalizing(data=arr)
-    print(new_arr, u, delta_double)
+    # fun为原函数，d_fun为导函数
+    def fun(x):
+        return math.sin(x)
 
-    new_arr, u, delta_double = normalizing_full(data=arr, u=u, delta_double=delta_double)
-    print(new_arr, u, delta_double)
+
+    def d_fun(x):
+        return math.cos(x)
+
+
+    my_epsilon = 1e-5
+    my_theta = 1e-5
+    my_x = 3
+    is_good, diff = grad_check(fun=fun, d_fun=d_fun, x=my_x, theta=my_theta, epsilon=my_epsilon)
+    print("is_good=", is_good)
+    print("diff=", diff)
