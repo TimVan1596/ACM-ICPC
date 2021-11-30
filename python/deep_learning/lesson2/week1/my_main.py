@@ -26,7 +26,11 @@ RELU_NAME = 'ReLU'
 def deep_neural_network(X, Y
                         , net_array, learning_rate=0.12
                         , train_times=3000, random_seed=2021
-                        , L2_lmd=0.0, keep_prob=1, normalizing=False):
+                        , L2_lmd=0.0, keep_prob=1, grad_check=False):
+    """
+    :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
+    """
+
     # 绘图
     x = []
     y = []
@@ -99,6 +103,14 @@ def deep_neural_network(X, Y
             # 更新参数
             W[L] = W[L] - learning_rate * dWL
             b[L] = b[L] - learning_rate * dbL
+
+        # 是否开启梯度检验
+        if i == 0 and grad_check:
+            print("打开了梯度检验")
+            W
+            b
+            Z
+            A
 
     parameter = {
         'W': W,
@@ -326,6 +338,36 @@ def normalizing_full(data: np.ndarray, u, delta_double):
     return cache, u, delta_double
 
 
+def grad_check(fun, d_fun, x, theta=1e-4, epsilon=1e-3):
+    """
+    :param fun:原函数
+    :param d_fun:导函数
+    :param x:自变量的求导点
+    :param theta:变化值
+    :param epsilon:误差精度
+    :return: 返回是否正常和diff
+        第一步、首先需要给出原函数、导函数、自变量的求导点和精度epsilon
+        第二步、分别求出梯度值和求导值
+        第三步、求出diff并与epsilon对比，返回是否正常和diff
+    """
+
+    def grad():
+        first = fun(x + theta)
+        second = fun(x - theta)
+        return (first - second) / (2 * theta)
+
+    def l2(val):
+        return (val ** 2) ** 0.5
+
+    gradient = grad()
+    derivation = d_fun(x)
+    print("gradient=", gradient)
+    print("derivation=", derivation)
+
+    diff = l2(gradient - derivation) / (l2(gradient) + l2(derivation))
+    return diff < epsilon, diff
+
+
 if __name__ == '__main__':
     # 导入官方给的例子
     train_X, train_Y, test_X, test_Y = init_utils.load_dataset(is_plot=False)
@@ -385,6 +427,7 @@ if __name__ == '__main__':
                                     , random_seed=random_seed
                                     , L2_lmd=0.2
                                     , keep_prob=0.5
+                                    , grad_check=True
                                     )
 
     # 对测试集数据进行评估准确性
