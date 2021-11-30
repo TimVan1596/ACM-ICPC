@@ -107,11 +107,19 @@ def deep_neural_network(X, Y
         # 是否开启梯度检验
         if i == 0 and grad_check:
             print("打开了梯度检验")
-            W
-            b
-            Z
-            A
+            for L in range(1, net_deep, 1):
+                # 规定好theta: 变化值，epsilon: 误差精度
+                theta = 1e-4
+                epsilon = 1e-3
+                WL = W[L]
+                bL = b[L]
+                ZL = Z[L]
+                AL = A[L]
+                AL_minus = AL - theta
+                AL_plus = AL + theta
 
+                def fun(X):
+                    pass
     parameter = {
         'W': W,
         'b': b,
@@ -351,13 +359,15 @@ def grad_check(fun, d_fun, x, theta=1e-4, epsilon=1e-3):
         第三步、求出diff并与epsilon对比，返回是否正常和diff
     """
 
+    # 计算L2正则
+    def l2(val):
+        return (val ** 2) ** 0.5
+
+    # 手动计算梯度
     def grad():
         first = fun(x + theta)
         second = fun(x - theta)
         return (first - second) / (2 * theta)
-
-    def l2(val):
-        return (val ** 2) ** 0.5
 
     gradient = grad()
     derivation = d_fun(x)
