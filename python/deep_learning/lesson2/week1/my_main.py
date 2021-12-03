@@ -107,19 +107,96 @@ def deep_neural_network(X, Y
         # 是否开启梯度检验
         if i == 0 and grad_check:
             print("打开了梯度检验")
-            for L in range(1, net_deep, 1):
-                # 规定好theta: 变化值，epsilon: 误差精度
-                theta = 1e-4
-                epsilon = 1e-3
-                WL = W[L]
-                bL = b[L]
-                ZL = Z[L]
-                AL = A[L]
-                AL_minus = AL - theta
-                AL_plus = AL + theta
+            # 规定好theta: 变化值，epsilon: 误差精度
+            theta = 1e-4
+            epsilon = 1e-3
 
-                def fun(X):
-                    pass
+            # 梯度检验对每一个深度的参数进行保存， = _grad_check
+            # A_minus = A的左变化值
+            # A_plus = A的右变化值，其他同
+            Z_minus = [np.array([])] * net_deep
+            Z_plus = [np.array([])] * net_deep
+            A_minus = [np.array([])] * net_deep
+            A_plus = [np.array([])] * net_deep
+            D_minus = [np.array([])] * net_deep
+            D_plus = [np.array([])] * net_deep
+            # 后向传播用于梯度下降
+            dZ_minus = [0] * net_deep
+            dZ_plus = [0] * net_deep
+            dW_minus = [0] * net_deep
+            dW_plus = [0] * net_deep
+            db_minus = [0] * net_deep
+            db_plus = [0] * net_deep
+            dA_minus = [0] * net_deep
+            dA_plus = [0] * net_deep
+            # 初始化
+            A_minus[0] = A[0] - theta
+            A_plus[0] = A[0] + theta
+
+            for L in range(1, net_deep, 1):
+                activate = net_array[L]['activate']
+                # 进行minus前向传播
+                forward_parameter = forward_propagation(A_minus[L - 1], {
+                    'W': W[L],
+                    'b': b[L],
+                }, activate, keep_prob=keep_prob)
+                Z_minus[L] = np.array(forward_parameter.get('Z'))
+                A_minus[L] = np.array(forward_parameter.get('A'))
+                D_minus[L] = np.array(forward_parameter.get('D'))
+                assert (Z_minus[L].shape == (net_array[L]['neurons'], m))
+
+                # 进行plus前向传播
+                forward_parameter = forward_propagation(A_plus[L - 1], {
+                    'W': W[L],
+                    'b': b[L],
+                }, activate, keep_prob=keep_prob)
+                Z_plus[L] = np.array(forward_parameter.get('Z'))
+                A_plus[L] = np.array(forward_parameter.get('A'))
+                D_plus[L] = np.array(forward_parameter.get('D'))
+                assert (Z_plus[L].shape == (net_array[L]['neurons'], m))
+
+                # minus后向传播用于梯度下降
+                # 倒序计算出
+                A_last = A_minus[net_deep - 1]
+                dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
+                for L in range(net_deep - 1, 0, -1):
+                    parameter_back = {}
+                    activate = net_array[L]['activate']
+                    # 由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
+                    parameter_back = backward_propagation(dA, A_minus[L - 1], Z_minus[L], W[L]
+                                                          , activate, L2_lbd=L2_lmd,
+                                                          keep_prob=keep_prob if L != 1 else 1, D_last=D_minus[L - 1])
+                    dWL_minus = np.array(parameter_back.get('dWL'))
+                    dbL_minus = np.array(parameter_back.get('dbL'))
+                    # 提供给下一次循环的AL
+                    dAL_minus = np.array(parameter_back.get('dAL'))
+                    assert dWL_minus.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
+
+                    # 更新参数
+                    W[L] = W[L] - learning_rate * dWL_minus
+                    b[L] = b[L] - learning_rate * dbL_minus
+
+                # minus后向传播用于梯度下降
+                # 倒序计算出
+                A_last = A_plus[net_deep - 1]
+                dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
+                for L in range(net_deep - 1, 0, -1):
+                    parameter_back = {}
+                    activate = net_array[L]['activate']
+                    # 由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
+                    parameter_back = backward_propagation(dA, A_plus[L - 1], Z_plus[L], W[L]
+                                                          , activate, L2_lbd=L2_lmd,
+                                                          keep_prob=keep_prob if L != 1 else 1, D_last=D_plus[L - 1])
+                    dWL_plus = np.array(parameter_back.get('dWL'))
+                    dbL_plus = np.array(parameter_back.get('dbL'))
+                    # 提供给下一次循环的AL
+                    dAL_plus = np.array(parameter_back.get('dAL'))
+                    assert dWL_plus.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
+
+                    # 更新参数
+                    W[L] = W[L] - learning_rate * dWL_plus
+                    b[L] = b[L] - learning_rate * db_plus
+
     parameter = {
         'W': W,
         'b': b,
