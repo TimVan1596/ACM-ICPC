@@ -107,6 +107,18 @@ def deep_neural_network(X, Y
         # 是否开启梯度检验
         if i == 0 and grad_check:
             print("打开了梯度检验")
+            # Note!!!
+            # 太麻烦了，因此暂时鸽了
+            # 仅在此说下大致思路
+            # 梯度校验应该作为一个函数
+            # 第一步：已知A[0]，需要生成W，W+，W-，b，b+，b-
+            # 第二步：按照每一层计算出对应的Z、A矩阵
+            # 第三步：分别计算diff1 = (J(A+)-J(A-))/2*theta
+            # diff2 = (A(W+,b)-A(W-,b))/2*theta
+            # diff3 = (A(W,b+)-A(W,b-))/2*theta
+            # 第四步：进行反向传播和上述进行比较
+
+
             # 规定好theta: 变化值，epsilon: 误差精度
             theta = 1e-4
             epsilon = 1e-3
@@ -176,7 +188,7 @@ def deep_neural_network(X, Y
                     W[L] = W[L] - learning_rate * dWL_minus
                     b[L] = b[L] - learning_rate * dbL_minus
 
-                # minus后向传播用于梯度下降
+                # plus后向传播用于梯度下降
                 # 倒序计算出
                 A_last = A_plus[net_deep - 1]
                 dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
@@ -295,18 +307,7 @@ def cost_cross(A, Y):
     m = A.shape[0]
     # 这里使用 np.multiply 是因为只有一维所以对应想乘
 
-    try:
-        temp = np.multiply(np.log(A + 1e-5), Y) + np.multiply((1 - Y), np.log((1 - A) + 1e-5))
-    except RuntimeWarning or FloatingPointError:
-        a = np.log(A)
-        b = np.multiply(np.log(A), Y)
-        c = np.log((1 - A) + 1e-5)
-        d = np.multiply((1 - Y), np.log((1 - A) + 1e-5))
-        print(a)
-        print(b)
-        print(c)
-        print(d)
-        temp = 0
+    temp = np.multiply(np.log(A + 1e-5), Y) + np.multiply((1 - Y), np.log((1 - A) + 1e-5))
 
     # 取了一次绝对值
     temp = np.maximum(temp, -temp)
@@ -423,6 +424,7 @@ def normalizing_full(data: np.ndarray, u, delta_double):
     return cache, u, delta_double
 
 
+# 梯度检验
 def grad_check(fun, d_fun, x, theta=1e-4, epsilon=1e-3):
     """
     :param fun:原函数
