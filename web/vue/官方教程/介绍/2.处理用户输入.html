@@ -8,9 +8,11 @@
   </head>
   <body>
     <div id="root">
-      <input type="text" name="user-input" v-model="msg" /><br>
-      <button>反转消息</button>
-      <h4 v-on:click="revMsg">{{msg}}</h4>
+      <input type="text" name="user-input" v-model="msg" placeholder="输入一条消息"/><br>
+      <button v-on:click="revMsg">反转消息</button>
+      <!-- 计算属性 -->
+      <h4>{{msg}}</h4>
+
     </div>
     <script src="../../js/vue.js"></script>
     <script>
@@ -18,16 +20,17 @@
       var vm = new Vue({
         el: "#root",
         data: {
-          msg: "输入一条消息",
+          msg: "",
         },
         methods: {
-            revMsg:function(){
-                this.msg = 'xzxzc';
+            revMsg(){
+              this.msg = this.msg.split('').reverse().join('')
             }
         },
         computed: {
           reverseMsg() {
-            return msg;
+            return this.msg.split('').reverse().join('')
+
           },
         },
       });

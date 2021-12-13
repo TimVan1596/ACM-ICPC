@@ -5,10 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1.6.1 绑定监听</title>
+    <style>
+      .my-block {
+        width: 200px;
+        padding: 5px;
+      }
+
+      .orange {
+        background-color: rgb(248, 187, 73);
+      }
+    </style>
   </head>
   <body>
     <div id="app">
       <h1>{{title}}</h1>
+      <div class="my-block orange" v-on:click="open1">点我展示消息(on)</div>
+      <br>
+      <div class="my-block orange" v-on:click="open2">点我展示消息(@绑定)</div>
     </div>
     <script src="../js/vue.js"></script>
     <script>
@@ -17,6 +30,11 @@
         el: "#app",
         data: {
           title: "1.6.1 绑定监听",
+        },
+        methods: {
+          open1() {
+            alert(this.title);
+          },
         },
       });
     </script>
