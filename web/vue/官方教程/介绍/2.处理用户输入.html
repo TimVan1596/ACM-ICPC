@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>处理用户输入</title>
+  </head>
+  <body>
+    <div id="root">
+      <input type="text" name="user-input" v-model="msg" /><br>
+      <button>反转消息</button>
+      <h4 v-on:click="revMsg">{{msg}}</h4>
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+      Vue.config.productionTip = false;
+      var vm = new Vue({
+        el: "#root",
+        data: {
+          msg: "输入一条消息",
+        },
+        methods: {
+            revMsg:function(){
+                this.msg = 'xzxzc';
+            }
+        },
+        computed: {
+          reverseMsg() {
+            return msg;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
