@@ -456,9 +456,26 @@ def grad_check(fun, d_fun, x, theta=1e-4, epsilon=1e-3):
     return diff < epsilon, diff
 
 
-# 将数据集切分成t份，便于实现mini-batch
-def split_data(dataset: list):
-    np.shuffle(dataset)
+# x = 数据集，y=对应的结果
+def split_data(x, y, t=1):
+    # 首先判断x和y的长度是否匹配
+    assert x.shape[1] == y.shape[1]
+    m = x.shape[1]
+
+    state = np.random.get_state()
+    np.random.shuffle(x.T)
+    np.random.set_state(state)
+    np.random.shuffle(y.T)
+
+    x_list = []
+    y_list = []
+    max_k = math.ceil(x.shape[1] / t)
+    for i in range(max_k):
+        start = i * t
+        end = start + t if (start + t) <= m else None
+        x_list.append(x[:, start:end])
+        y_list.append(y[:, start:end])
+    return x_list, y_list
 
 
 if __name__ == '__main__':
