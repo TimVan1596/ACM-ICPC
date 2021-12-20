@@ -16,6 +16,8 @@ TANH_NAME = 'tanh'
 RELU_NAME = 'ReLU'
 
 # 绘图的参数值
+# plot_x = 迭代次数，横坐标
+# plot_y = 准确率，纵坐标
 plot_x = []
 plot_y = []
 
@@ -28,10 +30,11 @@ plot_y = []
 # L2_lmd = L2正则的lambda参数，若L2_lmd<=0，则关闭L2正则
 # keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
 # normalizing = 是否归一化处理
+# mini_batch = 是否开启mini_batch。若不为0，其值就是每一个mini-batch的大小
 def deep_neural_network(X, Y
                         , net_array, learning_rate=0.12
                         , train_times=3000, random_seed=2021
-                        , L2_lmd=0.0, keep_prob=1, grad_check=False):
+                        , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0):
     """
     :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
     """
@@ -57,7 +60,7 @@ def deep_neural_network(X, Y
     # 训练次数
     last_cost = 0
     for i in range(0, train_times, 1):
-        # 正向传播：从第1层到最后一层（第0层为输入层，不算）
+        # 第一步、正向传播：从第1层到最后一层（第0层为输入层，不算）
         for L in range(1, net_deep, 1):
             activate = net_array[L]['activate']
             # 进行前向传播
@@ -84,17 +87,17 @@ def deep_neural_network(X, Y
                       + "，成本较上次减少" + str((last_cost - cost_value) * (1e6)))
                 last_cost = cost_value
 
-        # 后向传播：从第1层到最后一层(dA是反向传播的输入)
-        dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
+        # 第二步、后向传播：从第1层到最后一层
+        dA = np.array([])
         for L in range(net_deep - 1, 0, -1):
             # keep_prob项:由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
-            parameter_back = backward_propagation(dA, A[L - 1], Z[L], W[L]
+            parameter_back = backward_propagation(dA, A_last=A[L - 1], A=A[L], ZL=Z[L], WL=W[L], Y=Y, L=L
                                                   , activate=net_array[L]['activate'], L2_lbd=L2_lmd,
                                                   keep_prob=keep_prob if L != 1 else 1, D_last=D[L - 1])
             dWL = np.array(parameter_back.get('dWL'))
             dbL = np.array(parameter_back.get('dbL'))
             # 提供给下一次循环的AL
-            dA = np.array(parameter_back.get('dAL'))
+            dA = np.array(parameter_back.get('dA'))
             assert dWL.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
 
             # 更新参数
@@ -155,26 +158,30 @@ def forward_propagation(A_Last, parameter, activate='tanh', keep_prob=1):
 # dbL = 第L层的b的导数
 # keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
 # D_last = 第L-1层的D,dropout的参数
-def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME, L2_lbd=0.2
+def backward_propagation(dA, A_last, A, ZL, WL, Y, L
+                         , activate=TANH_NAME, L2_lbd=0.2
                          , keep_prob=1, D_last: np.ndarray = 0):
     # m = 样本数量
-    global dZL
+    dZL = np.array([])
     m = ZL.shape[1]
     if activate == TANH_NAME:
         dZL = dA * (1 - (pow(np.tanh(ZL), 2)))
     elif activate == SIGMOID_NAME:
-        sig = act.sigmoid(ZL)
-        dZL = dA * sig * (1 - sig)
+        # dA = -np.divide(Y, A) + np.divide(1 - Y, 1 - A)
+        # sig = act.sigmoid(ZL)
+        # dZL = dA * sig * (1 - sig)
+        dZL = (1. / m) * (A - Y)
     elif activate == RELU_NAME:
-        dZL = dA * act.d_ReLU(ZL)
+        # dZL = dA * act.d_ReLU(ZL)
+        dZL = np.multiply(dA, np.int64(A > 0))
 
     dWL = (1 / m) * (np.dot(dZL, A_last.T))
     # 若L2_lbd>0，则开启L2正则项的求导
     if L2_lbd > 0:
         dWL = dWL + (L2_lbd / m) * WL
     dbL = (1 / m) * np.sum(dZL, axis=1, keepdims=True)
-    dA = np.dot(WL.T, dZL)
 
+    dA = np.dot(WL.T, dZL)
     # 是否dropout
     if 0 < keep_prob < 1:
         assert dA.shape == D_last.shape
@@ -402,12 +409,12 @@ if __name__ == '__main__':
     # 初始化超参数
     # net_array = 神经网络描述数组，第0项实际为输入值的特征数，不起作用
     net_array = [
-        {'neurons': 2, 'activate': TANH_NAME},
-        {'neurons': 7, 'activate': TANH_NAME},
-        {'neurons': 3, 'activate': TANH_NAME},
+        {'neurons': 2, 'activate': RELU_NAME},
+        {'neurons': 7, 'activate': RELU_NAME},
+        {'neurons': 4, 'activate': RELU_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 0.034
+    learning_rate = 200
     random_seed = 1
 
     print("训练集输入的维度为：" + str(data_X.shape))
@@ -417,13 +424,14 @@ if __name__ == '__main__':
     # 对训练集进行归一化输入
     new_data_X, u, delta_double = normalizing(data=data_X)
 
-    parameter = deep_neural_network(new_data_X, data_Y, train_times=4000
+    parameter = deep_neural_network(new_data_X, data_Y, train_times=8000
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
-                                    , L2_lmd=0.2
-                                    , keep_prob=0.5
+                                    , L2_lmd=0
+                                    , keep_prob=0
                                     , grad_check=False
+                                    , mini_batch=15
                                     )
 
     # 对测试集数据进行评估准确性
