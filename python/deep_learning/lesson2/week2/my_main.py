@@ -1,9 +1,10 @@
+import math
 import numpy as np
-import numpy.random
+from numpy import seterr
 import matplotlib.pyplot as plt
+
 import acivate_fun as act
 from generate_data import get_normal_data, get_simple_data
-from numpy import seterr
 import init_utils
 
 seterr(all='raise')
@@ -13,6 +14,10 @@ seterr(all='raise')
 SIGMOID_NAME = 'sigmoid'
 TANH_NAME = 'tanh'
 RELU_NAME = 'ReLU'
+
+# 绘图的参数值
+plot_x = []
+plot_y = []
 
 
 # 深层神经网络主驱动
@@ -31,14 +36,10 @@ def deep_neural_network(X, Y
     :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
     """
 
-    # 绘图
-    x = []
-    y = []
-
     # 初始化基本参数
     net_deep = len(net_array)
     net_array[0]['neurons'] = X.shape[0]
-    numpy.random.seed(random_seed)
+    np.random.seed(random_seed)
     m = X.shape[1]
     W, b = initial_parameters(net_array)
 
@@ -56,7 +57,7 @@ def deep_neural_network(X, Y
     # 训练次数
     last_cost = 0
     for i in range(0, train_times, 1):
-        # 每次前向传播中的纵向深度
+        # 正向传播：从第1层到最后一层（第0层为输入层，不算）
         for L in range(1, net_deep, 1):
             activate = net_array[L]['activate']
             # 进行前向传播
@@ -68,14 +69,14 @@ def deep_neural_network(X, Y
             A[L] = np.array(forward_parameter.get('A'))
             D[L] = np.array(forward_parameter.get('D'))
             assert (Z[L].shape == (net_array[L]['neurons'], m))
-
-        # 计算成本cost
+        # 计算cost成本值
         A_last = A[net_deep - 1]
         cost_value = cost(A_last, Y, W, L2_lmd)
+        # 日志和绘图
         if i % 100 == 0:
             accuracy = getAccuracy(A_last, Y)
-            x.append(i)
-            y.append(accuracy)
+            plot_x.append(i)
+            plot_y.append(accuracy)
             # 打印成本值
             if i % 200 == 0:
                 print("第" + str(i) + "次迭代，成本值为："
@@ -83,136 +84,26 @@ def deep_neural_network(X, Y
                       + "，成本较上次减少" + str((last_cost - cost_value) * (1e6)))
                 last_cost = cost_value
 
-        # 后向传播用于梯度下降
-        # 倒序计算出
+        # 后向传播：从第1层到最后一层(dA是反向传播的输入)
         dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
-
         for L in range(net_deep - 1, 0, -1):
-            parameter_back = {}
-            activate = net_array[L]['activate']
-            # 由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
+            # keep_prob项:由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
             parameter_back = backward_propagation(dA, A[L - 1], Z[L], W[L]
-                                                  , activate, L2_lbd=L2_lmd,
+                                                  , activate=net_array[L]['activate'], L2_lbd=L2_lmd,
                                                   keep_prob=keep_prob if L != 1 else 1, D_last=D[L - 1])
             dWL = np.array(parameter_back.get('dWL'))
             dbL = np.array(parameter_back.get('dbL'))
             # 提供给下一次循环的AL
-            dAL = np.array(parameter_back.get('dAL'))
+            dA = np.array(parameter_back.get('dAL'))
             assert dWL.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
 
             # 更新参数
             W[L] = W[L] - learning_rate * dWL
             b[L] = b[L] - learning_rate * dbL
 
-        # 是否开启梯度检验
-        if i == 0 and grad_check:
-            print("打开了梯度检验")
-            # Note!!!
-            # 太麻烦了，因此暂时鸽了
-            # 仅在此说下大致思路
-            # 梯度校验应该作为一个函数
-            # 第一步：已知A[0]，需要生成W，W+，W-，b，b+，b-
-            # 第二步：按照每一层计算出对应的Z、A矩阵
-            # 第三步：分别计算diff1 = (J(A+)-J(A-))/2*theta
-            # diff2 = (A(W+,b)-A(W-,b))/2*theta
-            # diff3 = (A(W,b+)-A(W,b-))/2*theta
-            # 第四步：进行反向传播和上述进行比较
-
-            # 规定好theta: 变化值，epsilon: 误差精度
-            theta = 1e-4
-            epsilon = 1e-3
-
-            # 梯度检验对每一个深度的参数进行保存， = _grad_check
-            # A_minus = A的左变化值
-            # A_plus = A的右变化值，其他同
-            Z_minus = [np.array([])] * net_deep
-            Z_plus = [np.array([])] * net_deep
-            A_minus = [np.array([])] * net_deep
-            A_plus = [np.array([])] * net_deep
-            D_minus = [np.array([])] * net_deep
-            D_plus = [np.array([])] * net_deep
-            # 后向传播用于梯度下降
-            dZ_minus = [0] * net_deep
-            dZ_plus = [0] * net_deep
-            dW_minus = [0] * net_deep
-            dW_plus = [0] * net_deep
-            db_minus = [0] * net_deep
-            db_plus = [0] * net_deep
-            dA_minus = [0] * net_deep
-            dA_plus = [0] * net_deep
-            # 初始化
-            A_minus[0] = A[0] - theta
-            A_plus[0] = A[0] + theta
-
-            for L in range(1, net_deep, 1):
-                activate = net_array[L]['activate']
-                # 进行minus前向传播
-                forward_parameter = forward_propagation(A_minus[L - 1], {
-                    'W': W[L],
-                    'b': b[L],
-                }, activate, keep_prob=keep_prob)
-                Z_minus[L] = np.array(forward_parameter.get('Z'))
-                A_minus[L] = np.array(forward_parameter.get('A'))
-                D_minus[L] = np.array(forward_parameter.get('D'))
-                assert (Z_minus[L].shape == (net_array[L]['neurons'], m))
-
-                # 进行plus前向传播
-                forward_parameter = forward_propagation(A_plus[L - 1], {
-                    'W': W[L],
-                    'b': b[L],
-                }, activate, keep_prob=keep_prob)
-                Z_plus[L] = np.array(forward_parameter.get('Z'))
-                A_plus[L] = np.array(forward_parameter.get('A'))
-                D_plus[L] = np.array(forward_parameter.get('D'))
-                assert (Z_plus[L].shape == (net_array[L]['neurons'], m))
-
-                # minus后向传播用于梯度下降
-                # 倒序计算出
-                A_last = A_minus[net_deep - 1]
-                dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
-                for L in range(net_deep - 1, 0, -1):
-                    parameter_back = {}
-                    activate = net_array[L]['activate']
-                    # 由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
-                    parameter_back = backward_propagation(dA, A_minus[L - 1], Z_minus[L], W[L]
-                                                          , activate, L2_lbd=L2_lmd,
-                                                          keep_prob=keep_prob if L != 1 else 1, D_last=D_minus[L - 1])
-                    dWL_minus = np.array(parameter_back.get('dWL'))
-                    dbL_minus = np.array(parameter_back.get('dbL'))
-                    # 提供给下一次循环的AL
-                    dAL_minus = np.array(parameter_back.get('dAL'))
-                    assert dWL_minus.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
-
-                    # 更新参数
-                    W[L] = W[L] - learning_rate * dWL_minus
-                    b[L] = b[L] - learning_rate * dbL_minus
-
-                # plus后向传播用于梯度下降
-                # 倒序计算出
-                A_last = A_plus[net_deep - 1]
-                dA = -np.divide(Y, A_last + 1e-5) + np.divide(1 - Y, (1 - A_last + 1e-5))
-                for L in range(net_deep - 1, 0, -1):
-                    parameter_back = {}
-                    activate = net_array[L]['activate']
-                    # 由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
-                    parameter_back = backward_propagation(dA, A_plus[L - 1], Z_plus[L], W[L]
-                                                          , activate, L2_lbd=L2_lmd,
-                                                          keep_prob=keep_prob if L != 1 else 1, D_last=D_plus[L - 1])
-                    dWL_plus = np.array(parameter_back.get('dWL'))
-                    dbL_plus = np.array(parameter_back.get('dbL'))
-                    # 提供给下一次循环的AL
-                    dAL_plus = np.array(parameter_back.get('dAL'))
-                    assert dWL_plus.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
-
-                    # 更新参数
-                    W[L] = W[L] - learning_rate * dWL_plus
-                    b[L] = b[L] - learning_rate * db_plus
-
     parameter = {
         'W': W,
         'b': b,
-        'x': x,
-        'y': y,
         'net_array': net_array,
     }
     return parameter
@@ -278,20 +169,20 @@ def backward_propagation(dA, A_last, ZL, WL, activate=TANH_NAME, L2_lbd=0.2
         dZL = dA * act.d_ReLU(ZL)
 
     dWL = (1 / m) * (np.dot(dZL, A_last.T))
-    # 若L2_lmd>0，则开启L2正则项的求导
+    # 若L2_lbd>0，则开启L2正则项的求导
     if L2_lbd > 0:
         dWL = dWL + (L2_lbd / m) * WL
     dbL = (1 / m) * np.sum(dZL, axis=1, keepdims=True)
-    dAL = np.dot(WL.T, dZL)
+    dA = np.dot(WL.T, dZL)
 
     # 是否dropout
     if 0 < keep_prob < 1:
-        assert dAL.shape == D_last.shape
-        dAL *= D_last
-        dAL /= keep_prob
+        assert dA.shape == D_last.shape
+        dA *= D_last
+        dA /= keep_prob
 
     return {
-        'dA_last': dAL,
+        'dA': dA,
         'dZL': dZL,
         'dWL': dWL,
         'dbL': dbL,
@@ -349,7 +240,7 @@ def initial_parameters(net_array):
     return W, b
 
 
-# 对深层神经网络得出的结果进行测试
+# 用测试集对训练结果进行评估
 def mytest_network(X, Y, parameter):
     W = parameter.get('W')
     b = parameter.get('b')
@@ -368,7 +259,7 @@ def mytest_network(X, Y, parameter):
     # 计算成本cost
     cost_value = cost_cross(A, Y)
 
-    print(numpy.around(np.squeeze(A), 3))
+    print(np.around(np.squeeze(A), 3))
     print(Y)
 
     accuracy = getAccuracy(A, Y)
@@ -478,6 +369,17 @@ def split_data(x, y, t=1):
     return x_list, y_list
 
 
+# matplotlib.pyplot的设置
+def pyplot_init():
+    plt.title("L2-Week2 改善深层神经网络")
+    plt.xlabel("x/times")
+    plt.ylabel("准确度")
+    plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
+    plt.rcParams['axes.unicode_minus'] = False  # 这两行需要手动设置
+    plt.plot(plot_x, plot_y, color='orange')
+    plt.show()
+
+
 if __name__ == '__main__':
     # 1. 分割数据集
     # 2. 优化梯度下降算法：
@@ -498,6 +400,7 @@ if __name__ == '__main__':
     data_Y = train_Y
 
     # 初始化超参数
+    # net_array = 神经网络描述数组，第0项实际为输入值的特征数，不起作用
     net_array = [
         {'neurons': 2, 'activate': TANH_NAME},
         {'neurons': 7, 'activate': TANH_NAME},
@@ -532,12 +435,5 @@ if __name__ == '__main__':
     new_test_X, u, delta_double = normalizing_full(data=test_X, u=u, delta_double=delta_double)
     mytest_network(new_test_X, test_Y, parameter=parameter)
 
-    plt.title("L2-Week2 改善深层神经网络")
-    plt.xlabel("x/times")
-    plt.ylabel("准确度")
-    plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
-    plt.rcParams['axes.unicode_minus'] = False  # 这两行需要手动设置
-    x = parameter.get('x')
-    y = parameter.get('y')
-    plt.plot(x, y, color='orange')
-    plt.show()
+    # 绘图最终的结果
+    pyplot_init()
