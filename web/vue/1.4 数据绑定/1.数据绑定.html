@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.数据绑定</title>
+</head>
+<body>
+    <div id="root">
+        <h2>{{title}}</h2>
+        单向数据绑定: <input type="text" name='single' v-bind:value="value1"> <br>
+        双向数据绑定: <input type="text" name='double' v-model:value="value2"> <br>
+
+        <hr />
+        <!-- 使用简写形式 -->
+        单向数据绑定: <input type="text" name='single' :value="value1"> <br>
+        双向数据绑定: <input type="text" name='double' v-model="value2"> <br>
+    </div>
+
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false
+        let vm  = new Vue({
+            el:"#root",
+            data() {
+                return {
+                    title:"我要写双向绑定和单向绑定",
+                    value1:'',
+                    value2:'',
+                }
+            },
+        })
+    </script>
+</body>
+</html>
