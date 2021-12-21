@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>基本使用</title>
+    <title>几个注意点</title>
   </head>
   <body>
    <!-- 
@@ -31,8 +31,9 @@
     <div id="root">
       <h1>{{title}}</h1>
       <hr />
-      <audi-car></audi-car>
       <student></student>
+      <h1>车辆信息</h1>
+      <hr />
       <audi-car></audi-car>
     </div>
     <script src="../../js/vue.js"></script>
@@ -54,8 +55,8 @@
           },
         });
 
-        let AudiCar = {
-          name :"audi-car",
+        let audiCar = {
+          name:"奥迪",
           template: `
                       <div>
                           <h2>车型：{{brand}}</h2>
@@ -72,7 +73,7 @@
 
 
         //对AudiCar进行全局注册
-        Vue.component('audi-car',AudiCar)
+        Vue.component('audi-car',audiCar)
         new Vue({
             el:"#root",
             data(){
