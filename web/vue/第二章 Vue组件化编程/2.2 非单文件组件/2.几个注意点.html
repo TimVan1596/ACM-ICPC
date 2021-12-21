@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>基本使用</title>
+  </head>
+  <body>
+   <!-- 
+			几个注意点：
+					1.关于组件名:
+								一个单词组成：
+											第一种写法(首字母小写)：school
+											第二种写法(首字母大写)：School
+								多个单词组成：
+											第一种写法(kebab-case命名)：my-school
+											第二种写法(CamelCase命名)：MySchool (需要Vue脚手架支持)
+								备注：
+										(1).组件名尽可能回避HTML中已有的元素名称，例如：h2、H2都不行。
+										(2).可以使用name配置项指定组件在开发者工具中呈现的名字。
+
+					2.关于组件标签:
+								第一种写法：<school></school>
+								第二种写法：<school/>
+								备注：不用使用脚手架时，<school/>会导致后续组件不能渲染。
+
+					3.一个简写方式：
+								const school = Vue.extend(options) 可简写为：const school = options
+		-->
+    <div id="root">
+      <h1>{{title}}</h1>
+      <hr />
+      <audi-car></audi-car>
+      <student></student>
+      <audi-car></audi-car>
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false;
+        let student = Vue.extend({
+          name :"studentInfo",
+          template: `
+                      <div>
+                          <h2>{{name}}</h2>
+                          <h2>{{sex}}</h2>
+                      </div>
+                `,
+          data() {
+            return {
+              name: "TimVan",
+              sex: "男",
+            };
+          },
+        });
+
+        let AudiCar = {
+          name :"audi-car",
+          template: `
+                      <div>
+                          <h2>车型：{{brand}}</h2>
+                          <h2>名称：{{name}}</h2>
+                      </div>
+                `,
+            data(){
+                return{
+                    brand : "A3",
+                    name:"A3L Limousine"
+                }
+            }
+        }
+
+
+        //对AudiCar进行全局注册
+        Vue.component('audi-car',AudiCar)
+        new Vue({
+            el:"#root",
+            data(){
+                return{
+                  title: "学生信息",
+                }
+            },
+            components:{
+              "student":student
+            }
+        })
+    </script>
+  </body>
+</html>
