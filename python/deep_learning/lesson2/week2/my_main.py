@@ -19,7 +19,8 @@ RELU_NAME = 'ReLU'
 # plot_x = 迭代次数，横坐标
 # plot_y = 准确率，纵坐标
 plot_x = []
-plot_y = []
+plot_accuracy = []
+plot_cost = []
 
 
 # 深层神经网络主驱动
@@ -79,7 +80,7 @@ def deep_neural_network(X, Y
         if i % 100 == 0:
             accuracy = getAccuracy(A_last, Y)
             plot_x.append(i)
-            plot_y.append(accuracy)
+            plot_accuracy.append(accuracy)
             # 打印成本值
             if i % 200 == 0:
                 print("第" + str(i) + "次迭代，成本值为："
@@ -121,10 +122,12 @@ def deep_neural_network(X, Y
 # keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
 # normalizing = 是否归一化处理
 # mini_batch = 是否开启mini_batch。若不为0，其值就是每一个mini-batch的大小
+# momentum = 是否开启momentum动量梯度下降,若不为0则开启，且β=momentum
 def mini_batch_deep_neural_network(X, Y
                                    , net_array, learning_rate=0.12
                                    , train_times=3000, random_seed=2021
-                                   , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0):
+                                   , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0
+                                   , momentum=0):
     """
     :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
     """
@@ -146,6 +149,9 @@ def mini_batch_deep_neural_network(X, Y
     dW = [0] * net_deep
     db = [0] * net_deep
     dA = [0] * net_deep
+    # momentum用到的参数
+    v_dw = 0
+    v_db = 0
 
     # 训练次数
     last_cost = 0
@@ -164,7 +170,6 @@ def mini_batch_deep_neural_network(X, Y
             A[0] = mini_X
 
             cnt += 1
-            print("cnt={}".format(cnt))
 
             # 第一步、正向传播：从第1层到最后一层（第0层为输入层，不算）
             for L in range(1, net_deep, 1):
@@ -182,15 +187,16 @@ def mini_batch_deep_neural_network(X, Y
             A_last = A[net_deep - 1]
             cost_value = cost(A_last, mini_Y, W, L2_lmd)
             # 日志和绘图
-            if i % 100 == 0:
+            if i % 200 == 0:
                 accuracy = getAccuracy(A_last, mini_Y)
                 plot_x.append(i)
-                plot_y.append(accuracy)
+                plot_accuracy.append(accuracy)
+                plot_cost.append(cost_value)
                 # 打印成本值
-                if i % 200 == 0:
-                    # print("第" + str(i) + "次迭代，成本值为："
-                    #       + str(round(cost_value, 10)) + "，准确性为" + str(accuracy) + "%"
-                    #       + "，成本较上次减少" + str((last_cost - cost_value) * (1e6)))
+                if i % 400 == 0:
+                    print("第" + str(i) + "次迭代，成本值为："
+                          + str(round(cost_value, 10)) + "，准确性为" + str(accuracy) + "%"
+                          + "，成本较上次减少" + str((last_cost - cost_value) * (1e6)))
                     last_cost = cost_value
 
             # 第二步、后向传播：从第1层到最后一层
@@ -207,8 +213,17 @@ def mini_batch_deep_neural_network(X, Y
                 assert dWL.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
 
                 # 更新参数
-                W[L] = W[L] - learning_rate * dWL
-                b[L] = b[L] - learning_rate * dbL
+                if momentum:
+                    # 进行梯度下降
+                    print("开启进行梯度下降")
+                    b = momentum
+                    v_dw = b * v_dw + (1 - b) * dWL
+                    v_db = b * v_db + (1 - b) * dbL
+                    W[L] = W[L] - learning_rate * v_dw
+                    b[L] = b[L] - learning_rate * v_db
+                else:
+                    W[L] = W[L] - learning_rate * dWL
+                    b[L] = b[L] - learning_rate * dbL
 
     parameter = {
         'W': W,
@@ -485,12 +500,19 @@ def split_data(x, y, t=1):
 
 # matplotlib.pyplot的设置
 def pyplot_init():
-    plt.title("L2-Week2 改善深层神经网络")
-    plt.xlabel("x/times")
-    plt.ylabel("准确度")
+    fig, axes = plt.subplots(1, 2, sharex=True, figsize=(10, 4))
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
     plt.rcParams['axes.unicode_minus'] = False  # 这两行需要手动设置
-    plt.plot(plot_x, plot_y, color='orange')
+
+    axes[0].plot(plot_x, plot_accuracy, color='orange', label='准确率')
+    axes[0].set_xlabel("x/训练次数")
+    axes[0].set_xlabel("x/训练次数")
+    axes[0].legend()
+    axes[1].plot(plot_x, plot_cost, color='blue', label='成本函数值')
+    axes[1].set_xlabel("x/训练次数")
+    axes[1].legend()
+
+    fig.suptitle("L2W2 MiniBatch-改善深层神经网络")
     plt.show()
 
 
@@ -505,10 +527,10 @@ if __name__ == '__main__':
     # 导入官方给的例子
     train_X, train_Y, test_X, test_Y = init_utils.load_dataset(is_plot=False)
 
-    X_shape = 1
-    data_X, data_Y = get_normal_data(2000, X_shape=X_shape)
-    data_X = np.array(data_X)
-    data_Y = np.array(data_Y)
+    # X_shape = 1
+    # data_X, data_Y = get_normal_data(2000, X_shape=X_shape)
+    # data_X = np.array(data_X)
+    # data_Y = np.array(data_Y)
 
     data_X = train_X
     data_Y = train_Y
@@ -521,7 +543,7 @@ if __name__ == '__main__':
         {'neurons': 4, 'activate': RELU_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 200
+    learning_rate = 15
     random_seed = 1
 
     print("训练集输入的维度为：" + str(data_X.shape))
@@ -531,7 +553,7 @@ if __name__ == '__main__':
     # 对训练集进行归一化输入
     new_data_X, u, delta_double = normalizing(data=data_X)
 
-    parameter = mini_batch_deep_neural_network(new_data_X, data_Y, train_times=8000
+    parameter = mini_batch_deep_neural_network(new_data_X, data_Y, train_times=3500
                                                , net_array=net_array
                                                , learning_rate=learning_rate
                                                , random_seed=random_seed
@@ -539,6 +561,7 @@ if __name__ == '__main__':
                                                , keep_prob=0
                                                , grad_check=False
                                                , mini_batch=100
+                                               , momentum=0.9
                                                )
 
     # 对测试集数据进行评估准确性
