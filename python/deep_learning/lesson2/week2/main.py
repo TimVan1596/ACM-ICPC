@@ -1,28 +1,41 @@
+# -*- coding: utf-8 -*-
+
 import numpy as np
+import matplotlib.pyplot as plt
+import scipy.io
 import math
+import sklearn
+import sklearn.datasets
+
+import opt_utils
+import testCase
 
 
-# 将数据集切分成t份，便于实现mini-batch(先打乱，再拆分)
-# x = 数据集，y=对应的结果
-def split_data(x, y, t=1):
-    # 首先判断x和y的长度是否匹配
-    assert x.shape[1] == y.shape[1]
-    m = x.shape[1]
+def update_parameters_with_gd(parameters, grads, learning_rate):
+    """
+    使用梯度下降更新参数
 
-    state = np.random.get_state()
-    np.random.shuffle(x.T)
-    np.random.set_state(state)
-    np.random.shuffle(y.T)
+    参数：
+        parameters - 字典，包含了要更新的参数：
+            parameters['W' + str(l)] = Wl
+            parameters['b' + str(l)] = bl
+        grads - 字典，包含了每一个梯度值用以更新参数
+            grads['dW' + str(l)] = dWl
+            grads['db' + str(l)] = dbl
+        learning_rate - 学习率
 
-    x_list = []
-    y_list = []
-    max_k = math.ceil(x.shape[1] / t)
-    for i in range(max_k):
-        start = i * t
-        end = start + t if (start + t) <= m else None
-        x_list.append(x[:, start:end])
-        y_list.append(y[:, start:end])
-    return x_list, y_list
+    返回值：
+        parameters - 字典，包含了更新后的参数
+    """
+
+    L = len(parameters) // 2  # 神经网络的层数
+
+    # 更新每个参数
+    for l in range(L):
+        parameters["W" + str(l + 1)] = parameters["W" + str(l + 1)] - learning_rate * grads["dW" + str(l + 1)]
+        parameters["b" + str(l + 1)] = parameters["b" + str(l + 1)] - learning_rate * grads["db" + str(l + 1)]
+
+    return parameters
 
 
 # mini-batch梯度下降法
@@ -110,17 +123,30 @@ def random_mini_batches(X, Y, mini_batch_size=64, seed=0):
     return mini_batches
 
 
-if __name__ == '__main__':
-    x = np.linspace(1, 10, 10, dtype='int').reshape(2, 5)
-    y = np.array([x[0, i] + x[1, i] for i in range(len(x[0,]))]).reshape(1, -1)
-    print(x)
-    print(y)
-    dataset = (x, y)
+if __name__ == "__main__":
+    # set default size of plots
+    plt.rcParams['figure.figsize'] = (7.0, 4.0)
+    # 最近邻插值
+    plt.rcParams['image.interpolation'] = 'nearest'
+    plt.rcParams['image.cmap'] = 'gray'
 
-    # 切分成每单位2个
-    x_list, y_list = split_data(x, y, t=2)
-    print(x_list)
-    print(y_list)
+    # 测试update_parameters_with_gd
+    print("-------------测试update_parameters_with_gd-------------")
+    parameters, grads, learning_rate = testCase.update_parameters_with_gd_test_case()
+    parameters = update_parameters_with_gd(parameters, grads, learning_rate)
+    print("W1 = " + str(parameters["W1"]))
+    print("b1 = " + str(parameters["b1"]))
+    print("W2 = " + str(parameters["W2"]))
+    print("b2 = " + str(parameters["b2"]))
 
-    mini_batches = random_mini_batches(x, y, mini_batch_size=2, seed=0)
-    print(mini_batches)
+    # 测试random_mini_batches
+    print("-------------测试random_mini_batches-------------")
+    X_assess, Y_assess, mini_batch_size = testCase.random_mini_batches_test_case()
+    mini_batches = random_mini_batches(X_assess, Y_assess, mini_batch_size)
+
+    print("第1个mini_batch_X 的维度为：", mini_batches[0][0].shape)
+    print("第1个mini_batch_Y 的维度为：", mini_batches[0][1].shape)
+    print("第2个mini_batch_X 的维度为：", mini_batches[1][0].shape)
+    print("第2个mini_batch_Y 的维度为：", mini_batches[1][1].shape)
+    print("第3个mini_batch_X 的维度为：", mini_batches[2][0].shape)
+    print("第3个mini_batch_Y 的维度为：", mini_batches[2][1].shape)
