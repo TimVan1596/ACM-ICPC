@@ -122,10 +122,12 @@ def deep_neural_network(X, Y
 # keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
 # normalizing = 是否归一化处理
 # mini_batch = 是否开启mini_batch。若不为0，其值就是每一个mini-batch的大小
+# momentum = 是否开启momentum动量梯度下降,若不为0则开启，且β=momentum
 def mini_batch_deep_neural_network(X, Y
                                    , net_array, learning_rate=0.12
                                    , train_times=3000, random_seed=2021
-                                   , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0):
+                                   , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0
+                                   , momentum=0):
     """
     :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
     """
@@ -147,6 +149,9 @@ def mini_batch_deep_neural_network(X, Y
     dW = [0] * net_deep
     db = [0] * net_deep
     dA = [0] * net_deep
+    # momentum用到的参数
+    v_dw = 0
+    v_db = 0
 
     # 训练次数
     last_cost = 0
@@ -208,8 +213,17 @@ def mini_batch_deep_neural_network(X, Y
                 assert dWL.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
 
                 # 更新参数
-                W[L] = W[L] - learning_rate * dWL
-                b[L] = b[L] - learning_rate * dbL
+                if momentum:
+                    # 进行梯度下降
+                    print("开启进行梯度下降")
+                    b = momentum
+                    v_dw = b * v_dw + (1 - b) * dWL
+                    v_db = b * v_db + (1 - b) * dbL
+                    W[L] = W[L] - learning_rate * v_dw
+                    b[L] = b[L] - learning_rate * v_db
+                else:
+                    W[L] = W[L] - learning_rate * dWL
+                    b[L] = b[L] - learning_rate * dbL
 
     parameter = {
         'W': W,
@@ -547,6 +561,7 @@ if __name__ == '__main__':
                                                , keep_prob=0
                                                , grad_check=False
                                                , mini_batch=100
+                                               , momentum=0.9
                                                )
 
     # 对测试集数据进行评估准确性
