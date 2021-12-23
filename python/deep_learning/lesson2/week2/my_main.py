@@ -32,102 +32,12 @@ plot_cost = []
 # keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
 # normalizing = 是否归一化处理
 # mini_batch = 是否开启mini_batch。若不为0，其值就是每一个mini-batch的大小
+# momentum = 是否开启momentum动量梯度下降,若不为0则开启，且β=momentum
 def deep_neural_network(X, Y
                         , net_array, learning_rate=0.12
                         , train_times=3000, random_seed=2021
-                        , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0):
-    """
-    :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
-    """
-
-    # 初始化基本参数
-    net_deep = len(net_array)
-    net_array[0]['neurons'] = X.shape[0]
-    np.random.seed(random_seed)
-    m = X.shape[1]
-    W, b = initial_parameters(net_array)
-
-    # 对每一个深度的参数进行保存
-    Z = [np.array([])] * net_deep
-    A = [np.array([])] * net_deep
-    D = [np.array([])] * net_deep
-    # 后向传播用于梯度下降
-    dZ = [0] * net_deep
-    dW = [0] * net_deep
-    db = [0] * net_deep
-    dA = [0] * net_deep
-    A[0] = X
-
-    # 训练次数
-    last_cost = 0
-    for i in range(0, train_times, 1):
-        # 第一步、正向传播：从第1层到最后一层（第0层为输入层，不算）
-        for L in range(1, net_deep, 1):
-            activate = net_array[L]['activate']
-            # 进行前向传播
-            forward_parameter = forward_propagation(A[L - 1], {
-                'W': W[L],
-                'b': b[L],
-            }, activate, keep_prob=keep_prob)
-            Z[L] = np.array(forward_parameter.get('Z'))
-            A[L] = np.array(forward_parameter.get('A'))
-            D[L] = np.array(forward_parameter.get('D'))
-            assert (Z[L].shape == (net_array[L]['neurons'], m))
-        # 计算cost成本值
-        A_last = A[net_deep - 1]
-        cost_value = cost(A_last, Y, W, L2_lmd)
-        # 日志和绘图
-        if i % 100 == 0:
-            accuracy = getAccuracy(A_last, Y)
-            plot_x.append(i)
-            plot_accuracy.append(accuracy)
-            # 打印成本值
-            if i % 200 == 0:
-                print("第" + str(i) + "次迭代，成本值为："
-                      + str(round(cost_value, 10)) + "，准确性为" + str(accuracy) + "%"
-                      + "，成本较上次减少" + str((last_cost - cost_value) * (1e6)))
-                last_cost = cost_value
-
-        # 第二步、后向传播：从第1层到最后一层
-        dA = np.array([])
-        for L in range(net_deep - 1, 0, -1):
-            # keep_prob项:由于L=1时，并不需要计算第0层即输入层的Dropout，因此临时传入1
-            parameter_back = backward_propagation(dA, A_last=A[L - 1], A=A[L], ZL=Z[L], WL=W[L], Y=Y, L=L
-                                                  , activate=net_array[L]['activate'], L2_lbd=L2_lmd,
-                                                  keep_prob=keep_prob if L != 1 else 1, D_last=D[L - 1])
-            dWL = np.array(parameter_back.get('dWL'))
-            dbL = np.array(parameter_back.get('dbL'))
-            # 提供给下一次循环的AL
-            dA = np.array(parameter_back.get('dA'))
-            assert dWL.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
-
-            # 更新参数
-            W[L] = W[L] - learning_rate * dWL
-            b[L] = b[L] - learning_rate * dbL
-
-    parameter = {
-        'W': W,
-        'b': b,
-        'net_array': net_array,
-    }
-    return parameter
-
-
-# 深层神经网络主驱动
-# net_array = 深度数组，如 [{'neurons': 3, 'activate': 'tanh'}]
-# learning_rate = 学习率，默认为 0.12
-# train_times = 训练次数，默认为 3000
-# random_seed = 随机数的种子，默认为 2021
-# L2_lmd = L2正则的lambda参数，若L2_lmd<=0，则关闭L2正则
-# keep_prob = dropout的范围数，范围在(0,1]，为1代表关闭“随机失活”,默认关闭
-# normalizing = 是否归一化处理
-# mini_batch = 是否开启mini_batch。若不为0，其值就是每一个mini-batch的大小
-# momentum = 是否开启momentum动量梯度下降,若不为0则开启，且β=momentum
-def mini_batch_deep_neural_network(X, Y
-                                   , net_array, learning_rate=0.12
-                                   , train_times=3000, random_seed=2021
-                                   , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0
-                                   , momentum=0):
+                        , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0
+                        , momentum=0):
     """
     :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
     """
@@ -150,10 +60,11 @@ def mini_batch_deep_neural_network(X, Y
     db = [0] * net_deep
     dA = [0] * net_deep
     # momentum用到的参数
-    v_dw = 0
-    v_db = 0
+    if momentum:
+        v_dw = [0] * net_deep
+        v_db = [0] * net_deep
 
-    # 训练次数
+    # 训练次数，注意：外层循环是迭代次数，内层循环是mini-batch！
     last_cost = 0
     for i in range(0, train_times, 1):
 
@@ -187,14 +98,14 @@ def mini_batch_deep_neural_network(X, Y
             A_last = A[net_deep - 1]
             cost_value = cost(A_last, mini_Y, W, L2_lmd)
             # 日志和绘图
-            if i % 200 == 0:
+            if cnt % 200 == 0:
                 accuracy = getAccuracy(A_last, mini_Y)
-                plot_x.append(i)
+                plot_x.append(cnt)
                 plot_accuracy.append(accuracy)
                 plot_cost.append(cost_value)
                 # 打印成本值
-                if i % 400 == 0:
-                    print("第" + str(i) + "次迭代，成本值为："
+                if cnt % 600 == 0:
+                    print("第" + str(cnt) + "次迭代，成本值为："
                           + str(round(cost_value, 10)) + "，准确性为" + str(accuracy) + "%"
                           + "，成本较上次减少" + str((last_cost - cost_value) * (1e6)))
                     last_cost = cost_value
@@ -212,15 +123,14 @@ def mini_batch_deep_neural_network(X, Y
                 dA = np.array(parameter_back.get('dA'))
                 assert dWL.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
 
-                # 更新参数
+                # 梯度下降
                 if momentum:
-                    # 进行梯度下降
-                    print("开启进行梯度下降")
-                    b = momentum
-                    v_dw = b * v_dw + (1 - b) * dWL
-                    v_db = b * v_db + (1 - b) * dbL
-                    W[L] = W[L] - learning_rate * v_dw
-                    b[L] = b[L] - learning_rate * v_db
+                    # 进行momentum
+                    beta = momentum
+                    v_dw[L] = beta * v_dw[L] + (1 - beta) * dWL
+                    v_db[L] = beta * v_db[L] + (1 - beta) * dbL
+                    W[L] = W[L] - learning_rate * v_dw[L]
+                    b[L] = b[L] - learning_rate * v_db[L]
                 else:
                     W[L] = W[L] - learning_rate * dWL
                     b[L] = b[L] - learning_rate * dbL
@@ -553,7 +463,7 @@ if __name__ == '__main__':
     # 对训练集进行归一化输入
     new_data_X, u, delta_double = normalizing(data=data_X)
 
-    parameter = mini_batch_deep_neural_network(new_data_X, data_Y, train_times=3500
+    parameter = deep_neural_network(new_data_X, data_Y, train_times=2700
                                                , net_array=net_array
                                                , learning_rate=learning_rate
                                                , random_seed=random_seed
