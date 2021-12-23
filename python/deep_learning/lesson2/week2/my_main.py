@@ -59,13 +59,14 @@ def deep_neural_network(X, Y
     dW = [0] * net_deep
     db = [0] * net_deep
     dA = [0] * net_deep
+    last_cost = 0
     # momentum用到的参数
     if momentum:
         v_dw = [0] * net_deep
         v_db = [0] * net_deep
 
     # 训练次数，注意：外层循环是迭代次数，内层循环是mini-batch！
-    last_cost = 0
+    # 这里的i实际是epoch的个数
     for i in range(0, train_times, 1):
 
         # t = 每一个mini-batch的大小
@@ -73,6 +74,7 @@ def deep_neural_network(X, Y
         X_list, Y_list = split_data(x=X, y=Y, t=t)
         # n = mini-batch切分后，一共有多少的mini-batch
         n = len(X_list)
+        # 内层循环是mini-batch个数进行循环
         for j in range(0, n, 1):
             mini_X = X_list[j]
             mini_Y = Y_list[j]
@@ -468,7 +470,7 @@ if __name__ == '__main__':
                                                , learning_rate=learning_rate
                                                , random_seed=random_seed
                                                , L2_lmd=0
-                                               , keep_prob=0
+                                               , keep_prob=0.1
                                                , grad_check=False
                                                , mini_batch=100
                                                , momentum=0.9
