@@ -70,3 +70,10 @@
 观察发现：
 	1.data中所有的属性，最后都出现在了vm身上。
 	2.vm身上所有的属性 及 Vue原型上所有属性，在Vue模板中都可以直接使用。
+
+## 1.5* 数据代理
+
+### 1.5*.1 回顾Object.defineProperty方法
+* enumerable:true, //控制属性是否可以枚举，默认值是false
+* writable:true, //控制属性是否可以被修改，默认值是false
+* configurable:true //控制属性是否可以被删除，默认值是false

@@ -8,20 +8,32 @@
   </head>
   <body>
     <script>
-      console.log("回顾Object.defineProperty方法")
+      // * enumerable:true, //控制属性是否可以枚举，默认值是false
+      // * writable:true, //控制属性是否可以被修改，默认值是false
+      // * configurable:true //控制属性是否可以被删除，默认值是false
+
+      console.log("回顾Object.defineProperty方法");
       let number = 18;
       let student = {
-          name:"Tim Van",
-          sex : "male",
+        name: "Tim Van",
+        sex: "male",
+      };
+
+      Object.defineProperty(student, "age", {
+        enumerable:true,
+        writable:true,
+        configurable:true,
+        get() {
+          return number;
+        },
+        set() {},
+      });
+
+      for (var elem in student) {
+        console.log(elem);
       }
 
-      Object.defineProperty(student,"age",{
-          get(){
-              return number;
-          }
-      })
-
-      console.log(student)
+      console.log(student);
     </script>
   </body>
 </html>
