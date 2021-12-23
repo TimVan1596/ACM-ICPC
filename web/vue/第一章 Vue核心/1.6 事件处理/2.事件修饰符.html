@@ -33,14 +33,37 @@
 						4.capture：使用事件的捕获模式；
 						5.self：只有event.target是当前操作的元素时才触发事件；
 						6.passive：事件的默认行为立即执行，无需等待事件回调执行完毕；
-	-->
+		-->
     <div id="root">
+      <!-- 测试阻止默认事件 -->
+      <a
+        class="my-block orange"
+        href="https://www.baidu.com/"
+        @click.prevent="open2"
+        >点我阻止默认事件</a
+      >
+      <br />
+      <br />
       <!-- 测试一个冒泡事件 -->
       <div class="my-big-block skyblue" @click="open1">
         <div class="my-block orange" @click.stop="open2">点我触发冒泡事件</div>
       </div>
+      <br />
+      <br />
+      <!-- 测试阻止默认事件 -->
+      <button class="my-block orange" @click.once="open2">
+        点我只运行一次
+      </button>
+      <br />
+      <br />
+
+      <!-- 添加事件监听器时使用事件捕获模式 -->
+      <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+      <div v-on:click.capture="doThis" class="my-block orange">...</div>
+      <br />
+      <br />
     </div>
-    <script src="../js/vue.js"></script>
+    <script src="../../js/vue.js"></script>
     <script>
       Vue.config.productionTip = false;
       new Vue({
