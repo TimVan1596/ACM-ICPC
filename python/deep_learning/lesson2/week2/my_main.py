@@ -33,11 +33,13 @@ plot_cost = []
 # normalizing = 是否归一化处理
 # mini_batch = 是否开启mini_batch。若不为0，其值就是每一个mini-batch的大小
 # momentum = 是否开启momentum动量梯度下降,若不为0则开启，且β=momentum
+# rms_prop = 是否开启rms_prop梯度下降,若不为0则开启，且β=rms_prop
+# adam = 是否开启Adam梯度下降,若不为0则开启，且adam=(beta1,beta2))
 def deep_neural_network(X, Y
                         , net_array, learning_rate=0.12
                         , train_times=3000, random_seed=2021
                         , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0
-                        , momentum=0):
+                        , momentum=0, rms_prop=0, adam=(None, None)):
     """
     :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
     """
@@ -60,6 +62,16 @@ def deep_neural_network(X, Y
     db = [0] * net_deep
     dA = [0] * net_deep
     last_cost = 0
+    # Adam用到的参数
+    if adam[0]:
+        v_dw = [0] * net_deep
+        v_db = [0] * net_deep
+        s_dw = [0] * net_deep
+        s_db = [0] * net_deep
+    # RMSProp用到的参数
+    if rms_prop:
+        s_dw = [0] * net_deep
+        s_db = [0] * net_deep
     # momentum用到的参数
     if momentum:
         v_dw = [0] * net_deep
@@ -126,7 +138,40 @@ def deep_neural_network(X, Y
                 assert dWL.shape == (net_array[L]['neurons'], net_array[L - 1]['neurons'])
 
                 # 梯度下降
-                if momentum:
+                if adam[0]:
+                    # momentum项所需
+                    beta1 = adam[0]
+                    # RMSprop项所需
+                    beta2 = adam[1]
+                    # epsilon=非常小的值保证分母不为0
+                    epsilon = 1e-8
+                    v_dw[L] = beta1 * v_dw[L] + (1 - beta1) * dWL
+                    v_db[L] = beta1 * v_db[L] + (1 - beta1) * dbL
+                    s_dw[L] = beta2 * s_dw[L] + (1 - beta2) * (dWL * dWL)
+                    s_db[L] = beta2 * s_db[L] + (1 - beta2) * (dbL * dbL)
+                    # c = correct即偏差修正
+                    v_dw_c = v_dw[L] / (1 - beta1 ** (i + 1))
+                    v_db_c = v_db[L] / (1 - beta1 ** (i + 1))
+                    s_dw_c = s_dw[L] / (1 - beta2 ** (i + 1))
+                    s_db_c = s_db[L] / (1 - beta2 ** (i + 1))
+                    W[L] = W[L] - learning_rate * (v_dw_c / (np.sqrt(s_dw_c) + epsilon))
+                    b[L] = b[L] - learning_rate * (v_db_c / (np.sqrt(s_db_c) + epsilon))
+                elif rms_prop:
+                    # 进行RMSprop均方差传递下降
+                    beta = rms_prop
+                    # epsilon=非常小的值保证分母不为0
+                    epsilon = 1e-8
+                    try:
+                        s_dw[L] = beta * s_dw[L] + (1 - beta) * (dWL * dWL)
+                    except FloatingPointError:
+                        s_dw[L] = (1 - beta) * (dWL * dWL)
+                    try:
+                        s_db[L] = beta * s_db[L] + (1 - beta) * (dbL * dbL)
+                    except FloatingPointError:
+                        s_db[L] = (1 - beta) * (dbL * dbL)
+                    W[L] = W[L] - learning_rate * (dWL / (np.sqrt(s_dw[L]) + epsilon))
+                    b[L] = b[L] - learning_rate * (dbL / (np.sqrt(s_db[L]) + epsilon))
+                elif momentum:
                     # 进行momentum
                     beta = momentum
                     v_dw[L] = beta * v_dw[L] + (1 - beta) * dWL
@@ -424,7 +469,7 @@ def pyplot_init():
     axes[1].set_xlabel("x/训练次数")
     axes[1].legend()
 
-    fig.suptitle("L2W2 MiniBatch-改善深层神经网络")
+    fig.suptitle("L2W2 RMSProp-改善深层神经网络")
     plt.show()
 
 
@@ -455,7 +500,7 @@ if __name__ == '__main__':
         {'neurons': 4, 'activate': RELU_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 15
+    learning_rate = 0.005
     random_seed = 1
 
     print("训练集输入的维度为：" + str(data_X.shape))
@@ -465,16 +510,18 @@ if __name__ == '__main__':
     # 对训练集进行归一化输入
     new_data_X, u, delta_double = normalizing(data=data_X)
 
-    parameter = deep_neural_network(new_data_X, data_Y, train_times=2700
-                                               , net_array=net_array
-                                               , learning_rate=learning_rate
-                                               , random_seed=random_seed
-                                               , L2_lmd=0
-                                               , keep_prob=0.1
-                                               , grad_check=False
-                                               , mini_batch=100
-                                               , momentum=0.9
-                                               )
+    parameter = deep_neural_network(new_data_X, data_Y, train_times=5000
+                                    , net_array=net_array
+                                    , learning_rate=learning_rate
+                                    , random_seed=random_seed
+                                    , L2_lmd=0
+                                    , keep_prob=0
+                                    , grad_check=False
+                                    , mini_batch=100
+                                    , momentum=0
+                                    , rms_prop=0
+                                    , adam=(0.9, 0.999)
+                                    )
 
     # 对测试集数据进行评估准确性
     # test_X, test_Y = get_normal_data(500, X_shape=X_shape)
