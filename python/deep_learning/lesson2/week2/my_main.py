@@ -145,10 +145,22 @@ def deep_neural_network(X, Y
                     beta2 = adam[1]
                     # epsilon=非常小的值保证分母不为0
                     epsilon = 1e-8
-                    v_dw[L] = beta1 * v_dw[L] + (1 - beta1) * dWL
-                    v_db[L] = beta1 * v_db[L] + (1 - beta1) * dbL
-                    s_dw[L] = beta2 * s_dw[L] + (1 - beta2) * (dWL * dWL)
-                    s_db[L] = beta2 * s_db[L] + (1 - beta2) * (dbL * dbL)
+                    try:
+                        v_dw[L] = beta1 * v_dw[L] + (1 - beta1) * dWL
+                    except FloatingPointError:
+                        v_dw[L] = (1 - beta1) * dWL
+                    try:
+                        v_db[L] = beta1 * v_db[L] + (1 - beta1) * dbL
+                    except FloatingPointError:
+                        v_db[L] = (1 - beta1) * dbL
+                    try:
+                        s_dw[L] = beta2 * s_dw[L] + (1 - beta2) * (dWL * dWL)
+                    except FloatingPointError:
+                        s_dw[L] = (1 - beta2) * (dWL * dWL)
+                    try:
+                        s_db[L] = beta2 * s_db[L] + (1 - beta2) * (dbL * dbL)
+                    except FloatingPointError:
+                        s_db[L] = (1 - beta2) * (dbL * dbL)
                     # c = correct即偏差修正
                     v_dw_c = v_dw[L] / (1 - beta1 ** (i + 1))
                     v_db_c = v_db[L] / (1 - beta1 ** (i + 1))
@@ -469,7 +481,7 @@ def pyplot_init():
     axes[1].set_xlabel("x/训练次数")
     axes[1].legend()
 
-    fig.suptitle("L2W2 RMSProp-改善深层神经网络")
+    fig.suptitle("L2W2 Adam-改善深层神经网络")
     plt.show()
 
 
@@ -500,7 +512,7 @@ if __name__ == '__main__':
         {'neurons': 4, 'activate': RELU_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 0.005
+    learning_rate = 1e-3
     random_seed = 1
 
     print("训练集输入的维度为：" + str(data_X.shape))
@@ -510,7 +522,7 @@ if __name__ == '__main__':
     # 对训练集进行归一化输入
     new_data_X, u, delta_double = normalizing(data=data_X)
 
-    parameter = deep_neural_network(new_data_X, data_Y, train_times=5000
+    parameter = deep_neural_network(new_data_X, data_Y, train_times=2600
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
