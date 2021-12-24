@@ -35,17 +35,21 @@ plot_cost = []
 # momentum = 是否开启momentum动量梯度下降,若不为0则开启，且β=momentum
 # rms_prop = 是否开启rms_prop梯度下降,若不为0则开启，且β=rms_prop
 # adam = 是否开启Adam梯度下降,若不为0则开启，且adam=(beta1,beta2))
+# learning_rate_decay = 是否开启学习率衰减,若不为0则开启，且decay_rate=learning_rate_decay
 def deep_neural_network(X, Y
                         , net_array, learning_rate=0.12
                         , train_times=3000, random_seed=2021
                         , L2_lmd=0.0, keep_prob=1, grad_check=False, mini_batch=0
-                        , momentum=0, rms_prop=0, adam=(None, None)):
+                        , momentum=0, rms_prop=0, adam=(None, None)
+                        , learning_rate_decay=0.2
+                        ):
     """
     :param grad_check: 是否进行梯度检测，默认不打开（若打开仅在第一次训练开启）
     """
     # debug次数
     cnt = 0
-
+    # 暂存学习率
+    a0 = learning_rate
     # 初始化基本参数
     net_deep = len(net_array)
     net_array[0]['neurons'] = X.shape[0]
@@ -86,6 +90,10 @@ def deep_neural_network(X, Y
         X_list, Y_list = split_data(x=X, y=Y, t=t)
         # n = mini-batch切分后，一共有多少的mini-batch
         n = len(X_list)
+        # 若开启学习率衰减
+        if learning_rate_decay > 0:
+            # 学习率衰减默认用a = a0 / (1 + decay_rat * epoch)
+            learning_rate = a0 / (1 + learning_rate_decay * t)
         # 内层循环是mini-batch个数进行循环
         for j in range(0, n, 1):
             mini_X = X_list[j]
@@ -145,10 +153,22 @@ def deep_neural_network(X, Y
                     beta2 = adam[1]
                     # epsilon=非常小的值保证分母不为0
                     epsilon = 1e-8
-                    v_dw[L] = beta1 * v_dw[L] + (1 - beta1) * dWL
-                    v_db[L] = beta1 * v_db[L] + (1 - beta1) * dbL
-                    s_dw[L] = beta2 * s_dw[L] + (1 - beta2) * (dWL * dWL)
-                    s_db[L] = beta2 * s_db[L] + (1 - beta2) * (dbL * dbL)
+                    try:
+                        v_dw[L] = beta1 * v_dw[L] + (1 - beta1) * dWL
+                    except FloatingPointError:
+                        v_dw[L] = (1 - beta1) * dWL
+                    try:
+                        v_db[L] = beta1 * v_db[L] + (1 - beta1) * dbL
+                    except FloatingPointError:
+                        v_db[L] = (1 - beta1) * dbL
+                    try:
+                        s_dw[L] = beta2 * s_dw[L] + (1 - beta2) * (dWL * dWL)
+                    except FloatingPointError:
+                        s_dw[L] = (1 - beta2) * (dWL * dWL)
+                    try:
+                        s_db[L] = beta2 * s_db[L] + (1 - beta2) * (dbL * dbL)
+                    except FloatingPointError:
+                        s_db[L] = (1 - beta2) * (dbL * dbL)
                     # c = correct即偏差修正
                     v_dw_c = v_dw[L] / (1 - beta1 ** (i + 1))
                     v_db_c = v_db[L] / (1 - beta1 ** (i + 1))
@@ -469,7 +489,7 @@ def pyplot_init():
     axes[1].set_xlabel("x/训练次数")
     axes[1].legend()
 
-    fig.suptitle("L2W2 RMSProp-改善深层神经网络")
+    fig.suptitle("L2W2 改善深层神经网络")
     plt.show()
 
 
@@ -500,7 +520,7 @@ if __name__ == '__main__':
         {'neurons': 4, 'activate': RELU_NAME},
         {'neurons': 1, 'activate': SIGMOID_NAME},
     ]
-    learning_rate = 0.005
+    learning_rate = 1e-1
     random_seed = 1
 
     print("训练集输入的维度为：" + str(data_X.shape))
@@ -510,7 +530,7 @@ if __name__ == '__main__':
     # 对训练集进行归一化输入
     new_data_X, u, delta_double = normalizing(data=data_X)
 
-    parameter = deep_neural_network(new_data_X, data_Y, train_times=5000
+    parameter = deep_neural_network(new_data_X, data_Y, train_times=3000
                                     , net_array=net_array
                                     , learning_rate=learning_rate
                                     , random_seed=random_seed
@@ -521,6 +541,7 @@ if __name__ == '__main__':
                                     , momentum=0
                                     , rms_prop=0
                                     , adam=(0.9, 0.999)
+                                    , learning_rate_decay=1
                                     )
 
     # 对测试集数据进行评估准确性
