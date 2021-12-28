@@ -32,11 +32,14 @@
     <div id="root">
         <h2>{{hello}}</h2>
         <p>输入框按下回车提示信息</p>
-        <input v-model="info" @keydown.enter="showInfo">
+        <input v-model="info" @keydown.huiche="showInfo">
     </div>
     <script src="../../js/vue.js"></script>
     <script>
         Vue.config.productionTip = false
+		Vue.config.keyCodes.huiche = 13 //定义了一个别名按键
+
+
         let vm = new Vue({
             el:"#root",
             data(){
@@ -46,8 +49,9 @@
                 }
             },
             methods: {
-                showInfo(){
+                showInfo(e){
                     alert(this.info)
+                    console.log(e.key,e.keyCode,e.target.value);
                 }
             },
         })
