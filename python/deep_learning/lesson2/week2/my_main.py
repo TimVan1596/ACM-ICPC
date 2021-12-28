@@ -489,7 +489,7 @@ def pyplot_init():
     axes[1].set_xlabel("x/训练次数")
     axes[1].legend()
 
-    fig.suptitle("L2W2 改善深层神经网络")
+    fig.suptitle("L2W2 改善深层神经网络 with Adam")
     plt.show()
 
 
@@ -501,7 +501,7 @@ if __name__ == '__main__':
     #     2.3 使用具有动量的梯度下降算法
     #     2.4 使用Adam算法
 
-    # 导入官方给的例子
+    # 导入官方给的例
     train_X, train_Y, test_X, test_Y = init_utils.load_dataset(is_plot=False)
 
     # X_shape = 1
