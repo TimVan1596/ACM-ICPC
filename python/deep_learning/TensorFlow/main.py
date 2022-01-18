@@ -6,11 +6,14 @@
 
 import os
 
-import tensorflow as tf
+import numpy as np
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "99"
 
 if __name__ == "__main__":
-    y = tf.constant([0, 1, 2, 3])
-    y = tf.one_hot(y, depth=10)
-    print(y)
+    arr = [
+        [1, 2, 3],
+        [4, 5, 6]
+    ]
+    arr = np.array(arr)
+    print(arr[:, 1::])
