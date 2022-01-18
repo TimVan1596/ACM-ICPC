@@ -23,10 +23,11 @@ def init_data():
 
 # 神经网络模型
 def train_model(dataset, epoch_num=10, learning_rate=0.01):
+    # 两个隐藏层的网络模型
     model = keras.Sequential([
-        keras.layers.Dense(8, activation='relu'),
-        keras.layers.Dense(5, activation='relu'),
-        keras.layers.Dense(10, activation='relu')
+        keras.layers.Dense(128, activation='relu'),
+        keras.layers.Dense(64, activation='relu'),
+        keras.layers.Dense(10)
     ])
     opt = keras.optimizers.SGD(learning_rate=learning_rate)
     index = 0
@@ -34,30 +35,47 @@ def train_model(dataset, epoch_num=10, learning_rate=0.01):
         # 一个epoch
         for step, (x, y) in enumerate(dataset):
             index += 1
+            # 构建梯度记录
             with tf.GradientTape() as tape:
                 x = tf.reshape(x, (-1, 28 * 28))
                 out = model(x)
                 y_one_hot = tf.one_hot(y, depth=10)
+                # MSE均方误差
                 loss = tf.square(out - y_one_hot)
                 loss = tf.reduce_sum(loss) / x.shape[0]
             grads = tape.gradient(loss, model.trainable_variables)
             opt.apply_gradients(zip(grads, model.trainable_variables))
             if index % 100 == 0:
+                acc = get_accuracy(out, y) * 100
                 plt_x.append(index)
-                plt_loss.append(loss.numpy())
-                print("{}-{}-{}:loss={}".format(index, epoch, step, loss.numpy()))
+                plt_loss.append(acc)
+                print("第{}次迭代,epoch={},step={},损失值={:.3f},准确性为={:.2f}%"
+                      .format(index, epoch, step, loss.numpy(), acc))
 
 
 # matplotlib.pyplot的设置
 def plt_init():
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
     plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-    plt.plot(plt_x, plt_loss, color='blue', label='loss')
-    plt.xlabel("x/Train_Times")
+    plt.plot(plt_x, plt_loss, color='blue', label='训练准确率')
+    plt.ylabel("准确率")
+    plt.xlabel("x/训练次数")
     plt.legend()
-
-    plt.title("Chapter3 MNIST")
+    plt.title("Tensorflow 第三章-手写数字识别")
     plt.show()
+
+
+# 获取准确性评估
+def get_accuracy(out, y):
+    # 独热编码转数字编码
+    y_hat = tf.argmax(out, 1).numpy()
+    y = y.numpy()
+    m = y.shape[0]
+    match = 0
+    for i in range(m):
+        if y[i] == y_hat[i]:
+            match += 1
+    return match / m
 
 
 # 对手写数字进行训练（仅完成训练集的部分）
@@ -72,5 +90,5 @@ if __name__ == '__main__':
     dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
     dataset = dataset.batch(128)
 
-    train_model(dataset, epoch_num=3, learning_rate=0.005)
+    train_model(dataset, epoch_num=10, learning_rate=0.005)
     plt_init()
