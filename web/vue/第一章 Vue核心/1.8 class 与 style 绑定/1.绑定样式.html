@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.绑定样式</title>
+    <style>
+        .basic {
+            width: 300px;
+            height: 80px;
+            border: 1px solid black;
+            font-size: large;
+        }
+
+        .happy {
+            border: 3px solid orange;
+            background-color: orange;
+            background: linear-gradient(30deg, yellow, green, orange, pink);
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <div class="basic">
+            Jeff
+        </div>
+        <br>
+        <div class="basic" :class='mood'>
+            Jeff
+        </div>
+        <br>
+        <div class="basic">
+            Jeff
+        </div>
+        <br>
+        <div class="basic">
+            Jeff
+        </div>
+        <br>
+        <div class="basic">
+            Jeff
+        </div>
+
+    </div>
+
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false;
+        let vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    mood: 'happy',
+                };
+            },
+        })
+    </script>
+</body>
+
+</html>
