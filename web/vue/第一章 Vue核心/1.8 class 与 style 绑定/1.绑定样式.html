@@ -1,64 +1,69 @@
 <!DOCTYPE html>
 <html lang="cn">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1.绑定样式</title>
     <style>
-        .basic {
-            width: 300px;
-            height: 80px;
-            border: 1px solid black;
-            font-size: large;
-        }
+      .basic {
+        width: 300px;
+        height: 80px;
+        border: 1px solid black;
+        font-size: large;
+      }
 
-        .happy {
-            border: 3px solid orange;
-            background-color: orange;
-            background: linear-gradient(30deg, yellow, green, orange, pink);
+      .happy {
+        border: 3px solid orange;
+        background-color: orange;
+        background: linear-gradient(30deg, yellow, green, orange, pink);
+      }
 
-        }
+      .sad {
+        border: 3px solid blue;
+        background-color: darkblue;
+        background: linear-gradient(30deg, gray, white, green);
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
+    <!-- 
+			绑定样式：
+					1. class样式
+								写法:class="xxx" xxx可以是字符串、对象、数组。
+										字符串写法适用于：类名不确定，要动态获取。
+										对象写法适用于：要绑定多个样式，个数不确定，名字也不确定。
+										数组写法适用于：要绑定多个样式，个数确定，名字也确定，但不确定用不用。
+					2. style样式
+								:style="{fontSize: xxx}"其中xxx是动态值。
+								:style="[a,b]"其中a、b是样式对象。
+		-->
     <div id="root">
-        <div class="basic">
-            Jeff
-        </div>
-        <br>
-        <div class="basic" :class='mood'>
-            Jeff
-        </div>
-        <br>
-        <div class="basic">
-            Jeff
-        </div>
-        <br>
-        <div class="basic">
-            Jeff
-        </div>
-        <br>
-        <div class="basic">
-            Jeff
-        </div>
-
+      <div :class="basic">Jeff</div>
+      <br />
+      <div class="basic" :class="mood">Jeff is Happy</div>
+      <br />
+      <div :class="sadArr">Jeff is Sad</div>
+      <br />
+      <div class="basic">Jeff</div>
+      <br />
+      <div class="basic">Jeff</div>
     </div>
 
     <script src="../../js/vue.js"></script>
     <script>
-        Vue.config.productionTip = false;
-        let vm = new Vue({
-            el: '#root',
-            data() {
-                return {
-                    mood: 'happy',
-                };
-            },
-        })
+      Vue.config.productionTip = false;
+      let vm = new Vue({
+        el: "#root",
+        data() {
+          return {
+            basic: "basic",
+            mood: "happy",
+            sadArr:["basic","sad"]
+          };
+        },
+      });
     </script>
-</body>
-
+  </body>
 </html>
