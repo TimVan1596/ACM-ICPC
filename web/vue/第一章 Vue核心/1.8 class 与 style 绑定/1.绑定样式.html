@@ -17,12 +17,16 @@
         border: 3px solid orange;
         background-color: orange;
         background: linear-gradient(30deg, yellow, green, orange, pink);
+        text-align: center;
       }
 
       .sad {
-        border: 3px solid blue;
-        background-color: darkblue;
-        background: linear-gradient(30deg, gray, white, green);
+        background-color: gray;
+        color: blue;
+      }
+
+      .normal {
+        background-color: skyblue;
       }
     </style>
   </head>
@@ -40,15 +44,8 @@
 								:style="[a,b]"其中a、b是样式对象。
 		-->
     <div id="root">
-      <div :class="basic">Jeff</div>
+      <div class="basic" :class="mood" @click="changeMood">Jeff 点击切换</div>
       <br />
-      <div class="basic" :class="mood">Jeff is Happy</div>
-      <br />
-      <div :class="sadArr">Jeff is Sad</div>
-      <br />
-      <div class="basic">Jeff</div>
-      <br />
-      <div class="basic">Jeff</div>
     </div>
 
     <script src="../../js/vue.js"></script>
@@ -60,8 +57,14 @@
           return {
             basic: "basic",
             mood: "happy",
-            sadArr:["basic","sad"]
+            moods: ["happy", "sad", "normal"],
           };
+        },
+        methods: {
+          changeMood() {
+            let randomIndex = Math.floor(Math.random() * this.moods.length);
+            this.mood = this.moods[randomIndex];
+          },
         },
       });
     </script>
