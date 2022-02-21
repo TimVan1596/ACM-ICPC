@@ -150,5 +150,5 @@ Vue中的事件修饰符：
                             对象写法适用于：要绑定多个样式，个数不确定，名字也不确定。
                             数组写法适用于：要绑定多个样式，个数确定，名字也确定，但不确定用不用。
         2. style样式
-                    :style="{fontSize: xxx}"其中xxx是动态值。
+                    :style="{fontSize: xxx}"其中xxx是动态值。注意是fontSize不是font-size
                     :style="[a,b]"其中a、b是样式对象。
