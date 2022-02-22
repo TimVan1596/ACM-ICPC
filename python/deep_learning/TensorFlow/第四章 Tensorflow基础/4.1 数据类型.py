@@ -22,6 +22,12 @@ if __name__ == '__main__':
     # print(tf.strings.lower(a))
 
     # 布尔类型
-    a = tf.constant(True)
-    print(a is True)
-    print(a == True)
+    # a = tf.constant(True)
+    # print(a is True)
+    # print(a == True)
+
+    a = []
+    aa = tf.constant(a)
+    print(type(aa))
+    print(aa.shape)
+    print(aa)
