@@ -1,14 +1,17 @@
-# ### 4.2 数值精度
-# 常用的精度类型有 tf.int16、tf.int32、tf.int64、tf.float16、tf.float32、
-# tf.float64 等。
-# 其中 tf.float64 即为 tf.double。
-
 import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = '1'
 import tensorflow as tf
 
 if __name__ == '__main__':
+    ### 4.2 数值精度
+
+    # 常用的精度类型有
+    # tf.int16、tf.int32、tf.int64、tf.float16、tf.float32、 tf.float64等。
+    # 其中tf.float64即为tf.double。
+    # 4.1.1 读取精度使用a.dtype
+    # 4.1.2 类型转换使用tf.cast(a, dtype=tf.float32)
+
     a = 2 ** 16 + 1
     print("2**16={}".format(a))
     aa = tf.constant(a, dtype=tf.int16)

@@ -13,3 +13,8 @@
 其中 tf.float64 即为 tf.double。  
 4.1.1 读取精度使用a.dtype  
 4.1.2 类型转换使用tf.cast(a,dtype=tf.float32)  
+
+
+### 4.3 待优化张量
+tf.Variable:专门的数据类型来支持梯度信息的记录：tf.Variable。  
+tf.Variable 类型在普通的张量类型基础上添加了name，trainable 等属性来支持计算图的构建。
