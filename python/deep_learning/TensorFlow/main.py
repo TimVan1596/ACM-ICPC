@@ -6,14 +6,16 @@
 
 import os
 
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
 import numpy as np
-
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "99"
+import tensorflow as tf
 
 if __name__ == "__main__":
-    arr = [
-        [1, 2, 3],
-        [4, 5, 6]
-    ]
-    arr = np.array(arr)
-    print(arr[:, 1::])
+    a = tf.random.uniform(shape=[3, 3], maxval=10, dtype=tf.int32)
+    print(a)
+
+    print(tf.sort(a))
+    print(tf.sort(a, direction="DESCENDING"))
+
+    idx = tf.argsort(a)
+    print(idx)
