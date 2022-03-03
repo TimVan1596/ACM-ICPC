@@ -11,11 +11,4 @@ import numpy as np
 import tensorflow as tf
 
 if __name__ == "__main__":
-    a = tf.random.uniform(shape=[3, 3], maxval=10, dtype=tf.int32)
-    print(a)
-
-    print(tf.sort(a))
-    print(tf.sort(a, direction="DESCENDING"))
-
-    idx = tf.argsort(a)
-    print(idx)
+    print(np.sin(3.1415/2))
