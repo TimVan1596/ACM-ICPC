@@ -72,3 +72,23 @@ tf.range(limit, delta=1)可以创建[0, limit)之间，步长为 delta 的整型
 indices是一个K维整数Tensor，
 - tf.boolean_mask(tensor, mask, name="boolean_mask", axis=None)
 tf.boolean_mask 的作用是通过布尔值过滤元素
+
+### 4.7 维度变换
+##### 4.7.1 改变视图  
+改变 x 的视图，存储并未改变
+##### 4.7.2 增、删维度
+- tf.expand_dims(x, axis)  
+通过 tf.expand_dims(x, axis)可在指定的 axis 轴前可以插入一个新的维度  
+需要注意的是，tf.expand_dims 的 axis 为正时，表示在当前维度之前插入一个新维度；为
+负时，表示当前维度之后插入一个新的维度。 
+- tf.squeeze(x, axis)  
+删除维度 是增加维度的逆操作，与增加维度一样，删除维度只能删除长度为 1 的维
+度，也不会改变张量的存储。如果希望将
+图片数量维度删除，可以通过 tf.squeeze(x, axis)函数，axis 参数为待删除的维度的索引号
+##### 4.7.3 交换维度  
+使用 tf.transpose(x, perm)函数完成维度交换操作，其中参数 perm 表示新维度的顺序 List
+##### 4.7.4 复制数据
+当通过增加维度操作插入新维度后，可能希望在新的维度上面复制若干份数据。  
+可以通过 tf.tile(x, multiples)函数完成数据在指定维度上的复制操作，multiples 分别指
+定了每个维度上面的复制倍数，对应位置为 1 表明不复制，为 2 表明新长度为原来长度的
+2 倍，即数据复制一份，以此类推。
