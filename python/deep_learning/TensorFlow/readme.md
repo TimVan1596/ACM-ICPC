@@ -1,5 +1,7 @@
 ## TensorFlow深度学习
 
+## 第4章 TensorFlow 基础
+
 ### 4.1 数据类型
 
 首先来介绍 TensorFlow 中的基本数据类型，包含数值类型、字符串类型和布尔类型。  
@@ -57,9 +59,6 @@ tf.range(limit, delta=1)可以创建[0, limit)之间，步长为 delta 的整型
 ##### 4.5.5 四维张量  
 [𝑏, ℎ, , 𝑐]其中𝑏表示输入样本的数量，ℎ/ 分别表示特征图的高/宽，𝑐表示特征图的通道数
 
-
-
-
 ### 4.6 索引与切片
 ##### 4.6.1 索引
 ##### 4.6.2 切片  
@@ -103,10 +102,9 @@ Broadcasting 称为广播机制(或自动扩展机制)，它是一种轻量级�
   
 通过 tf.broadcast_to(x, new_shape)函数可以显式地执行自动扩展功能
 
-
 ### 4.9 数学运算
 ##### 4.9.1 加、减、乘、除运算
-分别通过 tf.add, tf.subtract, tf.multiply tf.divide函数实现，
+分别通过 tf.add, tf.subtract, tf.multiply,tf.divide函数实现，
 TensorFlow 已经重载了+、 − 、 ∗ 、/运算符(推荐)
 ##### 4.9.2 乘方运算
 通过 tf.pow(x, a)可以方便地完成𝑦 = 𝑎的乘方运算，也可以通过运算符**实现 ∗∗ 𝑎运
@@ -128,3 +126,9 @@ TensorFlow 已经重载了+、 − 、 ∗ 、/运算符(推荐)
     @和matual，即以矩阵相乘的方式进行
 3. dim-wise  
     reduce_mean/max/min/sum，按维度进行运算
+
+## 第5章 TensorFlow 进阶
+### 5.1 合并与分割
+##### 5.1.1 合并
+张量的合并可以使用拼接(Concatenate)和堆叠(Stack)操作实现
+- 拼接 在 TensorFlow 中，可以通过 tf.concat(tensors, axis)函数拼接张量
