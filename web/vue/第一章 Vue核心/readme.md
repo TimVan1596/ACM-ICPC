@@ -200,3 +200,22 @@ v-for 指令:
                       1.最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
                       2.如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，仅用于渲染列表用于展示，
                           使用index作为key是没有问题的。
+
+### 1.10.8 Vue.set的使用
+- Vue.set( target, propertyName/index, value )  
+参数：
+{Object | Array} target  
+{string | number} propertyName/index  
+{any} value  
+返回值：设置的值。
+
+用法：  
+向响应式对象中添加一个 property，  
+并确保这个新 property 同样是响应式的，且触发视图更新。  
+它必须用于向响应式对象上添加新 property，  
+因为 Vue 无法探测普通的新增 property   
+(比如 this.myObject.newProperty = 'hi')  
+注意对象不能是 Vue 实例，或者 Vue 实例的根数据对象。
+
+- vm.$set( target, propertyName/index, value )
+这是全局 Vue.set 的别名。
