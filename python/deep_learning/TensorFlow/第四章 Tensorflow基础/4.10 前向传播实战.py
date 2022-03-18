@@ -25,9 +25,32 @@ def load_data():
     return train_dataset
 
 
+# 初始化参数
+def init_parameters():
+    # 每层的张量都需要被优化，故使用Variable类型
+    # 并使用截断的正太分布初始化权值张量
+    # 偏置向量初始化为 0 即可
+    w1 = tf.Variable(tf.random.truncated_normal([784, 256], stddev=0.1))
+    b1 = tf.Variable(tf.zeros[256])
+    w2 = tf.Variable(tf.random.truncated_normal([256, 128], stddev=0.1))
+    b2 = tf.Variable(tf.zeros[128])
+    w3 = tf.Variable(tf.random.truncated_normal([128, 10], stddev=0.1))
+    b3 = tf.Variable(tf.zeros[10])
+    return w1, b1, w2, b2, w3, b3
+
+
+# epoch进行训练
+def epoch_train():
+    pass
+
+
 def train():
-    # 获取数据集
+    # 1、获取数据集
     train_dataset = load_data()
+    # 2、初始化参数
+    w1, b1, w2, b2, w3, b3 = init_parameters()
+    # 3、epoch进行训练
+    pass
 
 
 if __name__ == '__main__':
