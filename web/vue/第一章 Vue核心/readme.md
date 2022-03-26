@@ -174,48 +174,70 @@ v-for 指令:
 2.语法：v-for="(item, index) in xxx" :key="yyy"  
 3.可遍历：数组、对象、字符串（用的很少）、指定次数（用的很少）
 
-### 1.10.2 key的原理
+### 1.10.2 key 的原理
+
 面试题：react、vue 中的 key 有什么作用？（key 的内部原理）
 
-  1. 虚拟DOM中key的作用：
-                  key是虚拟DOM对象的标识，当数据发生变化时，Vue会根据【新数据】生成【新的虚拟DOM】,
-                  随后Vue进行【新虚拟DOM】与【旧虚拟DOM】的差异比较，比较规则如下：
+1. 虚拟 DOM 中 key 的作用：
+   key 是虚拟 DOM 对象的标识，当数据发生变化时，Vue 会根据【新数据】生成【新的虚拟 DOM】,
+   随后 Vue 进行【新虚拟 DOM】与【旧虚拟 DOM】的差异比较，比较规则如下：
 
-  2.对比规则：
-              (1).旧虚拟DOM中找到了与新虚拟DOM相同的key：
-                          ①.若虚拟DOM中内容没变, 直接使用之前的真实DOM！
-                          ②.若虚拟DOM中内容变了, 则生成新的真实DOM，随后替换掉页面中之前的真实DOM。
+2.对比规则：
+(1).旧虚拟 DOM 中找到了与新虚拟 DOM 相同的 key：
+①.若虚拟 DOM 中内容没变, 直接使用之前的真实 DOM！
+②.若虚拟 DOM 中内容变了, 则生成新的真实 DOM，随后替换掉页面中之前的真实 DOM。
 
               (2).旧虚拟DOM中未找到与新虚拟DOM相同的key
                           创建新的真实DOM，随后渲染到到页面。
 
-  3. 用index作为key可能会引发的问题：
-                      1. 若对数据进行：逆序添加、逆序删除等破坏顺序操作:
-                                      会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低。
+3.  用 index 作为 key 可能会引发的问题： 1. 若对数据进行：逆序添加、逆序删除等破坏顺序操作:
+    会产生没有必要的真实 DOM 更新 ==> 界面效果没问题, 但效率低。
 
-                      2. 如果结构中还包含输入类的DOM：
-                                      会产生错误DOM更新 ==> 界面有问题。
+                    2. 如果结构中还包含输入类的DOM：
+                                    会产生错误DOM更新 ==> 界面有问题。
 
-  4. 开发中如何选择key?:
-                      1.最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
-                      2.如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，仅用于渲染列表用于展示，
-                          使用index作为key是没有问题的。
+4.  开发中如何选择 key?: 1.最好使用每条数据的唯一标识作为 key, 比如 id、手机号、身份证号、学号等唯一值。 2.如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，仅用于渲染列表用于展示，
+    使用 index 作为 key 是没有问题的。
 
-### 1.10.8 Vue.set的使用
+### 1.10.8 Vue.set 的使用
+
 - Vue.set( target, propertyName/index, value )  
-参数：
-{Object | Array} target  
-{string | number} propertyName/index  
-{any} value  
-返回值：设置的值。
+  参数：
+  {Object | Array} target  
+  {string | number} propertyName/index  
+  {any} value  
+  返回值：设置的值。
 
 用法：  
 向响应式对象中添加一个 property，  
 并确保这个新 property 同样是响应式的，且触发视图更新。  
 它必须用于向响应式对象上添加新 property，  
-因为 Vue 无法探测普通的新增 property   
+因为 Vue 无法探测普通的新增 property  
 (比如 this.myObject.newProperty = 'hi')  
 注意对象不能是 Vue 实例，或者 Vue 实例的根数据对象。
 
 - vm.$set( target, propertyName/index, value )
-这是全局 Vue.set 的别名。
+  这是全局 Vue.set 的别名。
+
+### 1.10.10 总结数据监视
+
+    		Vue监视数据的原理：
+    			1. vue会监视data中所有层次的数据。
+
+    			2. 如何监测对象中的数据？
+    							通过setter实现监视，且要在new Vue时就传入要监测的数据。
+    								(1).对象中后追加的属性，Vue默认不做响应式处理
+    								(2).如需给后添加的属性做响应式，请使用如下API：
+    												Vue.set(target，propertyName/index，value) 或
+    												vm.$set(target，propertyName/index，value)
+
+    			3. 如何监测数组中的数据？
+    								通过包裹数组更新元素的方法实现，本质就是做了两件事：
+    									(1).调用原生对应的方法对数组进行更新。
+    									(2).重新解析模板，进而更新页面。
+
+    			4.在Vue修改数组中的某个元素一定要用如下方法：
+    						1.使用这些API:push()、pop()、shift()、unshift()、splice()、sort()、reverse()
+    						2.Vue.set() 或 vm.$set()
+
+    			特别注意：Vue.set() 和 vm.$set() 不能给vm 或 vm的根数据对象 添加属性！！！
