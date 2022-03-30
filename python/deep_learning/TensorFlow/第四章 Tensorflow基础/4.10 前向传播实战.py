@@ -40,15 +40,21 @@ def init_parameters():
 
 
 # epoch进行训练
+# 1 epoch=一代=只是一次遍历了训练集
 def train_epoch(epoch, train_dataset, param, lr=0.001):
-    # 1 epoch=一代=只是一次遍历了训练集
-    print(epoch)
-    print(train_dataset)
-    # 总共300各step，每个step有200个数据
+    w1, b1, w2, b2, w3, b3 = param[0], param[1], param[2], param[3], param[4], param[5]
+    print(tensor_equal(w1, param[0]))
+    print(tensor_equal(w1, param[1]))
+    print(tensor_equal(b1, param[1]))
+
+    # 总共300个step，每个step有200个数据
     # 300*200 = 600000 =  MNIST数据集数量
     for step, (x, y) in enumerate(train_dataset):
-        print("step={}".format(step))
-        print(x.shape, y.shape)
+        # x.shape=(200, 784)  y.shape=(200, 10)
+        with tf.GradientTape() as tape:
+            # 三层结构为 784*256,256*128,128*10
+            h1 = x @ w1 + tf.broadcast_to(b1, (x.shape[0], 256))
+            pass
 
 
 def train(epochs):
@@ -62,6 +68,23 @@ def train(epochs):
         train_epoch(epoch, train_dataset, param, lr=0.001)
         break
     pass
+
+
+# 判断两个tensor的值是否相等
+def tensor_equal(a, b):
+    # 判断类型是否均为tensor
+    if type(a) != type(b):
+        return False
+    if isinstance(a, type(tf.constant([]))) is not True:
+        if isinstance(a, type(tf.Variable([]))) is not True:
+            return False
+    # 判断形状相等
+    if a.shape != b.shape:
+        return False
+    # 逐值对比后若有False则不相等
+    if not tf.reduce_min(tf.cast(a == b, dtype=tf.int32)):
+        return False
+    return True
 
 
 if __name__ == '__main__':
