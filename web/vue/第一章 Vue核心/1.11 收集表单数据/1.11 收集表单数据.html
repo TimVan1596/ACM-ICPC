@@ -32,6 +32,9 @@
             性别：
             男<input type="radio" name="sex" v-model="userInfo.sex" value="male">
             女<input type="radio" name="sex" v-model="userInfo.sex" value="female"> <br /><br />
+            <!-- 配置input的value属性 -->
+            <!--    (1)v-model的初始值是非数组，那么收集的就是checked（勾选 or 未勾选，是布尔值）
+                            (2)v-model的初始值是数组，那么收集的的就是value组成的数组 -->
             爱好：
             学习<input type="checkbox" v-model="userInfo.hobby" value="study">
             打游戏<input type="checkbox" v-model="userInfo.hobby" value="game">
@@ -63,6 +66,7 @@
                     password: '',
                     age: 18,
                     sex: 'female',
+                    // checkbox是数组
                     hobby: [],
                     city: 'beijing',
                     other: '',
