@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link type="text/css" rel="styleSheet" href="./css/style.css" />
-  </head>
-  <body>
-    <div>
-      <h1 class="tim-text">Hello,VS Code!</h1>
-    </div>
-    <div id="my-vue">
-      <h1>我的名字是{{name}}</h1>
-    </div>
 
-    <script src="./js/vue.js"></script>
-    <script>
-      const vm = new Vue({
-        el: "#my-vue",
-        data: {
-          name: "Tim Van",
-        },
-      });
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link type="text/css" rel="styleSheet" href="./css/style.css" />
+</head>
+
+<body>
+  <div>
+    <h1 class="tim-text">Hello,VS Code!</h1>
+  </div>
+
+
+  <script>
+    function Person(name) {
+      this.func = fun
+    }
+
+    function fun() {
+      console.log(this);
+    }
+    let person = new Person('name')
+    console.log('person.func中的this是');
+    person.func()
+    console.log('外部直接func中的this是');
+    fun()
+
+  </script>
+</body>
+
 </html>
