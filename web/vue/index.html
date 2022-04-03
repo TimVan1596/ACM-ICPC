@@ -16,18 +16,15 @@
 
 
   <script>
-    function Person(name) {
-      this.func = fun
-    }
+    index = '123'
+    function myMatch(index) {
+      if (/^.{3}$/.test(index)) {
+        return true
+      } else {
+        return false
+      }
 
-    function fun() {
-      console.log(this);
     }
-    let person = new Person('name')
-    console.log('person.func中的this是');
-    person.func()
-    console.log('外部直接func中的this是');
-    fun()
 
   </script>
 </body>
