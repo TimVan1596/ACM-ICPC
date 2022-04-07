@@ -1,9 +1,32 @@
-import xlwt
-
-if __name__ == '__main__':
-    workbook = xlwt.Workbook(encoding='utf-8')  # 创建workbook 对象
-    worksheet = workbook.add_sheet('sheet1')  # 创建工作表sheet
-    # 往表中写内容,第一各参数 行,第二个参数列,第三个参数内容
-    worksheet.write(0, 0, 'hello world')
-    worksheet.write(0, 1, '你好')
-    workbook.save('first.xls')  # 保存表为students.xls
+# -*- coding: UTF-8 -*-
+# helloworld.py
+ 
+# 导入所需的模块
+import pygame, sys
+# 导入所有pygame.locals里的变量（比如下面大写的QUIT变量）
+from pygame.locals import *
+ 
+ 
+# 初始化pygame
+pygame.init()
+ 
+# 设置窗口的大小，单位为像素
+screen = pygame.display.set_mode((320, 240))
+ 
+# 设置窗口标题
+pygame.display.set_caption('Hello World! I am Miyoo Mini')
+ 
+# 程序主循环
+while True:
+ 
+  # 获取事件
+  for event in pygame.event.get():
+    # 判断事件是否为退出事件
+    if event.type == QUIT:
+      # 退出pygame
+      pygame.quit()
+      # 退出系统
+      sys.exit()
+ 
+  # 绘制屏幕内容
+  pygame.display.update()
