@@ -209,18 +209,33 @@ TensorFlow 中，可以通过 tf.norm(x, ord)求解张量的 L1、L2、∞等范
 其中参数ord 指定为 1、2 时计算 L1、L2 范数，指定为 np.inf 时计算∞ −范数
 
 ##### 5.2.2 最值、均值、和
+
 通过 tf.reduce_max、tf.reduce_min、tf.reduce_mean、tf.reduce_sum 函数
 
-可以求解张量
-在某个维度上的最大、最小、均值、和，也可以求全局最大、最小、均值、和信息。
+可以求解张量 在某个维度上的最大、最小、均值、和，也可以求全局最大、最小、均值、和信息。
 
 这样的操作相当于减维，因此用reduce前缀
 
 - 通过 tf.reduce_max 函数实现最大值
-- 当不指定 axis 参数时，tf.reduce_*函数会求解出全局元素的最大、最小、均值、和等
-数据
+- 当不指定 axis 参数时，tf.reduce_*函数会求解出全局元素的最大、最小、均值、和等 数据
 - 通过 tf.reduce_mean 在样本数维度上计算均值
-- 求和函数 tf.reduce_sum(x, axis)，它可以求解张量在 axis 轴上所有
-特征的和
-- 通过 tf.argmax(x, axis)和 tf.argmin(x, axis)可以求解在 axis 轴上，x 的最大值、最小值所
-在的索引号
+- 求和函数 tf.reduce_sum(x, axis)，它可以求解张量在 axis 轴上所有 特征的和
+- 通过 tf.argmax(x, axis)和 tf.argmin(x, axis)可以求解在 axis 轴上，x 的最大值、最小值所 在的索引号
+
+### 5.3 张量比较和排序
+
+#### 5.3.1 张量比较
+
+通过 tf.equal(a, b)(或 tf.math.equal(a, b)，两者等价)函数可以比较这 2 个张量是否相等
+
+tf.equal()函数返回布尔类型的张量比较结果
+
+除了比较相等的 tf.equal(a, b)函数，其它的比较函数用法类似，如:
+
+1. tf.math.greater
+2. tf.math.less
+3. tf.math.greater_equal...等
+
+- tf.unique 返回去除重复的与索引号
+#### 5.3.2 张量排序
+
