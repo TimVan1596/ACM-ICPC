@@ -237,5 +237,9 @@ tf.equal()函数返回布尔类型的张量比较结果
 3. tf.math.greater_equal...等
 
 - tf.unique 返回去除重复的与索引号
-#### 5.3.2 张量排序
 
+#### 5.3.2 张量排序
+1. 排序sort,argsort:求排序和索引
+2. 前k大值 Top_k,res=tf.math.top_k(a,2)
+3. Top Acc:前N个中有没有命中的准确率
+4. tf.unique() 返回去除重复的与索硬化
