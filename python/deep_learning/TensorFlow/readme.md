@@ -239,7 +239,15 @@ tf.equal()函数返回布尔类型的张量比较结果
 - tf.unique 返回去除重复的与索引号
 
 #### 5.3.2 张量排序
-1. 排序sort,argsort:求排序和索引
+
+1. 排序sort,argsort:求排序和索引：
+   **特别的，argsort是原来元素在排序后所在的下标**
 2. 前k大值 Top_k,res=tf.math.top_k(a,2)
-3. Top Acc:前N个中有没有命中的准确率
-4. tf.unique() 返回去除重复的与索硬化
+3. Top Acc:前N个中有没有命中的准确率，即使用top_k和target进行比较
+4. tf.unique() 返回去除重复的与给出索引，并且可以用tf.gather()进行还原
+
+### 5.4 填充与复制
+
+#### 5.4.1 填充
+填充操作可以通过 tf.pad(x, paddings)函数实现，参数 paddings 是包含了多个
+[Left Padding,Right Padding]的嵌套方案 List
