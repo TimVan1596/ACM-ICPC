@@ -16,14 +16,29 @@
 
 
   <script>
-    index = '123'
-    function myMatch(index) {
-      if (/^.{3}$/.test(index)) {
-        return true
-      }
-      return false
-    }
+    layui.use(['layer', 'miniTab', 'echarts'], function () {
 
+      // 全局定义
+      let comSelect;
+      //打开首页立即执行，因此comSelect只要页面打开就会被初始化
+      renderSelect()
+
+      //首页下拉串口号
+      function renderSelect() {
+        comSelect = xmSelect.render({
+          el: '#COM',
+          radio: true,
+          direction: 'down',
+          tips: '串口号',
+          data: dataList
+        })
+      }
+
+      //获取数据
+      function getHumidTempData() {
+        comSelect.getValue()
+      }
+    })
   </script>
 </body>
 

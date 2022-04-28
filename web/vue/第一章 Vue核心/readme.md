@@ -308,8 +308,41 @@ v-html指令：
       1.v-once所在节点在初次动态渲染后，就视为静态内容了。
       2.以后数据的改变不会引起v-once所在结构的更新，可以用于优化性能。
 
-### 1.13.4  v-pre指令
+### 1.13.5  v-pre指令
 
    v-pre指令：
      1.跳过其所在节点的编译过程。
      2.可利用它跳过：没有使用指令语法、没有使用插值语法的节点，会加快编译。
+
+### 1.13.6  自定义指令
+
+需求1：定义一个v-big指令，和v-text功能类似，但会把绑定的数值放大10倍。
+    需求2：定义一个v-fbind指令，和v-bind功能类似，但可以让其所绑定的input元素默认获取焦点。
+    自定义指令总结：
+      一、定义语法：
+         (1).局部指令：
+            new Vue({               new Vue({
+             directives:{指令名:配置对象}   或     directives{指令名:回调函数}
+            })                   })
+         (2).全局指令：
+             Vue.directive(指令名,配置对象) 或   Vue.directive(指令名,回调函数)
+
+            指令钩子函数会被传入以下参数：
+
+            el：指令所绑定的元素，可以用来直接操作 DOM。
+            binding：一个对象，包含以下 property：
+                name：指令名，不包括 v- 前缀。
+                value：指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
+                oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
+                expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
+                arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
+                modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }。
+
+      二、配置对象中常用的3个回调：
+         (1).bind：指令与元素成功绑定时调用。
+         (2).inserted：指令所在元素被插入页面时调用。
+         (3).update：指令所在模板结构被重新解析时调用。
+
+      三、备注：
+         1.指令定义时不加v-，但使用时要加v-；
+         2.指令名如果是多个单词，要使用kebab-case命名方式，不要用camelCase命名。
