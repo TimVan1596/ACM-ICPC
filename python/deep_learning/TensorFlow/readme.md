@@ -249,5 +249,20 @@ tf.equal()函数返回布尔类型的张量比较结果
 ### 5.4 填充与复制
 
 #### 5.4.1 填充
-填充操作可以通过 tf.pad(x, paddings)函数实现，参数 paddings 是包含了多个
-[Left Padding,Right Padding]的嵌套方案 List
+
+填充操作可以通过 tf.pad(x, paddings)函数实现。
+
+参数 paddings 是包含了多个[Left Padding,Right Padding]的嵌套方案 List
+
+如[[0,0],[2,1],[1,2]]表示第一个维度不填 充，第二个维度左边(起始处)填充两个单元，右边(结束处)填充一个单元，第三个维度左边 填充一个单元，右边填充两个单元
+
+#### 5.4.2 复制
+
+1. 通过 tf.tile 函数可以在任意维度将数据重复复制多份 
+
+    如 shape 为[4,32,32,3]的数据， 复制方案为 multiples=[2,3,3,1]，
+
+    即通道数据不复制，高和宽方向分别复制 2 份，图片数再 复制 1 份
+
+3. **复制推荐使用tf.broadcast_to**
+tf.broadcast_to(input, shape, name=None)既不占用空间，也能达到复制效果
