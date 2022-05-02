@@ -54,8 +54,24 @@ if __name__ == '__main__':
 
     # 如果网络层所接受的数据高宽为32 × 32，则必须将28 × 28大小填充到32 × 32，
     # 可以选择在图片矩阵的上、下、左、右方向各填充 2 个单元
-    x = tf.random.normal([4, 28, 28, 1])
-    # 图片上下、左右各填充 2 个单元
-    x = tf.pad(x, [[0, 0], [2, 2], [2, 2], [0, 0]])
-    print(x.shape)
+    # x = tf.random.normal([4, 28, 28, 1])
+    # # 图片上下、左右各填充 2 个单元
+    # x = tf.pad(x, [[0, 0], [2, 2], [2, 2], [0, 0]])
+    # print(x.shape)
+
+    # #### 5.4.2 复制
+    #
+    # 1. 通过 tf.tile 函数可以在任意维度将数据重复复制多份
+    #    如 shape 为[4,32,32,3]的数据， 复制方案为 multiples=[2,3,3,1]，
+    #    即通道数据不复制，高和宽方向分别复制 2 份，图片数再 复制 1 份
+    # x = tf.random.normal([4, 32, 32, 3])
+    # x = tf.tile(x, [2, 3, 3, 1])
+    # print(x.shape)
+
+    # 2.复制推荐使用tf.broadcast_to， **仅适用[3, 4]->[2, 3, 4]**
+    #    tf.broadcast_to(input, shape, name=None)既不占用空间，也能达到复制效果
+    x = tf.random.normal([3, 4])
+    y = tf.broadcast_to(x, [2, 3, 4])
+    # y.shape=(2, 3, 4)
+    print(y.shape)
     pass
