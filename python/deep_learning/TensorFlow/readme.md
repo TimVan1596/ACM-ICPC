@@ -266,3 +266,12 @@ tf.equal()函数返回布尔类型的张量比较结果
 
 2. 复制推荐使用tf.broadcast_to， **仅适用[3, 4]->[2, 3, 4]**
    tf.broadcast_to(input, shape, name=None)既不占用空间，也能达到复制效果
+
+
+### 5.5 数据限幅
+1. 通过 tf.maximum(x, a)实现数据的下限幅，即𝑥 ∈ [𝑎, +∞)；
+2. 可以通过 tf.minimum(x, a)实现数据的上限幅，即𝑥 ∈ (−∞,𝑎]
+3. 通过组合 tf.maximum(x, a)和 tf.minimum(x, b)可以实现同时对数据的上下边界限幅，即 𝑥 ∈ [𝑎, 𝑏]
+4. 使用 tf.clip_by_value 实现上下限幅
+5. 使用 tf.clip_by_norm 实现对梯度进行裁剪，等比例放缩，防止梯度爆炸
+6. 使用 tf.clip_by_global_norm 实现整体缩放，通过权重梯度的总和的比率来截取多个张量的值
