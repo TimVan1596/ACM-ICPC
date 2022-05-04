@@ -282,3 +282,11 @@ tf.equal()函数返回布尔类型的张量比较结果
 
 - tf.gather 可以实现根据索引号收集数据的目的
 - tf.gather 非常适合索引号没有规则的场合，其中索引号可以乱序排列，此时收 集的数据也是对应顺序
+
+#### 5.6.2 tf.gather_nd
+
+tf.gather_nd的函数原型是：
+
+def gather_nd(params, indices, name=None)
+
+根据定义， 其主要功能是根据indices描述的索引，提取params上的元素， 重新构建一个tensor
