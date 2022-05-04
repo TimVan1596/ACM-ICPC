@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>分析生命周期</title>
+</head>
+
+<body>
+	<!-- 
+			四大阶段，八大方法
+
+			阶段		方法名			方法名
+			初始化		beforeCreate	created
+			挂载		beforeMount		mounted
+			更新		beforeUpdate	updated
+			销毁		beforeDestroy	destroyed
+		-->
+	<!-- 准备好一个容器-->
+	<div id="root">
+		<h2>当前值是{{n}}</h2>
+		<button @click="n+=1">点我n+1</button>
+		<button @click="bye">点我销毁vm</button>
+	</div>
+	<script src="../../js/vue.js"></script>
+	<script>
+		Vue.config.productionTip = false
+
+		let vm = new Vue({
+			el: "#root",
+			data() {
+				return {
+					n: 1
+				}
+			},
+			methods: {
+				bye() {
+					console.log("goodbye vm");
+					console.log(this);
+					this.$destroy()
+				}
+			},
+			watch: {
+				n() {
+					console.log("n变了");
+				}
+			},
+			beforeCreate() {
+				console.log("beforeCreate", this, '----');
+			},
+			created() {
+				console.log("created", this, '----');
+			},
+			beforeMount() {
+				console.log('beforeMount')
+			},
+			mounted() {
+				console.log('mounted')
+			},
+			beforeUpdate() {
+				console.log('beforeUpdate')
+			},
+			updated() {
+				console.log('updated')
+			},
+			beforeDestroy() {
+				console.log('beforeDestroy')
+			},
+			destroyed() {
+				console.log('destroyed')
+			},
+		})
+	</script>
+</body>
+
+</html>

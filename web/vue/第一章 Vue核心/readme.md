@@ -356,3 +356,13 @@ v-html指令：
       2.是什么：Vue在关键时刻帮我们调用的一些特殊名称的函数。
       3.生命周期函数的名字不可更改，但函数的具体内容是程序员根据需求编写的。
       4.生命周期函数中的this指向是vm 或 组件实例对象。
+
+### 1.14.2 分析生命周期
+
+      四大阶段，八大方法
+
+   阶段  方法名   方法名
+   初始化  beforeCreate created
+   挂载  beforeMount  mounted
+   更新  beforeUpdate updated
+   销毁  beforeDestroy destroyed
