@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>基本使用</title>
-  </head>
-  <body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.基本使用</title>
+</head>
+
+<body>
     <!-- 
 			Vue中使用组件的三大步骤：
 					一、定义组件(创建组件)
@@ -27,60 +29,90 @@
 			三、编写组件标签：
 							<school></school>
 		-->
+    <!-- 准备好一个容器-->
+
     <div id="root">
-      <h1>{{title}}</h1>
-      <hr />
-      <AudiCar></AudiCar>
-      <student></student>
-      <audiCar></audiCar>
+        <h1>{{msg}}</h1>
+        <School></School>
+        <hr>
+        <Student></Student>
+        <hr>
+    </div>
+    <div id="root2">
+        <Hello></Hello>
     </div>
     <script src="../../js/vue.js"></script>
     <script>
-        Vue.config.productionTip = false;
-        let student = Vue.extend({
-          template: `
-                      <div>
-                          <h2>{{name}}</h2>
-                          <h2>{{sex}}</h2>
-                      </div>
-                `,
-          data() {
-            return {
-              name: "TimVan",
-              sex: "男",
-            };
-          },
-        });
-
-        let AudiCar = {
-          template: `
-                      <div>
-                          <h2>车型：{{brand}}</h2>
-                          <h2>名称：{{name}}</h2>
-                      </div>
-                `,
-            data(){
-                return{
-                    brand : "A3",
-                    name:"A3L Limousine"
-                }
-            }
-        }
-
-
-        //对AudiCar进行全局注册
-        Vue.component('AudiCar',AudiCar)
-        new Vue({
-            el:"#root",
-            data(){
-                return{
-                  title: "学生信息",
+        /**
+            Vue中使用组件的三大步骤：
+                一、定义组件(创建组件)
+                二、注册组件
+                三、使用组件(写组件标签)
+        */
+        let School = Vue.extend({
+            template: `
+                <div> 
+                    <h2>{{msg}}</h2>
+                </div>
+            `,
+            data() {
+                return {
+                    msg: "我是School组件"
                 }
             },
-            components:{
-              student
+
+        })
+
+        let Student = Vue.extend({
+            template: `
+                <div> 
+                    <h2>{{msg}}</h2>
+                </div>
+            `,
+            data() {
+                return {
+                    msg: "我是Student组件"
+                }
+            },
+
+        })
+
+        // 2.全局注册：靠Vue.component('组件名',组件)
+
+        let Hello = Vue.extend({
+            template: `
+                <div> 
+                    <h2>{{msg}}</h2>
+                </div>
+            `,
+            data() {
+                return {
+                    msg: "我是Hello组件"
+                }
+            },
+
+        })
+        Vue.component('Hello', Hello)
+
+
+        Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+        let vm = new Vue({
+            el: '#root',
+            data: {
+                msg: "你好 Vue"
+            },
+            // 1.局部注册：靠new Vue的时候传入components选项
+            components: {
+                School,
+                Student
             }
         })
+
+        let vm2 = new Vue({
+            el: '#root2',
+        })
+
     </script>
-  </body>
+</body>
+
 </html>
