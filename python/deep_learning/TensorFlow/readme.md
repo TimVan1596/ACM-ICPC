@@ -310,3 +310,22 @@ def boolean_mask(tensor, mask, name="boolean_mask", axis=None):
 这里的 tf.boolean_mask 的用法其实与 tf.gather 非常类似，只不过一个通过掩码 方式采样，一个直接给出索引号采样
 
 可见 tf.boolean_mask 既可以实现了 tf.gather 方式的一维 掩码采样，又可以实现 tf.gather_nd 方式的多维掩码采样。
+
+**上面的 3 个操作比较常用，尤其是 tf.gather 和 tf.gather_nd 出现的频率较高，必须掌握**
+
+#### 5.6.4 tf.where
+
+- 通过 tf.where(cond, a, b)操作可以根据 cond 条件的真假从参数𝑨或𝑩中读取数据
+
+条件判定规则如下：
+
+𝑜𝑖 =
+
+1. 𝑎𝑖 cond𝑖为 True
+
+2. 𝑏𝑖 cond𝑖为 False
+
+其中𝑖为张量的元素索引，返回的张量大小与𝑨和𝑩一致，当对应位置的cond𝑖为 True，𝑜𝑖从 𝑎𝑖中复制数据；当对应位置的cond𝑖为 False，𝑜𝑖从𝑏𝑖中复制数据。
+
+- 当参数 a=b=None 时，即 a 和 b 参数不指定，tf.where 会返回 cond 张量中所有 True 的元素的索引坐标
+- 通过一系列的比较、索引号收集和掩码收集的操作组合是有很大的实际应用的
