@@ -329,3 +329,19 @@ def boolean_mask(tensor, mask, name="boolean_mask", axis=None):
 
 - 当参数 a=b=None 时，即 a 和 b 参数不指定，tf.where 会返回 cond 张量中所有 True 的元素的索引坐标
 - 通过一系列的比较、索引号收集和掩码收集的操作组合是有很大的实际应用的
+
+#### 5.6.5 scatter_nd
+
+张量白板刷新，有目的性刷新
+
+通过 tf.scatter_nd(indices, updates, shape)函数可以高效地刷新张量的部分数据，
+
+但是这个函数只能在全 0 的白板张量上面执行刷新操作，
+
+因此可能需要结合其它操作来实现现有张量的数据刷新功能。
+
+直接用scatter_nd是从全0白板更新，如何从已有的数据上更新？
+
+1. 假设A是待更新，从A中将待更新的部分值取出，用scatter_nd生成A'
+2. 拿A=A-A'清除待更新的部分值（clear）
+3. 新的值通过scatter_nd生成A'',则A=A+A''可进行部分更新

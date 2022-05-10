@@ -104,12 +104,62 @@ if __name__ == '__main__':
     # 学生的数量减少到 3 个，即一个班级只有 3 个学生，shape 为[2,3,8]。
     # 如果希望采样第 1 个班级的第 1~2 号学生，第 2 个班级的第 2~3 号学生，
     # 通过tf.gather_nd 可以实现为
-    x = tf.random.uniform([2, 3, 8], maxval=100, dtype=tf.int32)
-    # gather_nd(params, indices, name=name, batch_dims=batch_dims)
-    # (4,8)
-    print(tf.gather_nd(x, [[0, 0], [0, 1], [1, 1], [1, 2]]))
-    # 多维掩码采样
-    # 两个[]说明从班级数量2中均取得，[]中三个boolean说明从 3 个学生中取
-    # (4,8)
-    print(tf.boolean_mask(x, ([True, True, False], [False, True, True])))
+    # x = tf.random.uniform([2, 3, 8], maxval=100, dtype=tf.int32)
+    # # gather_nd(params, indices, name=name, batch_dims=batch_dims)
+    # # (4,8)
+    # print(tf.gather_nd(x, [[0, 0], [0, 1], [1, 1], [1, 2]]))
+    # # 多维掩码采样
+    # # 两个[]说明从班级数量2中均取得，[]中三个boolean说明从 3 个学生中取
+    # # (4,8)
+    # print(tf.boolean_mask(x, ([True, True, False], [False, True, True])))
+
+    # #### 5.6.4 tf.where
+    # - 通过 tf.where(cond, a, b)操作可以根据 cond 条件的真假从参数𝑨或𝑩中读取数据
+    #
+    # 条件判定规则如下：
+    # 𝑜𝑖 =
+    # 1. 𝑎𝑖 cond𝑖为 True
+    # 2. 𝑏𝑖 cond𝑖为 False
+
+    #
+    # 其中𝑖为张量的元素索引，返回的张量大小与𝑨和𝑩一致，当对应位置的cond𝑖为 True，𝑜𝑖从 𝑎𝑖中复制数据；当对应位置的cond𝑖为 False，𝑜𝑖从𝑏𝑖中复制数据。
+    #
+    # - 通过一系列的比较、索引号收集和掩码收集的操作组合是有很大的实际应用的
+
+    # 考虑从 2 个全 1 和全 0 的 3 × 3大小的张量𝑨和𝑩中提取数据，
+    # 其中cond𝑖为 True 的位置从𝑨中对应位置提取元素 1，
+    # cond𝑖为 False 的位置从𝑩对应位置提取元素 0
+    # a = tf.ones([3, 3])
+    # b = tf.zeros([3, 3])
+    # cond = tf.constant([[True, False, False],
+    #                     [False, True, False],
+    #                     [False, False, True]])
+    # # [[1. 0. 0.]
+    # #  [0. 1. 0.]
+    # #  [0. 0. 1.]]
+    # print(tf.where(cond, a, b))
+    #
+    # # -当参数 a=b=None 时，即 a 和 b 参数不指定，tf.where 会返回 cond 张量中所有 True 的元素的索引坐标。
+    # # If `x` and `y` are not provided (both are None):
+    # #   `tf.where` will return the indices of `condition` that are non-zero
+    # # [[0 0]
+    # #  [1 1]
+    # #  [2 2]]
+    # print(tf.where(cond))
+
+    # 我们需要提取张量中所有正数的数据和索引。
+    # 首先构造张量 a，并通过比较运算得到所有正数的位置掩码
+    x = tf.random.normal([3, 3])
+    mask = x > 0
+    print(x)
+    print(mask)
+    indices = tf.where(mask)
+
+    # tf.gather_nd(x, [[1, 1], [2, 2], [3, 3]]
+    # tf.boolean_mask(x, [True, False, False, True], axis=0)
+
+    # 拿到索引后，通过 tf.gather_nd 即可恢复出所有正数的元素：
+    print(tf.gather_nd(x, indices))
+    print(tf.boolean_mask(x, mask))
+
     pass
