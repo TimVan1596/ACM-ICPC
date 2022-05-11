@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.组件的嵌套</title>
+</head>
+
+<body>
+    <!-- 
+        组件的嵌套
+        Vue嵌套，关于嵌套就是将一个组件嵌套到另一个组件中，
+        那么外部的组件就是父组件，内部的组件就是子组件，我们就可以通过父组件来控制子组件。
+
+    -->
+    <!-- 准备好一个容器-->
+
+    <div id="root">
+        <App></App>
+    </div>
+
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+
+        let MySchool = Vue.extend({
+            template: `
+                <div> 
+                    <h2>{{msg}}</h2>
+                </div>
+            `,
+            data() {
+                return {
+                    msg: "我是School组件"
+                }
+            },
+
+        })
+
+        let Student = {
+            // 可以使用name配置项指定组件在开发者工具中呈现的名字。
+            name: "It Is Student",
+            template: `
+                <div> 
+                    <h2>{{msg}}</h2>
+                </div>
+            `,
+            data() {
+                return {
+                    msg: "我是Student组件"
+                }
+            },
+
+        }
+
+        let app = {
+            name: "APP",
+            template: `
+                <div> 
+                    <MySchool></MySchool>
+                    <Student></Student>
+                </div>
+            `,
+            // 1.局部注册：靠new Vue的时候传入components选项
+            components: {
+                MySchool,
+                Student
+            }
+        }
+
+
+
+        new Vue({
+            el: '#root',
+            data: {
+                msg: "你好 Vue"
+            },
+            // 1.局部注册：靠new Vue的时候传入components选项
+            components: {
+                app
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>
