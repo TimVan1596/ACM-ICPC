@@ -149,17 +149,66 @@ if __name__ == '__main__':
 
     # 我们需要提取张量中所有正数的数据和索引。
     # 首先构造张量 a，并通过比较运算得到所有正数的位置掩码
-    x = tf.random.normal([3, 3])
-    mask = x > 0
-    print(x)
-    print(mask)
-    indices = tf.where(mask)
+    # x = tf.random.normal([3, 3])
+    # mask = x > 0
+    # print(x)
+    # print(mask)
+    # indices = tf.where(mask)
+    #
+    # # tf.gather_nd(x, [[1, 1], [2, 2], [3, 3]]
+    # # tf.boolean_mask(x, [True, False, False, True], axis=0)
+    #
+    # # 拿到索引后，通过 tf.gather_nd 即可恢复出所有正数的元素：
+    # print(tf.gather_nd(x, indices))
+    # print(tf.boolean_mask(x, mask))
 
-    # tf.gather_nd(x, [[1, 1], [2, 2], [3, 3]]
-    # tf.boolean_mask(x, [True, False, False, True], axis=0)
+    # #### 5.6.5 scatter_nd
+    #
+    # 张量白板刷新，有目的性刷新
+    #
+    # 通过 tf.scatter_nd(indices, updates, shape)函数可以高效地刷新张量的部分数据，
 
-    # 拿到索引后，通过 tf.gather_nd 即可恢复出所有正数的元素：
-    print(tf.gather_nd(x, indices))
-    print(tf.boolean_mask(x, mask))
+    # 构造需要刷新数据的位置参数，即为 4、3、1 和 7 号位置
+    # indices = [[4], [3], [1], [7]]
+    # # 构造需要写入的数据，4 号位写入 4.4,3 号位写入 3.3，以此类推
+    # updates = [4.4, 3.3, 1.1, 7.7]
+    # # 在长度为 8 的全 0 向量上根据 indices 写入 updates 数据
+    # # [0,1.1,0,3.3,4.4,0,0,7.7]
+    # print(tf.scatter_nd(indices=indices, updates=updates, shape=[8]))
 
+    # 但是这个函数只能在全 0 的白板张量上面执行刷新操作，
+    #
+    # 因此可能需要结合其它操作来实现现有张量的数据刷新功能。
+    #
+    # 直接用scatter_nd是从全0白板更新，如何从已有的数据上更新？
+    #
+    # 1. 假设A是待更新，从A中将待更新的部分值取出，用scatter_nd生成A'
+    # 2. 拿A=A-A'清除待更新的部分值（clear）
+    # 3. 新的值通过scatter_nd生成A'',则A=A+A''可进行部分更新
+
+    A = tf.range(8) * 2
+    indices = tf.range(1, 8, 2)
+    indices = tf.reshape(indices, shape=[4, -1])
+    print(indices)
+
+    print(tf.reshape(tf.gather(A, indices), shape=[-1]))
+    # indices = [[1] [3] [5] [7]]
+    # tf.reshape(tf.gather(A, indices), shape=[-1]) =  [ 2  6 10 14]
+    A1 = tf.scatter_nd(indices=indices,
+                       updates=tf.reshape(tf.gather(A, indices), shape=[-1]),
+                       shape=[8])
+    # A1 = [ 0  2  0  6  0 10  0 14]
+    print(A1)
+    A = A - A1
+    # A = [ 0  0  4  0  8  0 12  0]
+    print(A)
+    updates = [2.2, 6.6, 10.10, 14.14]
+    A2 = tf.scatter_nd(indices=indices,
+                       updates=updates,
+                       shape=[8])
+    # A2 = [ 0.    2.2   0.    6.6   0.   10.1   0.   14.14]
+    print(A2)
+    A = tf.cast(A, dtype=tf.float32) + A2
+    # A = [ 0.    2.2   4.    6.6   8.   10.1  12.   14.14]
+    print(A)
     pass

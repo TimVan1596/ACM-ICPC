@@ -345,3 +345,10 @@ def boolean_mask(tensor, mask, name="boolean_mask", axis=None):
 1. 假设A是待更新，从A中将待更新的部分值取出，用scatter_nd生成A'
 2. 拿A=A-A'清除待更新的部分值（clear）
 3. 新的值通过scatter_nd生成A'',则A=A+A''可进行部分更新
+
+#### 5.6.6 meshgrid
+
+- 通过 tf.meshgrid 函数可以方便地生成二维网格的采样点坐标，方便可视化等应用场合。
+- 通过 tf.stack([x,y],axis=2) 可以将x，y还原成对应的坐标
+
+stack的操作：当axis ≥ 0时，在axis 之前插入；当axis < 0时，在 axis 之后插入新维度。
