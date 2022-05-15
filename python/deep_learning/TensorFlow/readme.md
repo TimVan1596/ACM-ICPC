@@ -349,6 +349,38 @@ def boolean_mask(tensor, mask, name="boolean_mask", axis=None):
 #### 5.6.6 meshgrid
 
 - 通过 tf.meshgrid 函数可以方便地生成二维网格的采样点坐标，方便可视化等应用场合。
+
+  ```python
+  x = [1, 2, 3]
+  y = [4, 5, 6]
+  X, Y = tf.meshgrid(x, y)
+  # X = [[1, 2, 3],
+  #      [1, 2, 3],
+  #      [1, 2, 3]]
+  # Y = [[4, 4, 4],
+  #      [5, 5, 5],
+  #      [6, 6, 6]]
+  ```
 - 通过 tf.stack([x,y],axis=2) 可以将x，y还原成对应的坐标
 
 stack的操作：当axis ≥ 0时，在axis 之前插入；当axis < 0时，在 axis 之后插入新维度。
+
+### 5.7 高级操作
+
+在 TensorFlow 中，keras.datasets 模块提供了常用经典数据集的自动下载、管理、加载与转换功能， 并且提供了 tf.data.Dataset 数据集对象
+
+- 通过 datasets.xxx.load_data()函数即可实现经典数据集的自动加载，
+
+其中 xxx 代表具体 的数据集名称，如“CIFAR10”、“MNIST”。
+
+TensorFlow 会默认将数据缓存在用户目录下 的.keras/datasets 文件夹
+
+- 通过 load_data()函数会返回相应格式的数据
+
+对于图片数据集 MNIST、CIFAR10 等，会返 回 2 个 tuple，第一个 tuple 保存了用于训练的数据 x 和 y 训练集对象；
+
+第 2 个 tuple 则保存 了用于测试的数据 x_test 和 y_test 测试集对象，所有的数据都用 Numpy 数组容器保存。
+
+- 通过 Dataset.from_tensor_slices 可以将训练部分的数据图片 x 和标签 y 都转换成 Dataset 对象
+
+数据加载进入内存后，需要转换成 Dataset 对象，才能利用 TensorFlow 提供的各种便捷功能。

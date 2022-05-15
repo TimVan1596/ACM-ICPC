@@ -186,29 +186,82 @@ if __name__ == '__main__':
     # 2. 拿A=A-A'清除待更新的部分值（clear）
     # 3. 新的值通过scatter_nd生成A'',则A=A+A''可进行部分更新
 
-    A = tf.range(8) * 2
-    indices = tf.range(1, 8, 2)
-    indices = tf.reshape(indices, shape=[4, -1])
-    print(indices)
+    # A = tf.range(8) * 2
+    # indices = tf.range(1, 8, 2)
+    # indices = tf.reshape(indices, shape=[4, -1])
+    # print(indices)
+    #
+    # print(tf.reshape(tf.gather(A, indices), shape=[-1]))
+    # # indices = [[1] [3] [5] [7]]
+    # # tf.reshape(tf.gather(A, indices), shape=[-1]) =  [ 2  6 10 14]
+    # A1 = tf.scatter_nd(indices=indices,
+    #                    updates=tf.reshape(tf.gather(A, indices), shape=[-1]),
+    #                    shape=[8])
+    # # A1 = [ 0  2  0  6  0 10  0 14]
+    # print(A1)
+    # A = A - A1
+    # # A = [ 0  0  4  0  8  0 12  0]
+    # print(A)
+    # updates = [2.2, 6.6, 10.10, 14.14]
+    # A2 = tf.scatter_nd(indices=indices,
+    #                    updates=updates,
+    #                    shape=[8])
+    # # A2 = [ 0.    2.2   0.    6.6   0.   10.1   0.   14.14]
+    # print(A2)
+    # A = tf.cast(A, dtype=tf.float32) + A2
+    # # A = [ 0.    2.2   4.    6.6   8.   10.1  12.   14.14]
+    # print(A)
 
-    print(tf.reshape(tf.gather(A, indices), shape=[-1]))
-    # indices = [[1] [3] [5] [7]]
-    # tf.reshape(tf.gather(A, indices), shape=[-1]) =  [ 2  6 10 14]
-    A1 = tf.scatter_nd(indices=indices,
-                       updates=tf.reshape(tf.gather(A, indices), shape=[-1]),
-                       shape=[8])
-    # A1 = [ 0  2  0  6  0 10  0 14]
-    print(A1)
-    A = A - A1
-    # A = [ 0  0  4  0  8  0 12  0]
-    print(A)
-    updates = [2.2, 6.6, 10.10, 14.14]
-    A2 = tf.scatter_nd(indices=indices,
-                       updates=updates,
-                       shape=[8])
-    # A2 = [ 0.    2.2   0.    6.6   0.   10.1   0.   14.14]
-    print(A2)
-    A = tf.cast(A, dtype=tf.float32) + A2
-    # A = [ 0.    2.2   4.    6.6   8.   10.1  12.   14.14]
-    print(A)
+    # #### 5.6.6 meshgrid
+    #
+    # - 通过 tf.meshgrid 函数可以方便地生成二维网格的采样点坐标，方便可视化等应用场合。
+    #
+
+    # 通过在 x 轴上进行采样 100 个数据点，y 轴上采样 100 个数据点，
+    # 然后利用tf.meshgrid(x, y)即可返回这 10000 个数据点的张量数据，
+    # 保存在 shape 为[100,100,2]的张量中。
+    # 为了方便计算，tf.meshgrid 会返回在 axis=2 维度切割后的 2 个张量𝑨和𝑩，
+    # 其中张量𝑨包含了所有点的 x 坐标，𝑩包含了所有点的 y 坐标，shape 都为[100,100]，实现如下
+
+    """
+        x = [1, 2, 3]
+        y = [4, 5, 6]
+        X, Y = tf.meshgrid(x, y)
+        # X = [[1, 2, 3],
+        #      [1, 2, 3],
+        #      [1, 2, 3]]
+        # Y = [[4, 4, 4],
+        #      [5, 5, 5],
+        #      [6, 6, 6]]
+    """
+    x = tf.linspace(-8, 8, 100)
+    y = tf.linspace(-8, 8, 100)
+    X, Y = tf.meshgrid(x, y)
+    # (100, 100)
+    # (100, 100)
+    print(X.shape)
+    print(Y.shape)
+
+    # 利用生成的网格点坐标张量𝑨和𝑩，Sinc 函数在 TensorFlow 中实现如下：
+    # sinc 函数实现
+    z = tf.sqrt(X ** 2 + Y ** 2)
+    z = tf.sin(z) / z
+
+    # 通过 matplotlib 库即可绘制出函数在𝑥 ∈ [−8,8],𝑦 ∈ [−8,8]区间的 3D 曲面
+    # import matplotlib
+    # from matplotlib import pyplot as plt
+    # # 导入 3D 坐标轴支持
+    # from mpl_toolkits.mplot3d import Axes3D
+    #
+    # fig = plt.figure()
+    # ax = Axes3D(fig)  # 设置 3D 坐标轴
+    # # 根据网格点绘制 sinc 函数 3D 曲面
+    # ax.contour3D(x.numpy(), y.numpy(), z.numpy(), 50)
+    # plt.show()
+
+    # - 通过 tf.stack([x,y],axis=2) 可以将x，y还原成对应的坐标
+    # stack的操作：当axis ≥ 0时，在axis 之前插入；当axis < 0时，在 axis 之后插入新维度。
+    cord = tf.stack([X, Y], axis=2)
+    # cord.shape=(100, 100, 2)
+    print(cord.shape)
     pass
