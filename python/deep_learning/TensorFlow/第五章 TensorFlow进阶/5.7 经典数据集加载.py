@@ -33,4 +33,28 @@ if __name__ == '__main__':
     train_db = tf.data.Dataset.from_tensor_slices((x, y))
     # <TensorSliceDataset element_spec=(TensorSpec(shape=(28, 28), dtype=tf.uint8, name=None), TensorSpec(shape=(), dtype=tf.uint8, name=None))>
     print(train_db)
+
+    # #### 5.7.1 随机打散
+    #
+    # 通过 Dataset.shuffle(buffer_size)工具可以设置 Dataset 对象随机打散数据之间的顺序，
+
+    # 防止每次训练时数据按固定顺序产生，从而使得模型尝试“记忆”住标签信息
+    #
+    # 其中，buffer_size 参数指定缓冲池的大小，一般设置为一个较大的常数即可。
+    # 调用 Dataset提供的这些工具函数会返回新的 Dataset 对象
+
+    # 随机打散样本，不会打乱样本与标签映射关系
+    train_db = train_db.shuffle(10000)
+    # <ShuffleDataset element_spec=(TensorSpec(shape=(28, 28), dtype=tf.uint8, name=None), TensorSpec(shape=(), dtype=tf.uint8, name=None))>
+    print(train_db)
+
+    # #### 5.7.2 批训练 .batch
+
+    # 一般在网络的计算过程中会同时计算多个样本，我们把这种训练方式叫做批训练，
+    # 其中一个批中样本的数量叫做 Batch Size。
+    # 为了一次能够从 Dataset 中产生 Batch Size 数量的样本，需要设置 Dataset 为批训练方式
+    # 其中 128 为 Batch Size 参数，即一次并行计算 128 个样本的数据
+    train_db = train_db.batch(128)
+    # <BatchDataset element_spec=(TensorSpec(shape=(None, 28, 28), dtype=tf.uint8, name=None), TensorSpec(shape=(None,), dtype=tf.uint8, name=None))>
+    print(train_db)
     pass

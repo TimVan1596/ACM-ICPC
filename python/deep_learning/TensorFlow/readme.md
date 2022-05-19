@@ -388,3 +388,34 @@ TensorFlow 会默认将数据缓存在用户目录下 的.keras/datasets 文件�
 其中，buffer_size 参数指定缓冲池的大小，一般设置为一个较大的常数即可。调用 Dataset
 
 提供的这些工具函数会返回新的 Dataset 对象
+
+#### 5.7.2 批训练 
+.batch,一般在网络的计算过程中会同时计算多个样本，我们 把这种训练方式叫做批训练，
+
+其中一个批中样本的数量叫做 Batch Size。
+
+为了一次能够从 Dataset 中产生 Batch Size 数量的样本，需要设置 Dataset 为批训练方式
+
+```python
+# 设置批训练,batch size 为 128
+train_db = train_db.batch(128) 
+```
+
+其中 128 为 Batch Size 参数，即一次并行计算 128 个样本的数据
+
+#### 5.7.3 预处理 
+Dataset 对象通过提供 map(func)工具函 数，
+
+可以非常方便地调用用户自定义的预处理逻辑，它实现在 func 函数里
+
+例如，下方代码调用名为 preprocess 的函数完成每个样本的预处理：
+
+```python
+# 预处理函数实现在 preprocess 函数中，传入函数名即可
+train_db = train_db.map(preprocess)
+
+# 自定义的预处理函数
+def preprocess(x, y): 
+    # 预处理函数里面进行
+    pass
+```
