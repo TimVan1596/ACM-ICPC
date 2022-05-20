@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <SchoolVue></SchoolVue>
+  </div>
 </template>
 
 <script>
@@ -30,10 +32,15 @@
             * export default aa,import的时候不要{}，可以重命名 import bb from 'aa.js';
              另外：
             * import xx from 'xx.js' 是编译阶段执行，是静态执行，不是运行时候执行；
-
-
  */
+
+import SchoolVue from "./School.vue";
+
+//引入组件
 export default {
   name: "App",
+  components: {
+    SchoolVue,
+  },
 };
 </script>

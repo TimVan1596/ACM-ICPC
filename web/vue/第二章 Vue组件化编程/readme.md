@@ -131,3 +131,28 @@ Vue嵌套，关于嵌套就是将一个组件嵌套到另一个组件中，
     样式定义
   </style>
   ```
+
+### 2.3.2. 基本使用
+
+1. 引入组件
+
+  ``` javascript
+    import SchoolVue from "./School.vue";
+  ```
+
+2. 映射成标签
+
+  ``` javascript
+    export default {
+      name: "App",
+      components: {
+        SchoolVue,
+      },
+    };
+  ```
+
+3. 使用组件标签
+
+  ``` html
+    <SchoolVue></SchoolVue>
+  ```
