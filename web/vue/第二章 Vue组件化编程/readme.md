@@ -98,3 +98,36 @@ Vue嵌套，关于嵌套就是将一个组件嵌套到另一个组件中，
 
   1. 一个重要的内置关系：VueComponent.prototype.__proto__ === Vue.prototype
   2. 为什么要有这个关系：让组件实例对象（vc）可以访问到 Vue原型上的属性、方法。
+
+## 2.3 单文件组件
+
+### 2.3.1 一个.vue 文件的组成(3 个部分)
+
+1. 模板页面
+
+  ``` html
+  <template>
+    页面模板
+  </template>
+  ```
+
+2. JS 模块对象
+
+  ```html
+  <script>
+    export default {
+      data() {return {}},
+      methods: {},
+      computed: {},
+      components: {}
+    }
+  </script>
+  ```
+
+3. 样式
+
+  ```html
+  <style>
+    样式定义
+  </style>
+  ```
