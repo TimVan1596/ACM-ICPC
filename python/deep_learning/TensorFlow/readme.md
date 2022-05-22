@@ -406,7 +406,7 @@ train_db = train_db.batch(128)
 
 #### 5.7.3 预处理
 
-Dataset 对象通过提供 map(func)工具函 数，
+Dataset 对象通过提供 map(func)工具函数，
 
 可以非常方便地调用用户自定义的预处理逻辑，它实现在 func 函数里
 
@@ -421,4 +421,27 @@ train_db = train_db.map(preprocess)
 def preprocess(x, y):
     # 预处理函数里面进行
     pass
+```
+
+5#### .7.4 循环训练 对于 Dataset 对象，在使用时可以通过
+
+```python
+# 迭代数据集对象，带 step 参数
+for step, (x, y) in enumerate(train_db):
+# 或迭代数据集对象
+for x, y in train_db: 
+```
+
+方式进行迭代，每次返回的 x 和 y 对象即为批量样本和标签。 当对 train_db 的所有样本完成一次迭代后，for 循环终止退出。
+
+- 完成一个 Batch 的数据训练，叫做一个 Step；
+- 通过多个 step 来完成整个训练集的一次迭代，叫做一个 Epoch。
+- 1 epoch = 1代 = 遍历整个数据集一次
+- 1 Step 是每次的梯度下降即完成1个Batch
+
+此外，也可以通过设置 Dataset 对象，使得数据集对象内部遍历多次才会退出，实现如下:
+
+```python
+# 数据集迭代 20 遍才终止
+train_db = train_db.repeat(20) 
 ```

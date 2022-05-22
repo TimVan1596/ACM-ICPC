@@ -57,4 +57,40 @@ if __name__ == '__main__':
     train_db = train_db.batch(128)
     # <BatchDataset element_spec=(TensorSpec(shape=(None, 28, 28), dtype=tf.uint8, name=None), TensorSpec(shape=(None,), dtype=tf.uint8, name=None))>
     print(train_db)
+
+
+    # #### 5.7.3 预处理
+    #
+    # Dataset 对象通过提供 map(func)工具函数，
+    #
+    # 可以非常方便地调用用户自定义的预处理逻辑，它实现在 func 函数里
+    #
+    # 例如，下方代码调用名为 preprocess 的函数完成每个样本的预处理：
+    # # 自定义的预处理函数
+    def preprocess(x, y):
+        # 调用此函数时会自动传入 x,y 对象，shape 为[b, 28, 28], [b]
+
+        x = tf.cast(x, dtype=tf.float32) / 255.0  # 标准化到 0~1
+        x = tf.reshape(x, shape=[-1, 28 * 28])  # 打平
+        y = tf.cast(y, dtype=tf.int32)  # 转成整型张量
+        # one-hot 编码
+        '''
+            indices = [0, 1, 2]
+            depth = 3
+            tf.one_hot(indices, depth)  # output: [3 x 3]
+            # [[1., 0., 0.],
+            #  [0., 1., 0.],
+            #  [0., 0., 1.]]
+        '''
+        y = tf.one_hot(y, depth=10)
+        return x, y
+
+
+    # ```python
+    # # 预处理函数实现在 preprocess 函数中，传入函数名即可
+    train_db = train_db.map(preprocess)
+    # shape=(None, 784),shape=(None, 10)
+    # <MapDataset element_spec=(TensorSpec(shape=(None, 784), dtype=tf.float32, name=None), TensorSpec(shape=(None, 10), dtype=tf.float32, name=None))>
+    print(train_db)
+
     pass
