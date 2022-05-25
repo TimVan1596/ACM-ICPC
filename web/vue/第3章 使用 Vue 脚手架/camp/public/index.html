@@ -1,5 +1,18 @@
-# 教程
+<!DOCTYPE html>
+<html lang="">
 
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+</head>
+
+<body>
+  <!-- 
 ## 3.1 初始化脚手架
 
 ### 3.1.1 说明
@@ -54,18 +67,15 @@ npm run serve
 
 1. 使用vue inspect > output.js可以查看到Vue脚手架的默认配置。
 2. 使用vue.config.js可以对脚手架进行个性化定制，详情见：<https://cli.vuejs.org/zh>
+ -->
 
-## 3.2 ref 与 props
 
-### 3.2.1 ref
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
 
-1. 作用：用于给节点打标识
-2. 读取方式：this.$refs.xxxxxx
-
-#### ref属性
-
-1. 被用来给元素或子组件注册引用信息（id的替代者）
-2. 应用在html标签上获取的是真实DOM元素，应用在组件标签上是组件实例对象（vc）
-3. 使用方式：
-    1. 打标识：```<h1 ref="xxx">.....</h1>``` 或 ```<School ref="xxx"></School>```
-    2. 获取：```this.$refs.xxx```
+</html>
