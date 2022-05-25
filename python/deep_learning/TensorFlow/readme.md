@@ -423,7 +423,9 @@ def preprocess(x, y):
     pass
 ```
 
-5#### .7.4 循环训练 对于 Dataset 对象，在使用时可以通过
+#### 5.7.4 循环训练
+
+对于 Dataset 对象，在使用时可以通过
 
 ```python
 # 迭代数据集对象，带 step 参数

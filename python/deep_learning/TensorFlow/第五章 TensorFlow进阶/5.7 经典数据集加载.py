@@ -93,4 +93,36 @@ if __name__ == '__main__':
     # <MapDataset element_spec=(TensorSpec(shape=(None, 784), dtype=tf.float32, name=None), TensorSpec(shape=(None, 10), dtype=tf.float32, name=None))>
     print(train_db)
 
+    # #### 5.7.4 循环训练
+    #
+    # 对于 Dataset 对象，在使用时可以通过
+    #
+    # ```python
+    # # 迭代数据集对象，带 step 参数
+    # for step, (x, y) in enumerate(train_db):
+    # # 或迭代数据集对象
+    # for x, y in train_db:
+    # ```
+    #
+
+    # 方式进行迭代，每次返回的 x 和 y 对象即为批量样本和标签。 当对 train_db 的所有样本完成一次迭代后，for 循环终止退出。
+
+    # - 通过多个 step 来完成整个训练集的一次迭代，叫做一个 Epoch。
+    for epoch in range(20):
+        # step从1到468，因为总共60K个样本，60000÷128=468.75
+        # - 完成一个 Batch 的数据训练，叫做一个 Step；
+        for step, (x, y) in enumerate(train_db):
+            #  x 和 y 对象即为批量样本和标签
+            print(step)
+
+    # - 1 epoch = 1代 = 遍历整个数据集一次
+    # - 1 Step 是每次的梯度下降即完成1个Batch
+    #
+    # 此外，也可以通过设置 Dataset 对象，使得数据集对象内部遍历多次才会退出，实现如下:
+    #
+    # ```python
+    # # 数据集迭代 20 遍才终止
+    # train_db = train_db.repeat(20)
+    # ```
+    # train_db = train_db.repeat(20)
     pass
