@@ -110,11 +110,11 @@ npm run serve
 
         ```js
         props:{
-         name:{
-         type:String, //类型
-         required:true, //必要性
-         default:'老王' //默认值
-         }
+            name:{
+                type:String, //类型
+                required:true, //必要性
+                default:'老王' //默认值
+            }
         }
         ```
 
