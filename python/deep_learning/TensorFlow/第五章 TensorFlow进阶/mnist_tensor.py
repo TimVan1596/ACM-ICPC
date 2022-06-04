@@ -28,10 +28,10 @@ def preprocess(x, y):
     return x, y
 
 
-# %%
+# %数据集预处理%
 (x, y), (x_test, y_test) = datasets.mnist.load_data()
 print('x:', x.shape, 'y:', y.shape, 'x test:', x_test.shape, 'y test:', y_test)
-# %%
+# %训练集随机，并分成mini-batch%
 batchsz = 512
 train_db = tf.data.Dataset.from_tensor_slices((x, y))
 train_db = train_db.shuffle(1000)
@@ -39,8 +39,7 @@ train_db = train_db.batch(batchsz)
 train_db = train_db.map(preprocess)
 train_db = train_db.repeat(20)
 
-# %%
-
+# %测试集类似%
 test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test))
 test_db = test_db.shuffle(1000).batch(batchsz).map(preprocess)
 x, y = next(iter(train_db))
@@ -63,6 +62,8 @@ def main():
     # 256 => 10
     w3, b3 = tf.Variable(tf.random.normal([128, 10], stddev=0.1)), tf.Variable(tf.zeros([10]))
 
+    # - 1 epoch = 1代 = 遍历整个数据集一次
+    # - 1 Step 是每次的梯度下降即完成1个Batch
     for step, (x, y) in enumerate(train_db):
 
         # [b, 28, 28] => [b, 784]
@@ -96,7 +97,7 @@ def main():
             losses.append(float(loss))
 
         if step % 80 == 0:
-            # evaluate/test
+            # evaluate/test，输入w1，b1，w2，b2，w3，b3
             total, total_correct = 0., 0
 
             for x, y in test_db:
@@ -108,13 +109,13 @@ def main():
                 h2 = tf.nn.relu(h2)
                 # output
                 out = h2 @ w3 + b3
-                # [b, 10] => [b]
+                # [b, 10] => [b]，获取最大下标
                 pred = tf.argmax(out, axis=1)
                 # convert one_hot y to number y
                 y = tf.argmax(y, axis=1)
-                # bool type
+                # bool type ，转为0和1
                 correct = tf.equal(pred, y)
-                # bool tensor => int tensor => numpy
+                # bool tensor => int tensor => numpy，统计为1的个数
                 total_correct += tf.reduce_sum(tf.cast(correct, dtype=tf.int32)).numpy()
                 total += x.shape[0]
 
@@ -130,6 +131,7 @@ def main():
     plt.legend()
     plt.savefig('train.svg')
 
+    # 打印ACC
     plt.figure()
     plt.plot(x, accs, color='C1', marker='s', label='测试')
     plt.ylabel('准确率')
