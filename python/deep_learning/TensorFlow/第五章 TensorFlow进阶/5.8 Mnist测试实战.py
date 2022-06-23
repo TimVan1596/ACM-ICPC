@@ -4,30 +4,49 @@ import tensorflow as tf
 import keras.datasets as datasets
 import matplotlib.pyplot as plt
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = "2"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 print(tf.__version__)
 
 # pyplot显示中文标签
-plt.rcParams['font.sans-serif'] = ['SimHei']
-plt.rcParams['axes.unicode_minus'] = False
+plt.rcParams["font.sans-serif"] = ["SimHei"]
+plt.rcParams["axes.unicode_minus"] = False
+
+
+# 预处理
+def preprocess(x, y):
+    # [b, 28, 28], [b]
+    print(x.shape, y.shape)
+    x = tf.cast(x, dtype=tf.float32) / 255.0
+    x = tf.reshape(x, [-1, 28 * 28])
+    y = tf.cast(y, dtype=tf.int32)
+    y = tf.one_hot(y, depth=10)
+
+    return x, y
 
 
 # 获取数据集
 def load_data(batch_size=200):
     # 1、获取 MNIST 数据集
-    (x, y), (_, _) = datasets.mnist.load_data()
+    (x, y), (test_x, test_y) = datasets.mnist.load_data()
     # 2、数据预处理：x转为浮点数，并缩放到-1~1，最后改变视图
     #               y转为整数 ，并转为独热编码
     # x = (60000, 28, 28) y=(60000,)
-    x = tf.convert_to_tensor(x, dtype=tf.float32) / 255
-    x = tf.reshape(x, (-1, 28 * 28))
-    y = tf.convert_to_tensor(y, dtype=tf.int32)
-    y = tf.one_hot(y, depth=10)
+
     # 3、构建数据集对象，进行mini-batch分组
     train_dataset = tf.data.Dataset.from_tensor_slices((x, y))
+    test_dataset = tf.data.Dataset.from_tensor_slices((test_x, test_y))
     # 批量训练
-    train_dataset = train_dataset.batch(batch_size=200)
-    return train_dataset
+    train_dataset = (
+        train_dataset.shuffle(1000).batch(batch_size=batch_size).map(preprocess)
+    )
+    # 数据集迭代 20 遍才终止
+    train_dataset = train_dataset.repeat(1)
+
+    test_dataset = (
+        test_dataset.shuffle(1000).batch(batch_size=batch_size).map(preprocess)
+    )
+
+    return train_dataset, test_dataset
 
 
 # 初始化参数
@@ -76,16 +95,18 @@ def train_epoch(epoch, train_dataset, param, lr=0.001):
         w3.assign_sub(grads[4] * lr)
         b3.assign_sub(grads[5] * lr)
         if step % 200 == 0:
-            tips = "[debug]:epoch={0},step={1} => loss:{2}" \
-                .format(epoch, step, loss.numpy())
+            tips = "[debug]:epoch={0},step={1} => loss:{2}".format(
+                epoch, step, loss.numpy()
+            )
             print(tips)
     return loss.numpy()
 
 
-def train(epochs):
+# 主训练程序
+def train(train_dataset, epochs):
     losses = []
     # 1、获取数据集
-    train_dataset = load_data(batch_size=200)
+
     # 2、初始化参数
     (w1, b1, w2, b2, w3, b3) = init_parameters()
     param = (w1, b1, w2, b2, w3, b3)
@@ -93,16 +114,18 @@ def train(epochs):
     for epoch in range(epochs):
         loss = train_epoch(epoch, train_dataset, param, lr=0.001)
         losses.append(loss)
+
     x = range(0, epochs)
     # 绘制曲线
-    plt.plot(x, losses, color='orange',
-             marker='s', label='训练')
-    plt.xlabel('Epoch')
-    plt.ylabel('MSE')
+    plt.plot(x, losses, color="orange", marker="s", label="训练")
+    plt.xlabel("Epoch")
+    plt.ylabel("MSE")
     plt.legend()
-    plt.savefig('MNIST数据集的前向传播训练误差曲线.jpg')
-    plt.show()
+    plt.savefig("MNIST数据集的前向传播训练误差曲线.jpg")
+    # plt.show()
     plt.close()
+
+    return param
 
 
 # 判断两个tensor的值是否相等
@@ -122,32 +145,72 @@ def tensor_equal(a, b):
     return True
 
 
-if __name__ == '__main__':
+# 主测试模型的工具
+def test_model(test_dataset, param):
+    # 分类任务测试部分逻辑：
+    # 1、传入参数（w1，b1，w2，b2，w3，b3）
+    # 2、进行训练，获取最大下标
+    # 3、结果转为0和1，统计为1的个数
+    # 4、计算准确率ACC，并通过plt打印
+    w1, b1, w2, b2, w3, b3 = param[0], param[1], param[2], param[3], param[4], param[5]
+
+    total_correct = 0
+    total = 0
+    for x, y in test_dataset:
+        h1 = x @ w1 + b1
+        h1 = tf.nn.relu(h1)
+
+        h2 = h1 @ w2 + b2
+        h2 = tf.nn.relu(h2)
+
+        h3 = h2 @ w3 + b3
+        out = tf.nn.relu(h3)
+
+        # 1. 先考虑一个 Batch 的样本 x，通过前向计算可以获得网络的预测值。预测值 out 的 shape 为[𝑏, 10]，分别代表了样本属于每个类别的概率
+        # shape= = [200  10]
+        print("@tf.shape(out)=", tf.shape(out))
+        print("@tf.shape(y)=", tf.shape(y))
+        # 2. 我们根据 tf.argmax 函数选出概率最大值出现的索引号，也即样本最有可能的类别号
+        pred = tf.argmax(out, axis=1)
+        y = tf.argmax(y, axis=1)
+        # 3. 由于我们的标注 y 已经在预处理中完成了 one-hot 编码，这在测试时其实是不需要的，因此通过 tf.argmax 可以得到数字编码的标注 y
+        # 4. 通过 tf.equal 可以比较这两者的结果是否相等
+        # 比较预测值与真实值
+        correct = tf.equal(pred, y)
+
+        # 5. 并求和比较结果中所有 True(转换为 1)的数量，即为预测正确的数量
+        # 6. 预测正确的数量除以总测试数量即可得到准确度，并打印出来
+        # 7、结果转为0和1，统计为1的个数
+        # 8、计算准确率ACC，并通过plt打印
+
+        # shape = 200
+        print("@tf.shape(correct)=", tf.shape(correct))
+        total_correct += tf.reduce_sum(tf.cast(correct, dtype=tf.int32)).numpy()
+        total += y.shape[0]
+
+    pass
+
+
+if __name__ == "__main__":
     # ### 5.8 MNIST 测试实战
     # 　上一节前向传播和数据集的加载步骤：
     # 1、获取数据集
     # 2、数据集分成mini-batch
     # 3、按照epoch进行更新
     # 4、三层神经网络
-    train(5)
+    train_dataset, test_dataset = load_data(batch_size=200)
+    param = train(train_dataset=train_dataset, epochs=1)
+
+    # 前面已经介绍并实现了前向传播和数据集的加载部分。
+    # 现在我们来完成剩下的分类任务逻辑。
+    # 1. 在训练的过程中，通过间隔数个 Step 后打印误差数据，可以有效监督模型的训练进度
+    # 2. 在若干个 Step 或者若干个 Epoch 训练后，可以进行一次测试(验证)，以获得模型的当前性能
 
     # 分类任务测试部分逻辑：
     # 1、传入参数（w1，b1，w2，b2，w3，b3）
     # 2、进行训练，获取最大下标
     # 3、结果转为0和1，统计为1的个数
     # 4、计算准确率ACC，并通过plt打印
+    test_model(test_dataset=test_dataset, param=param)
 
-    # 前面已经介绍并实现了前向传播和数据集的加载部分。现在我们来完成剩下的分类任务逻辑。
-    #
-    # 1. 在训练的过程中，通过间隔数个 Step 后打印误差数据，可以有效监督模型的训练进度
-    # 2. 在若干个 Step 或者若干个 Epoch 训练后，可以进行一次测试(验证)，以获得模型的当前性能
-
-    # 现在我们来利用学习到的 TensorFlow 张量操作函数，完成准确度的计算实战
-    #
-    # 1. 先考虑一个 Batch 的样本 x，通过前向计算可以获得网络的预测值。预测值 out 的 shape 为[𝑏, 10]，分别代表了样本属于每个类别的概率
-    # 2. 我们根据 tf.argmax 函数选出概率最大值出现的索引号，也即样本最有可能的类别号
-    # 3. 由于我们的标注 y 已经在预处理中完成了 one-hot 编码，这在测试时其实是不需要的，因此通过 tf.argmax 可以得到数字编码的标注 y
-    # 4. 通过 tf.equal 可以比较这两者的结果是否相等
-    # 5. 并求和比较结果中所有 True(转换为 1)的数量，即为预测正确的数量
-    # 6. 预测正确的数量除以总测试数量即可得到准确度，并打印出来
     pass
