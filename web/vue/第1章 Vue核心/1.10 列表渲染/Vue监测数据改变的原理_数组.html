@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9.Vue监测数据改变的原理_数组</title>
+</head>
+
+<body>
+    <!-- ### 9.Vue监测数据改变的原理_数组 -->
+    <div id="root">
+        <h3>数组遍历</h3>
+        <ol>
+            <li v-for="(item,index) of porcelains" :key="index">
+                {{item.id}}-{{item.name}}
+            </li>
+        </ol>
+
+
+        <button @click="addAttr">添加一个数据</button>
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false;
+        let vm = new Vue({
+            el: '#root'
+            , data() {
+                return {
+                    porcelains: [
+                        { id: '001', name: '汝窑' },
+                        { id: '002', name: '官窑' },
+                        { id: '003', name: '哥窑' },
+                        { id: '004', name: '钧窑' },
+                        { id: '005', name: '' }
+                    ],
+                }
+            },
+            methods: {
+                addAttr() {
+                    // this.porcelains[5] = { id: '005', name: '定窑' }
+                    this.porcelains.pop()
+                    console.log(this.porcelains);
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

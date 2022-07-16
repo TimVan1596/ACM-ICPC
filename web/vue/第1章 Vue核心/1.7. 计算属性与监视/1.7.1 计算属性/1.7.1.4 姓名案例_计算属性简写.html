@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>姓名案例_计算属性简写</title>
+  </head>
+  <body>
+    <!-- 
+	计算属性：
+			1.定义：要用的属性不存在，要通过已有属性计算得来。
+			2.原理：底层借助了Objcet.defineproperty方法提供的getter和setter。
+			3.get函数什么时候执行？
+						(1).初次读取时会执行一次。
+						(2).当依赖的数据发生改变时会被再次调用。
+			4.优势：与methods实现相比，内部有缓存机制（复用），效率更高，调试方便。
+			5.备注：
+					1.计算属性最终会出现在vm上，直接读取使用即可。
+					2.如果计算属性要被修改，那必须写set函数去响应修改，且set中要引起计算时依赖的数据发生改变。
+		 -->
+    <div id="root">
+      请输入姓：<input type="text" name="firstName" v-model="firstName" /><br />
+      请输入名：<input type="text" name="lastName" v-model="lastName" /><br />
+      <h3>{{fullName}}</h3>
+    </div>
+    <script src="../../../js/vue.js"></script>
+    <script>
+      Vue.config.productionTip = false;
+      let vm = new Vue({
+        el: "#root",
+        data() {
+          return {
+            firstName: "张",
+            lastName: "三",
+          };
+        },
+        computed: {
+          fullName() {
+            return this.firstName + "-" + this.lastName;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

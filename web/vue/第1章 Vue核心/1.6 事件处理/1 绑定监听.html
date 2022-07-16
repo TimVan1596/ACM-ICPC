@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1 绑定监听</title>
+    <style>
+      .my-block {
+        width: 200px;
+        padding: 5px;
+      }
+
+      .orange {
+        background-color: rgb(248, 187, 73);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 
+				事件的基本使用：
+							1.使用v-on:xxx 或 @xxx 绑定事件，其中xxx是事件名；
+							2.事件的回调需要配置在methods对象中，最终会在vm上；
+							3.methods中配置的函数，不要用箭头函数！否则this就不是vm了；
+							4.methods中配置的函数，都是被Vue所管理的函数，this的指向是vm 或 组件实例对象；
+							5.@click="demo" 和 @click="demo($event)" 效果一致，但后者可以传参；
+		-->
+    <div id="app">
+      <h1>{{title}}</h1>
+      <div class="my-block orange" v-on:click="open1">点我展示消息(on)</div>
+      <br />
+      <div class="my-block orange" @click="open2">点我展示消息(@绑定)</div>
+      <br />
+      <div class="my-block orange" @click="open3($event,123)">
+        点我展示传入的参数
+      </div>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+      Vue.config.productionTip = false;
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          title: "1 绑定监听",
+        },
+        methods: {
+          open1() {
+            alert("v-on:click");
+          },
+          open2() {
+            alert("@click");
+            console.log(this);
+          },
+          open3(event, val) {
+            console.log(event,val);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

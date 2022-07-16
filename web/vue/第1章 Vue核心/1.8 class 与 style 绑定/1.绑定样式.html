@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.绑定样式</title>
+    <style>
+      .basic {
+        width: 300px;
+        height: 80px;
+        border: 1px solid black;
+        font-size: large;
+      }
+
+      .happy {
+        border: 3px solid orange;
+        background-color: orange;
+        background: linear-gradient(30deg, yellow, green, orange, pink);
+        text-align: center;
+      }
+
+      .sad {
+        background-color: gray;
+        color: blue;
+      }
+
+      .normal {
+        background-color: skyblue;
+      }
+
+      .Jeff-big {
+        font-size: xx-large;
+      }
+
+      .Jeff-center {
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 
+			绑定样式：
+					1. class样式
+								写法:class="xxx" xxx可以是字符串、对象、数组。
+										字符串写法适用于：类名不确定，要动态获取。
+										对象写法适用于：要绑定多个样式，个数不确定，名字也不确定。
+										数组写法适用于：要绑定多个样式，个数确定，名字也确定，但不确定用不用。
+					2. style样式
+								:style="{fontSize: xxx}"其中xxx是动态值。注意是fontSize不是font-size。
+								:style="[a,b]"其中a、b是样式对象。
+		-->
+    <div id="root">
+      <!-- 绑定class样式--字符串写法，适用于：样式的类名不确定，需要动态指定 -->
+      <div class="basic" :class="mood" @click="changeMood">Jeff 点击切换</div>
+      <br />
+
+      <!-- 绑定class样式--数组写法，适用于：要绑定的样式个数不确定、名字也不确定 -->
+      <div class="basic" :class="classArr">Jeff 和classArr</div>
+      <br />
+
+      <!-- 绑定class样式--对象写法，适用于：要绑定的样式个数确定、名字也确定，但要动态决定用不用 -->
+      <div class="basic" :class="classObj">Jeff 和classObj</div>
+      <br />
+
+      <!-- 绑定style样式--对象写法 -->
+      <div class="basic" :style="styleObj">Jeff 和styleObj</div>
+      <br />
+      <!-- 绑定style样式--数组写法 -->
+      <div class="basic" :style="styleArr">Jeff 和styleArr</div>
+      <br />
+    </div>
+
+    <script src="../../js/vue.js"></script>
+    <script>
+      Vue.config.productionTip = false;
+      let vm = new Vue({
+        el: "#root",
+        data() {
+          return {
+            basic: "basic",
+            mood: "happy",
+            moods: ["happy", "sad", "normal"],
+            classArr: ["normal", "Jeff-big", "Jeff-center"],
+            classObj: {
+              normal: true,
+              "Jeff-big": true,
+              "Jeff-center": false,
+            },
+            styleObj: {
+              backgroundColor: "skyblue",
+            },
+            styleArr: [
+              { backgroundColor: "skyblue" },
+              {
+                fontSize: "xx-large",
+              },
+            ],
+          };
+        },
+        methods: {
+          changeMood() {
+            let randomIndex = Math.floor(Math.random() * this.moods.length);
+            this.mood = this.moods[randomIndex];
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.条件渲染</title>
+    <script src="../../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        条件渲染：
+                    1.v-if
+                                写法：
+                                        (1).v-if="表达式" 
+                                        (2).v-else-if="表达式"
+                                        (3).v-else="表达式"
+                                适用于：切换频率较低的场景。
+                                特点：不展示的DOM元素直接被移除。
+                                注意：v-if可以和:v-else-if、v-else一起使用，但要求结构不能被“打断”。
+
+                    2.v-show
+                                写法：v-show="表达式"
+                                适用于：切换频率较高的场景。
+                                特点：不展示的DOM元素未被移除，仅仅是使用样式隐藏掉
+                                    隐藏时无法获取焦点
+                        
+                    3.备注：使用v-if的时，元素可能无法获取到，而使用v-show一定可以获取到。
+		 -->
+    <!-- 准备好一个容器-->
+    <div id="root">
+        <h3>{{WelcomeTip}}</h3>
+        <h4>当前的n值是{{n}}</h4>
+        <button @click="add">点击n+1</button>
+        <!-- 使用v-show做条件渲染 -->
+        <div v-show="n==1">
+            <h4>欢迎来到Vue</h4>
+        </div>
+        <!-- v-else和v-else-if -->
+        <div>
+            <h4 v-if="n==1">汝窑</h4>
+            <h4 v-else-if="n==2">官窑</h4>
+            <h4 v-else-if="n==3">哥窑</h4>
+            <h4 v-else-if="n==4">钧窑</h4>
+            <h4 v-else="n==5">定窑</h4>
+        </div>
+
+        <!-- v-if与template的配合使用 -->
+        <div v-if="n==6">
+            <ul>
+                <li>条件渲染</li>
+                <li>样式绑定</li>
+                <li>计算属性</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false;
+        let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    WelcomeTip: "Hello Vue",
+                    n: 0,
+                };
+            },
+            methods: {
+                add() {
+                    this.n++;
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>

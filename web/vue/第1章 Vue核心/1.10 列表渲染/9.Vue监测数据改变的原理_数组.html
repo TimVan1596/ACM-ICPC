@@ -1,0 +1,9 @@
+    <!-- Vue监测数据的原理
+    1.原理
+        1.vue会监视data中所有层次的数据
+        2.如何监测对象中的数据？
+        通过setter事件监视,且要在newVue时就传入要监测的数据
+        (1).在对象后追加的属性,Vue默认不做响应式处理
+        (2).如需给后添加的属性做响应式,需要使用以下API:
+            Vue.set(target,propertyName/index,value)
+            vm.$ser(target,propertyName/index,value) -->

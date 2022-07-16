@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.列表过滤</title>
+</head>
+
+<body>
+    <div id="root">
+        <h3>北宋五大名窑</h3>
+        <input type="text" placeholder="请输入名称" v-model="keyword" />
+        <ol>
+            <li v-for="(item, index) in newArr" :key="item.id">
+                {{item.id}}- {{item.name}}
+            </li>
+        </ol>
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false;
+        let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    porcelains: [
+                        { id: '001', name: '汝窑' },
+                        { id: '002', name: '官窑' },
+                        { id: '003', name: '哥窑' },
+                        { id: '004', name: '钧窑' },
+                    ],
+                    keyword: ""
+                }
+            },
+            //用watch实现
+            // watch: {
+            //     keyword: {
+            //         immediate: true,
+            //         handler(value) {
+            //             this.newArr = this.porcelains.filter(
+            //                 item => item.name.indexOf(value) > -1
+            //             )
+            //         }
+            //     }
+            // }
+            //用computed实现
+            computed: {
+                newArr() {
+                    return this.porcelains.filter(
+                        item => item.name.indexOf(this.keyword) > -1
+                    )
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

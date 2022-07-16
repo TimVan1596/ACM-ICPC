@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一个重要的内置关系</title>
+</head>
+
+<body>
+    <!-- 
+		1. 一个重要的内置关系：VueComponent.prototype.__proto__ === Vue.prototype
+        2. 为什么要有这个关系：让组件实例对象（vc）可以访问到 Vue原型上的属性、方法。
+		-->
+    <!-- 准备好一个容器-->
+
+    <div id="root">
+        <App></App>
+    </div>
+
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+        Vue.prototype.x = 9
+
+        let MySchool = Vue.extend({
+            template: `
+                <div> 
+                    <h2>{{msg}}</h2>
+                    <h2>名称：{{name}}</h2>
+                    <button @click="showX">点我打印名称</button>
+                </div>
+            `,
+            data() {
+                return {
+                    msg: "我是School组件",
+                    name: "Tim"
+                }
+            },
+            methods: {
+                showX() {                  
+                    console.log(this.x,this)
+                }
+            },
+
+        })
+
+        let app = {
+            name: "APP",
+            template: `
+                <div> 
+                    <MySchool></MySchool>
+                </div>
+            `,
+            // 1.局部注册：靠new Vue的时候传入components选项
+            components: {
+                MySchool,
+            }
+        }
+
+
+
+        new Vue({
+            el: '#root',
+            data: {
+                msg: "你好 Vue"
+            },
+            // 1.局部注册：靠new Vue的时候传入components选项
+            components: {
+                app
+            }
+        })
+
+        // 定义一个构造函数
+        function Person() {
+            this.a = 3
+        }
+        // 创建一个实例对象
+        p = new Person()
+
+        console.log(p.a);
+        console.log(p);
+        console.log(Person);
+        //显式原型属性
+        console.log(Person.prototype);
+        // 隐式原型属性
+        console.log(p.__proto__);
+        console.log(p.__proto__ === Person.prototype);
+
+        // 程序员通过显示原型属性操作原型对象，追加一个x属性，值为99
+        Person.prototype.x = 99
+        console.log(p.x)
+
+
+    </script>
+</body>
+
+</html>

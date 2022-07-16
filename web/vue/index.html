@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link type="text/css" rel="styleSheet" href="./css/style.css" />
+</head>
+
+<body>
+  <div>
+    <h1 class="tim-text">Hello,VS Code!</h1>
+  </div>
+
+
+  <script>
+    layui.use(['layer', 'miniTab', 'echarts'], function () {
+
+      // 全局定义
+      let comSelect;
+      //打开首页立即执行，因此comSelect只要页面打开就会被初始化
+      renderSelect()
+
+      //首页下拉串口号
+      function renderSelect() {
+        comSelect = xmSelect.render({
+          el: '#COM',
+          radio: true,
+          direction: 'down',
+          tips: '串口号',
+          data: dataList
+        })
+      }
+
+      //获取数据
+      function getHumidTempData() {
+        comSelect.getValue()
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.列表过滤</title>
+</head>
+
+<body>
+    <div id="root">
+        <h3>人员名单</h3>
+        <input type="text" placeholder="请输入名称" v-model="keyword" />
+        <button @click="sortType=2">升序</button>
+        <button @click="sortType=1">降序</button>
+        <button @click="sortType=0">初始化</button>
+        <ol>
+            <li v-for="(item, index) in newArr" :key="item.id">
+                {{item.id}}-{{item.name}}-{{item.age}}-{{item.sex}}
+                <input type="text">
+            </li>
+        </ol>
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false;
+        let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    persons: [
+                        { id: '001', name: '马冬梅', age: 30, sex: '女' },
+                        { id: '002', name: '周冬雨', age: 31, sex: '女' },
+                        { id: '003', name: '周杰伦', age: 18, sex: '男' },
+                        { id: '004', name: '温兆伦', age: 19, sex: '男' }
+                    ],
+                    keyword: "",
+                    sortType: 0
+                }
+            },
+            //用computed实现
+            computed: {
+                newArr() {
+                    let arr = this.persons.filter(
+                        item => item.name.indexOf(this.keyword) > -1
+                    )
+                    if (this.sortType) {
+                        arr.sort((p1, p2) => {
+                            return this.sortType == 1 ? p2.age - p1.age : p1.age - p2.age
+                        })
+                    }
+                    return arr
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

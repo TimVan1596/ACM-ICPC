@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.过滤器</title>
+</head>
+
+<body>
+    <div id="root">
+        <h2>显示格式化后的时间</h2>
+        <h3>{{fmtTime}}</h3>
+        <h3>{{getFmtTime()}}</h3>
+        <h3>{{time|timeFormat}}</h3>
+        <h3 :x="1648967288|timeFormat|myFilter">{{time|timeFormat('YYYY-MM-DD HH:mm:ss')}}</h3>
+
+    </div>
+    <div id="root2">
+        <h2>root2</h2>
+        <h3>{{msg|myFilter}}</h3>
+    </div>
+
+    <script src="../../js/vue.js"></script>
+    <script src="../../js/dayjs.min.js"></script>
+    <script>
+        Vue.config.productionTip = false
+        // 全局过滤器
+        Vue.filter('myFilter', function (value) {
+            return value.slice(0, 4)
+        })
+        let vm = new Vue({
+            el: "#root"
+            , data() {
+                return {
+                    time: 1648967288
+                }
+            }
+            , computed: {
+                fmtTime() {
+                    return dayjs.unix(this.time).format()
+                }
+            }
+            , methods: {
+                getFmtTime() {
+                    return dayjs.unix(this.time).format('YYYY-MM-DD')
+                }
+            }
+            // 局部过滤器
+            , filters: {
+                timeFormat(value, str = 'YYYY年MM月DD日 HH:mm:ss') {
+                    return dayjs.unix(value).format(str)
+                }
+            }
+        })
+        new Vue({
+            el: "#root2"
+            , data() {
+                return {
+                    msg: "2022年4月3日 14:50:05"
+                }
+            },
+        })
+    </script>
+
+</body>
+
+</html>

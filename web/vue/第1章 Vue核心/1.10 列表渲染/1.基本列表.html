@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.基本列表</title>
+</head>
+
+<body>
+    <!-- 
+        v-for指令:
+                1.用于展示列表数据
+                2.语法：v-for="(item, index) in xxx" :key="yyy"
+                3.可遍历：数组、对象、字符串（用的很少）、指定次数（用的很少）
+		-->
+    <!-- 准备好一个容器-->
+    <div id="root">
+        <h3>数组遍历</h3>
+        <ol>
+            <li v-for="(item,index) of porcelains" :key="index">
+                {{item.id}}-{{item.name}}
+            </li>
+        </ol>
+
+        <h3>对象遍历</h3>
+        <ol>
+            <li v-for="(value,k) of movie" :key="k">
+                {{k}}-{{value}}
+            </li>
+        </ol>
+
+        <h3>遍历字符串（用的很少）</h3>
+        <ul>
+            <li v-for="(char,index) of str" :key="index">
+                {{index}}-{{char}}
+            </li>
+        </ul>
+
+        <h3>遍历指定次数（用的很少）</h3>
+        <ul>
+            <li v-for="(item,index) of 5" :key="index">
+                {{index}}-{{item}}
+            </li>
+        </ul>
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false;
+
+        let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    porcelains: [
+                        { id: '001', name: '汝窑' },
+                        { id: '002', name: '官窑' },
+                        { id: '003', name: '哥窑' },
+                        { id: '004', name: '钧窑' },
+                        { id: '005', name: '定窑' }
+                    ],
+                    movie: {
+                        name: "大腕",
+                        enName: "Happy Funeral",
+                        director: "冯小刚",
+                    },
+                    str: "Hello 世界！"
+                }
+            },
+
+        })
+    </script>
+
+</body>
+
+</html>

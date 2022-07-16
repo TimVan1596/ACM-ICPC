@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>姓名案例_methods实现</title>
+</head>
+<body>
+	<div id="root">
+		请输入姓：<input type="text" name="firstName" v-model="firstName"><br>
+		请输入名：<input type="text" name="lastName" v-model="lastName"><br>
+		<h3>{{getFullName()}}</h3>
+	</div>
+	<script src="../../../js/vue.js"></script>
+	<script>
+		Vue.config.productionTip = false;
+		let vm = new Vue({
+			el:"#root",
+			data() {
+				return {
+					firstName :"",
+					lastName :"",
+				}
+			},
+			methods: {
+				getFullName(){
+					return this.firstName+'-'+this.lastName
+				}
+			},
+		});
+	</script>
+</body>
+</html>
