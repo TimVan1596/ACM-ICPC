@@ -112,8 +112,11 @@ def train(train_dataset, epochs):
     param = (w1, b1, w2, b2, w3, b3)
     # 3、epoch进行训练
     for epoch in range(epochs):
-        loss = train_epoch(epoch, train_dataset, param, lr=0.001)
+        loss = train_epoch(epoch, train_dataset, param, lr=0.01)
         losses.append(loss)
+        # 分类任务测试部分逻辑
+        acc = test_model(test_dataset=test_dataset, param=param)
+        print(f"-epoch={epoch}, acc={acc}")
 
     x = range(0, epochs)
     # 绘制曲线
@@ -145,7 +148,7 @@ def tensor_equal(a, b):
     return True
 
 
-# 主测试模型的工具
+# 主测试模型的工具，返回准确率
 def test_model(test_dataset, param):
     # 分类任务测试部分逻辑：
     # 1、传入参数（w1，b1，w2，b2，w3，b3）
@@ -168,8 +171,6 @@ def test_model(test_dataset, param):
 
         # 1. 先考虑一个 Batch 的样本 x，通过前向计算可以获得网络的预测值。预测值 out 的 shape 为[𝑏, 10]，分别代表了样本属于每个类别的概率
         # shape= = [200  10]
-        print("@tf.shape(out)=", tf.shape(out))
-        print("@tf.shape(y)=", tf.shape(y))
         # 2. 我们根据 tf.argmax 函数选出概率最大值出现的索引号，也即样本最有可能的类别号
         pred = tf.argmax(out, axis=1)
         y = tf.argmax(y, axis=1)
@@ -184,11 +185,13 @@ def test_model(test_dataset, param):
         # 8、计算准确率ACC，并通过plt打印
 
         # shape = 200
-        print("@tf.shape(correct)=", tf.shape(correct))
+        # print("@tf.shape(correct)=", tf.shape(correct))
         total_correct += tf.reduce_sum(tf.cast(correct, dtype=tf.int32)).numpy()
         total += y.shape[0]
 
-    pass
+    acc = total_correct / total
+
+    return acc
 
 
 if __name__ == "__main__":
@@ -199,18 +202,16 @@ if __name__ == "__main__":
     # 3、按照epoch进行更新
     # 4、三层神经网络
     train_dataset, test_dataset = load_data(batch_size=200)
-    param = train(train_dataset=train_dataset, epochs=1)
+    param = train(train_dataset=train_dataset, epochs=320)
 
     # 前面已经介绍并实现了前向传播和数据集的加载部分。
     # 现在我们来完成剩下的分类任务逻辑。
     # 1. 在训练的过程中，通过间隔数个 Step 后打印误差数据，可以有效监督模型的训练进度
     # 2. 在若干个 Step 或者若干个 Epoch 训练后，可以进行一次测试(验证)，以获得模型的当前性能
 
-    # 分类任务测试部分逻辑：
     # 1、传入参数（w1，b1，w2，b2，w3，b3）
     # 2、进行训练，获取最大下标
     # 3、结果转为0和1，统计为1的个数
     # 4、计算准确率ACC，并通过plt打印
-    test_model(test_dataset=test_dataset, param=param)
 
     pass
