@@ -8,6 +8,7 @@
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
+submission_*.csv
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
